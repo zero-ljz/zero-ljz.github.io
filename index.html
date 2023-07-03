@@ -2,10 +2,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css"
+    />
     <title>空心的小站</title>
     <style>
       body {
-        background: url("https://source.unsplash.com/random/2560x1600/?beutiful,girl,sea,ocean,mountain,star-sky,animal,food,sunrise");
         background-repeat: no-repeat;
         background-size: cover;
         margin: 0;
@@ -15,20 +18,17 @@
         justify-content: center;
         min-height: 100vh;
       }
-
       /* 添加动画效果 */
       @keyframes fade-in {
         0% {
           opacity: 0;
           transform: translateY(20px);
         }
-
         100% {
           opacity: 1;
           transform: translateY(0);
         }
       }
-
       .glass-box {
         background: rgba(255, 255, 255, 0.6);
         border-radius: 1.2rem;
@@ -39,7 +39,6 @@
         text-align: center;
         animation: fade-in 1s ease-out;
       }
-
       .avatar {
         position: absolute;
         top: -40px;
@@ -54,33 +53,27 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         animation: fade-in 1s ease-out;
       }
-
       ul {
         list-style: none;
         padding: 0;
       }
-
       ul li {
         margin-bottom: 1rem;
         animation: fade-in 1s ease-out;
         animation-delay: 0.2s;
       }
-
       ul li a {
         color: #1a5ba8;
         text-decoration: none;
       }
-
       ul li a:hover {
         text-decoration: underline;
       }
-
       .buttons {
         display: flex;
         justify-content: center;
         margin-top: 2rem;
       }
-
       .buttons a {
         display: inline-block;
         background-color: #1a5ba8;
@@ -93,11 +86,9 @@
         animation: fade-in 1s ease-out;
         animation-delay: 0.4s;
       }
-
       .buttons a:hover {
         background-color: #14508e;
       }
-
       footer {
         color: #fff;
         padding: 1rem;
@@ -108,7 +99,6 @@
         animation: fade-in 1s ease-out;
         animation-delay: 0.6s;
       }
-
       .clock {
         position: fixed;
         top: 20px;
@@ -118,19 +108,29 @@
         font-family: Arial, sans-serif;
         z-index: 9999;
       }
-
       .date {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      font-size: 24px;
-      color: rgba(255, 255, 255, 0.8);
-      font-family: Arial, sans-serif;
-      z-index: 9999;
-    }
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        font-size: 24px;
+        color: rgba(255, 255, 255, 0.8);
+        font-family: Arial, sans-serif;
+        z-index: 9999;
+      }
+      .arrow-right {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        cursor: pointer;
+      }
+      .arrow-down {
+        position: fixed;
+        bottom: 120px;
+        right: 20px;
+        cursor: pointer;
+      }
     </style>
   </head>
-
   <body>
     <div>
       <div class="glass-box">
@@ -148,89 +148,96 @@
         </div>
       </div>
     </div>
-
-    <div id="music-player" key="2740824585" api="https://api.rainss.cn/x-player"></div>
     <div id="player"></div>
-
-    <!-- 日期和时钟代码 -->
+    <div class="arrow-right">
+      <i
+        class="fa fa-arrow-right"
+        style="font-size: 32px; color: white"
+        onclick="changeWallpaper()"
+      ></i>
+    </div>
     <div class="clock" id="date"></div>
     <div class="date" id="clock"></div>
+    <!-- Footer -->
+    <footer>
+      <p></p>
+    </footer>
+    <script>
+      // HTML 文档的 DOM 树构建完成
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("DOM fully loaded and parsed");
+        changeWallpaper();
+      });
+      
+      // 整个页面及其所有资源都加载完成
+      window.addEventListener("load", function () {
+        updateDateTime();
+      });
+      
+      function changeWallpaper() {
+        var wallpaperUrl =
+          "https://source.unsplash.com/random/2560x1600/?beutiful,girl,sea,ocean,mountain,star-sky,animal,food,sunrise"; // 新壁纸的URL
+        var timestamp = new Date().getTime(); // 生成一个随机时间戳
+        var newWallpaperUrl = wallpaperUrl + "&t=" + timestamp; // 在URL中添加随机参数
+        document.body.style.backgroundImage = "url(" + newWallpaperUrl + ")";
+      }
+    </script>
     <script>
       // JavaScript 代码用于更新日期和时钟
       function updateDateTime() {
         var now = new Date();
-
         var dateOptions = {
           year: "numeric",
           month: "2-digit",
           day: "2-digit"
         };
         var dateString = now.toLocaleDateString("zh-CN", dateOptions);
-
         var dateElement = document.getElementById("date");
         dateElement.textContent = dateString.replace(/\//g, "-");
-
         var timeOptions = {
           hour: "2-digit",
           minute: "2-digit",
           second: "2-digit"
         };
         var timeString = now.toLocaleTimeString("zh-CN", timeOptions);
-
         var clockElement = document.getElementById("clock");
         clockElement.textContent = timeString;
-
         // 每秒更新一次日期和时钟
         setTimeout(updateDateTime, 1000);
       }
 
-      // 页面加载完成后开始更新日期和时钟
-      window.addEventListener("load", function () {
-        updateDateTime();
+    </script>
+    <script>
+      const currentYear = new Date().getFullYear();
+      const footerText = document.querySelector("footer p");
+      footerText.textContent = `© 2015-${currentYear} zero-ljz. All rights reserved.`;
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css"
+      rel="stylesheet"
+    />
+    <script>
+      const ap = new APlayer({
+        container: document.getElementById("player"),
+        fixed: true,
+        audio: [
+          {
+            name: "朗朗晴天",
+            artist: "猫瑾",
+            url: "https://i.iapp.run/%E6%9C%97%E6%9C%97%E6%99%B4%E5%A4%A9.mp3",
+            cover:
+              "https://y.qq.com/music/photo_new/T002R300x300M000003R5Lzp0J4xMr_10.jpg?max_age=2592000"
+          },
+          {
+            name: "桃花诺",
+            artist: "G.E.M.邓紫棋",
+            url: "https://dl.stream.qqmusic.qq.com/C400001UVbfz2A0biM.m4a?guid=464323224&vkey=C97D409CC8D5617F13E4451E7AE9768A164D41724494B45FB7D3213FCEA7FF9F4C259EF700C00BFBC69701745330255403B4B6F577974E9A&uin=&fromtag=120032",
+            cover:
+              "https://y.qq.com/music/photo_new/T001R300x300M000001fNHEf1SFEFN_7.jpg?max_age=2592000"
+          }
+        ]
       });
     </script>
-
-    <!-- Footer -->
-    <footer>
-      <p></p>
-    </footer>
   </body>
-
-  <script>
-    const currentYear = new Date().getFullYear();
-    const footerText = document.querySelector("footer p");
-    footerText.textContent = `© 2015-${currentYear} zero-ljz. All rights reserved.`;
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" rel="stylesheet">
-  <script>
-const ap = new APlayer({
-    container: document.getElementById('player'),
-    fixed: true,
-    audio: [
-    {
-        name: '朗朗晴天',
-        artist: '猫瑾',
-        url: 'https://i.iapp.run/%E6%9C%97%E6%9C%97%E6%99%B4%E5%A4%A9.mp3',
-        cover: 'https://y.qq.com/music/photo_new/T002R300x300M000003R5Lzp0J4xMr_10.jpg?max_age=2592000',
-    },
-          {
-        name: '桃花诺',
-        artist: 'G.E.M.邓紫棋',
-        url: 'https://dl.stream.qqmusic.qq.com/C400001UVbfz2A0biM.m4a?guid=464323224&vkey=C97D409CC8D5617F13E4451E7AE9768A164D41724494B45FB7D3213FCEA7FF9F4C259EF700C00BFBC69701745330255403B4B6F577974E9A&uin=&fromtag=120032',
-        cover: 'https://y.qq.com/music/photo_new/T001R300x300M000001fNHEf1SFEFN_7.jpg?max_age=2592000',
-    }
-           
-           
-           
-           
-           
-           
-           
-           ]
-});
-</script>
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js" ></script>
-  <script id="xplayer" src="https://api.rainss.cn/x-player/static/js/player-5.min.js" ></script>
 </html>
