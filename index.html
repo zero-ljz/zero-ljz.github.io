@@ -179,6 +179,8 @@
         updateDateTime();
       });
 
+var siteTitle = document.title; document.addEventListener("visibilitychange",function () {if (document.visibilityState ==="visible") {document.title =siteTitle;} else {document.title ="(*>﹏<*)快回来😴" + " • " + siteTitle;} });
+      
       function changeWallpaper() {
         var wallpaperUrl =
           "https://source.unsplash.com/random/2560x1600/?beutiful,girl,sea,ocean,mountain,star-sky,animal,food,sunrise"; // 新壁纸的URL
