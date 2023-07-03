@@ -1,208 +1,191 @@
-<!DOCTYPE html>
-<html  lang="zh-CN">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>空心的小站</title>
-  <style>
-    body {
-      background: url("https://source.unsplash.com/random/2560x1600/?star-sky");
-      background-repeat: no-repeat;
-      background-size: cover;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
-
-        /* 添加动画效果 */
-        @keyframes fade-in {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>空心的小站</title>
+    <style>
+      body {
+        background: url("https://source.unsplash.com/random/2560x1600/?beutiful,girl,sea,ocean,mountain,star-sky,animal,food,sunrise");
+        background-repeat: no-repeat;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
       }
 
-      100% {
-        opacity: 1;
-        transform: translateY(0);
+      /* 添加动画效果 */
+      @keyframes fade-in {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
-    }
 
+      .glass-box {
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 1.2rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        max-width: 400px;
+        padding: 2rem;
+        text-align: center;
+        animation: fade-in 1s ease-out;
+      }
 
-    .glass-box {
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 1.2rem;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      max-width: 400px;
-      padding: 2rem;
-      text-align: center;
-      animation: fade-in 1s ease-out;
-    }
+      .avatar {
+        position: absolute;
+        top: -40px;
+        left: calc(50% - 40px);
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background-image: url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD//gA+Q1JFQVRPUjogZ2QtanBlZyB2MS4wICh1c2luZyBJSkcgSlBFRyB2NjIpLCBkZWZhdWx0IHF1YWxpdHkK/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8AAEQgAUABQAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8A9/ooooAKKKyrzVCb5dMsHha+YFn8zkQoMZYgcn7y4GRnPWgDVorNh0WAOJruSW9n5+edsgZGDtQfKvHHAz6k01vD+nqM2kbWL9ntHMXPqVHyt/wIEUAalFZ2mXcjyT2VzMktzbkfOi43oSQGx0zkMDjup6ZxWjQAUUUUAFFFFAEF7crZWNxdMrOsMbSFVHJAGcD3qtpFjLaWu66laW5kZpHLMWEZbkohPO0Y/Sr7qHRlPQjBrM0SZlgk0+eQtcWbmM7vvNH/AMs298rjJ6ZDelAGpWCL6+vdWRrPLWCzFGcYwdiuHOfQuyLj/YY0mtS6nqC3+mabDb8Q7HkmlKnLqR8oA7cHOe2MdxsvbxTWht5Il8pl2tGOmPSgDA0Wze31yV57tTcNE8hhjHyYkkLHB43bW4z/ALXOMiulrF1i1t7PTbaS1jSB7WWJbbywFC7nVdmB2OcEf1AraoAKKKKACiiigAqne6Zb3zJI++OePPlzxNtdPoR1HTg5BxyKuVnardTRiGztGC3V0xRGIz5agZZyO+B09yo70AYUkd7F4xsLScPOJI2ZrqORoi0acjzFUhSQxA6YO/oMEG/Zy6xFcT2ML2t3HaBI/NnLo5JGcMfm3EKVJOBnPSopNIi0y/tv7Mmlhvbn5JJHbzQ6opO6QNyeSBwVPzDmrFlNeWOpumoW1vGL+bKSwSs43iNRhgVGMhCRjjjHXkgFkWV3eXEE1/JEscJ3rbw5Kl+cMzHGcdQMDB55wMadFFABRRRQAUUUUAFYIvokvLzVZQzpG32K1RBlpGB+faPUv8v/AGzz0ranlWCCSVvuopY/QCsLSlKHRLWSKNmSxa4d2HzCQ7ASPrvfP196AJDp+rS3EeqNdRLeojIlrtzCEYqSpbG7d8o+bp/s9jDdamdVsb+3jtZodQ0/y5/JccllO9QCOoJTGR2NdHWXOAniazPTzLSdT7kNEQP1b9aANGGVLiCOaJg0cihlYdwRkGn1l6D+7sHsz1s5ntwPRAcp/wCOFK1KACiiigAooooARlDKVYAgjBB71GbaI3KXGz97GjRqc9FJBIx/wEflUtFABUUlvFLNFK65eIkoc9CRg/oalooAijtooZ5pkXa8xBk56kDAOPXAA/AVLRRQAUUUUAf/2Q==);
+        background-size: cover;
+        background-position: center;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        animation: fade-in 1s ease-out;
+      }
 
-    .avatar {
-      position: absolute;
-      top: -40px;
-      left: calc(50% - 40px);
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background-image: url(data:image/jpeg;base64,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);
-      background-size: cover;
-      background-position: center;
-      border: 2px solid #fff;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      animation: fade-in 1s ease-out;
-    }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
 
-    ul {
-      list-style: none;
-      padding: 0;
-    }
+      ul li {
+        margin-bottom: 1rem;
+        animation: fade-in 1s ease-out;
+        animation-delay: 0.2s;
+      }
 
-    ul li {
-      margin-bottom: 1rem;
-      animation: fade-in 1s ease-out;
-      animation-delay: 0.2s; /* 延迟0.2秒后开始动画 */
-    }
+      ul li a {
+        color: #1a5ba8;
+        text-decoration: none;
+      }
 
-    ul li a {
-      color: #1a5ba8;
-      text-decoration: none;
-    }
+      ul li a:hover {
+        text-decoration: underline;
+      }
 
-    ul li a:hover {
-      text-decoration: underline;
-    }
+      .buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+      }
 
-    .buttons {
-      display: flex;
-      justify-content: center;
-      margin-top: 2rem;
-    }
+      .buttons a {
+        display: inline-block;
+        background-color: #1a5ba8;
+        color: #fff;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        border-radius: 999px;
+        margin-right: 1rem;
+        text-decoration: none;
+        animation: fade-in 1s ease-out;
+        animation-delay: 0.4s;
+      }
 
-    .buttons a {
-      display: inline-block;
-      background-color: #1a5ba8;
-      color: #fff;
-      font-weight: bold;
-      padding: 0.5rem 1rem;
-      border-radius: 999px;
-      margin-right: 1rem;
-      text-decoration: none;
-      animation: fade-in 1s ease-out;
-      animation-delay: 0.4s; /* 延迟0.4秒后开始动画 */
-    }
+      .buttons a:hover {
+        background-color: #14508e;
+      }
 
-    .buttons a:hover {
-      background-color: #14508e;
-    }
+      footer {
+        color: #fff;
+        padding: 1rem;
+        text-align: center;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        animation: fade-in 1s ease-out;
+        animation-delay: 0.6s;
+      }
 
+      .clock {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        font-size: 24px;
+        color: rgba(255, 255, 255, 0.8);
+        font-family: Arial, sans-serif;
+        z-index: 9999;
+      }
+    </style>
+  </head>
 
-    footer {
-      color: #fff;
-      padding: 1rem;
-      text-align: center;
-      width: 100%;
-      position: fixed;
-      bottom: 0;
-      animation: fade-in 1s ease-out;
-      animation-delay: 0.6s; /* 延迟0.6秒后开始动画 */
-    }
-
-   /* 样式代码用于时钟 */
-   .clock {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      font-size: 24px;
-      color: rgba(255, 255, 255, 0.8);
-      font-family: Arial, sans-serif;
-      z-index: 9999;
-    }
-
-    .date {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      font-size: 24px;
-      color: rgba(255, 255, 255, 0.8);
-      font-family: Arial, sans-serif;
-      z-index: 9999;
-    }
-
-  </style>
-</head>
-
-<body>
-  <div>
-    <div class="glass-box">
-      <div class="avatar"></div>
-      <br/>
-      <h1>欢迎来到我的小站</h1>
-      <p>看看这些很棒的网站:</p>
-      <ul>
-        <li><a href="http://iapp.run">我的应用</a></li>
-        <li><a href="http://blog.iapp.run">我的博客</a></li>
-      </ul>
-      <div class="buttons">
-        <a href="#">关于我</a>
-        <a href="mailto:me@iapp.run">联系我</a>
+  <body>
+    <div>
+      <div class="glass-box">
+        <div class="avatar"></div>
+        <br />
+        <h1>欢迎来到我的小站</h1>
+        <p>看看这些很棒的网站:</p>
+        <ul>
+          <li><a href="http://iapp.run">我的应用</a></li>
+          <li><a href="http://blog.iapp.run">我的博客</a></li>
+        </ul>
+        <div class="buttons">
+          <a href="#">关于我</a>
+          <a href="mailto:me@iapp.run">联系我</a>
+        </div>
       </div>
     </div>
-  </div>
 
- <!-- 日期和时钟代码 -->
- <div class="date" id="date"></div>
- <div class="clock" id="clock"></div>
- <script>
-  // JavaScript 代码用于更新日期和时钟
-  function updateDateTime() {
-    var now = new Date();
+    <!-- 日期和时钟代码 -->
+    <div class="clock" id="date"></div>
+    <div class="clock" id="clock"></div>
+    <script>
+      // JavaScript 代码用于更新日期和时钟
+      function updateDateTime() {
+        var now = new Date();
 
-    var dateOptions = {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    };
-    var dateString = now.toLocaleDateString('zh-CN', dateOptions);
+        var dateOptions = {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit"
+        };
+        var dateString = now.toLocaleDateString("zh-CN", dateOptions);
 
-    var dateElement = document.getElementById('date');
-    dateElement.textContent = dateString.replace(/\//g, '-');
+        var dateElement = document.getElementById("date");
+        dateElement.textContent = dateString.replace(/\//g, "-");
 
-    var timeOptions = {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    };
-    var timeString = now.toLocaleTimeString('zh-CN', timeOptions);
+        var timeOptions = {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit"
+        };
+        var timeString = now.toLocaleTimeString("zh-CN", timeOptions);
 
-    var clockElement = document.getElementById('clock');
-    clockElement.textContent = timeString;
+        var clockElement = document.getElementById("clock");
+        clockElement.textContent = timeString;
 
-    // 每秒更新一次日期和时钟
-    setTimeout(updateDateTime, 1000);
-  }
+        // 每秒更新一次日期和时钟
+        setTimeout(updateDateTime, 1000);
+      }
 
-  // 页面加载完成后开始更新日期和时钟
-  window.addEventListener('load', function () {
-    updateDateTime();
-  });
-</script>
+      // 页面加载完成后开始更新日期和时钟
+      window.addEventListener("load", function () {
+        updateDateTime();
+      });
+    </script>
 
-  <!-- Footer -->
-  <footer>
-    <p></p>
-  </footer>
-</body>
+    <!-- Footer -->
+    <footer>
+      <p></p>
+    </footer>
+  </body>
 
-<script>
-  const currentYear = new Date().getFullYear();
-  const footerText = document.querySelector('footer p');
-  footerText.textContent = `© 2015-${currentYear} zero-ljz. All rights reserved.`;
-</script>
-
+  <script>
+    const currentYear = new Date().getFullYear();
+    const footerText = document.querySelector("footer p");
+    footerText.textContent = `© 2015-${currentYear} zero-ljz. All rights reserved.`;
+  </script>
 </html>
