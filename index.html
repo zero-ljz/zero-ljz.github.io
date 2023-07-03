@@ -29,16 +29,25 @@
           transform: translateY(0);
         }
       }
+
       .glass-box {
         background: rgba(255, 255, 255, 0.6);
-        border-radius: 1.2rem;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         backdrop-filter: blur(10px);
-        max-width: 400px;
+        border-radius: 1.2rem;
         padding: 2rem;
-        text-align: center;
-        animation: fade-in 1s ease-out;
       }
+
+      .blur-box {
+        background-image: linear-gradient(125deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2) 70%); /* color: #ADADAD */
+        background-image: linear-gradient(125deg, rgba(64, 64, 64, 0.3), rgba(64, 64, 64, 0.2) 70%);
+        color: white;
+        box-shadow: inset 1px 1px rgb(255 255 255 / 20%), inset -1px -1px rgb(255 255 255 / 10%), 1px 3px 24px -1px rgb(0 0 0 / 15%);
+        backdrop-filter: blur(5px);
+        border-radius: 7px;
+        padding: 1.2rem;
+      }
+
       .avatar {
         position: absolute;
         top: -40px;
@@ -133,7 +142,14 @@
   </head>
   <body>
     <div>
-      <div class="glass-box">
+      <div
+        class="glass-box"
+        style="
+          max-width: 400px;
+          text-align: center;
+          animation: fade-in 1s ease-out;
+        "
+      >
         <div class="avatar"></div>
         <br />
         <h1>欢迎来到我的小站</h1>
@@ -143,16 +159,24 @@
           <li><a href="http://blog.iapp.run">我的博客</a></li>
         </ul>
         <div class="buttons">
-          <a href="#">关于我</a>
+          <a href="#" onclick="showMessage(`这里暂时没有内容！
+          `, 10000)">关于我</a>
           <a href="mailto:me@iapp.run">联系我</a>
         </div>
       </div>
     </div>
 
-    <div id="music-player" key="2740824585" api="https://api.rainss.cn/x-player"></div>
- <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js" ></script>
-  <script id="xplayer" src="https://api.rainss.cn/x-player/static/js/player-5.min.js" ></script>
-    
+    <div
+      id="music-player"
+      playlist-id="2740824585"
+      api="https://api.rainss.cn/x-player"
+    ></div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script
+      id="xplayer"
+      src="https://api.rainss.cn/x-player/static/js/player-5.min.js"
+    ></script>
+
     <div id="player"></div>
     <div class="arrow-right">
       <i
@@ -179,8 +203,15 @@
         updateDateTime();
       });
 
-var siteTitle = document.title; document.addEventListener("visibilitychange",function () {if (document.visibilityState ==="visible") {document.title =siteTitle;} else {document.title ="(*>﹏<*)快回来😴" + " • " + siteTitle;} });
-      
+      var siteTitle = document.title;
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible") {
+          document.title = siteTitle;
+        } else {
+          document.title = "(*>﹏<*)快回来😴" + " • " + siteTitle;
+        }
+      });
+
       function changeWallpaper() {
         var wallpaperUrl =
           "https://source.unsplash.com/random/2560x1600/?beutiful,girl,sea,ocean,mountain,star-sky,animal,food,sunrise"; // 新壁纸的URL
@@ -256,5 +287,49 @@ var siteTitle = document.title; document.addEventListener("visibilitychange",fun
         ]
       });
     </script>
+<script>
+  // 创建消息框元素
+  function createMessageBox(message) {
+    var messageBox = document.createElement("div");
+    messageBox.classList.add("blur-box");
+
+    messageBox.style.position = "fixed";
+    messageBox.style.top = "20px"; // 将消息框的位置移到屏幕的上方
+    messageBox.style.left = "calc(50% - 40px);";
+    messageBox.style.zIndex = "9999";
+    messageBox.style.minWidth = "200px"; // 设置最小宽度
+    messageBox.style.minHeight = "100px"; // 设置最小高度
+
+    var messageText = document.createElement("span");
+    messageText.textContent = message.replace(/\n/g, "\r\n"); // 替换换行符为回车换行
+    messageText.style.whiteSpace = "pre-line"; // 设置样式以支持换行
+
+    messageBox.appendChild(messageText);
+
+    var closeButton = document.createElement("button");
+    closeButton.textContent = "关闭";
+    closeButton.style.marginLeft = "10px";
+    closeButton.style.position = "absolute";
+    closeButton.style.bottom = "10px";
+    closeButton.style.right = "10px";
+    closeButton.addEventListener("click", function () {
+      messageBox.style.display = "none";
+    });
+    messageBox.appendChild(closeButton);
+
+    document.body.appendChild(messageBox);
+
+    return messageBox;
+  }
+
+  // 显示消息框
+  function showMessage(message, duration) {
+    var messageBox = createMessageBox(message);
+    setTimeout(function () {
+      messageBox.style.display = "none";
+    }, duration);
+  }
+</script>
+
   </body>
 </html>
