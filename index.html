@@ -118,6 +118,16 @@
         font-family: Arial, sans-serif;
         z-index: 9999;
       }
+
+      .date {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      color: rgba(255, 255, 255, 0.8);
+      font-family: Arial, sans-serif;
+      z-index: 9999;
+    }
     </style>
   </head>
 
@@ -141,7 +151,7 @@
 
     <!-- 日期和时钟代码 -->
     <div class="clock" id="date"></div>
-    <div class="clock" id="clock"></div>
+    <div class="date" id="clock"></div>
     <script>
       // JavaScript 代码用于更新日期和时钟
       function updateDateTime() {
