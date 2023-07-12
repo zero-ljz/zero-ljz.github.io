@@ -249,7 +249,7 @@
         let wallpaperUrl =
           "https://source.unsplash.com/random/1920x1080/?landscape"; // 新壁纸的URL
         let timestamp = new Date().getTime(); // 生成一个随机时间戳
-        let newWallpaperUrl = wallpaperUrl + "?t=" + timestamp; // 在URL中添加随机参数
+        let newWallpaperUrl = wallpaperUrl + "&t=" + timestamp; // 在URL中添加随机参数
 
         // 创建一个新的背景图像元素
         var newBackgroundImage = new Image();
