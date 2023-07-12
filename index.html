@@ -246,7 +246,7 @@
 
       function changeWallpaper() {
         let wallpaperUrl =
-          "https://source.unsplash.com/random/1920x1080/?sea,ocean"; // 新壁纸的URL
+          "https://source.unsplash.com/random/2560x1600/?beutiful,girl,sea,ocean,mountain,star-sky,animal,food,sunrise"; // 新壁纸的URL
         let timestamp = new Date().getTime(); // 生成一个随机时间戳
         let newWallpaperUrl = wallpaperUrl + "&t=" + timestamp; // 在URL中添加随机参数
 
@@ -346,7 +346,7 @@
             container: document.getElementById("player"),
             fixed: true,
             lrcType: 3,
-            autoplay: true,
+            autoplay: false,
             theme: "#b7daff",
             audio: data.songs
           });
