@@ -2,7 +2,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <link
       rel="stylesheet"
       href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"
@@ -11,6 +11,7 @@
       rel="stylesheet"
       href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css"
     />
+
     <title>空心的小站</title>
     <style>
       body {
@@ -44,10 +45,20 @@
       }
 
       .blur-box {
-        background-image: linear-gradient(125deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2) 70%); /* color: #ADADAD */
-        background-image: linear-gradient(125deg, rgba(64, 64, 64, 0.3), rgba(64, 64, 64, 0.2) 70%);
+        background-image: linear-gradient(
+          125deg,
+          rgba(255, 255, 255, 0.3),
+          rgba(255, 255, 255, 0.2) 70%
+        ); /* color: #ADADAD */
+        background-image: linear-gradient(
+          125deg,
+          rgba(64, 64, 64, 0.3),
+          rgba(64, 64, 64, 0.2) 70%
+        );
         color: white;
-        box-shadow: inset 1px 1px rgb(255 255 255 / 20%), inset -1px -1px rgb(255 255 255 / 10%), 1px 3px 24px -1px rgb(0 0 0 / 15%);
+        box-shadow: inset 1px 1px rgb(255 255 255 / 20%),
+          inset -1px -1px rgb(255 255 255 / 10%),
+          1px 3px 24px -1px rgb(0 0 0 / 15%);
         backdrop-filter: blur(5px);
         border-radius: 7px;
         padding: 1.2rem;
@@ -164,14 +175,18 @@
           <li><a href="http://blog.iapp.run">我的博客</a></li>
         </ul>
         <div class="buttons">
-          <a href="#" onclick="showMessage(`这里暂时没有内容！
-          `, 10000)">关于我</a>
+          <a
+            href="#"
+            onclick="showMessage(`这里暂时没有内容！
+          `, 10000)"
+            >关于我</a
+          >
           <a href="mailto:me@iapp.run">联系我</a>
         </div>
       </div>
     </div>
 
-    <div
+    <!--<div
       id="music-player"
       playlist-id="725994751"
       api="https://api.rainss.cn/x-player"
@@ -180,7 +195,7 @@
     <script
       id="xplayer"
       src="https://api.rainss.cn/x-player/static/js/player-5.min.js"
-    ></script>
+    ></script>-->
 
     <div id="player"></div>
     <div class="arrow-right">
@@ -196,6 +211,13 @@
     <footer>
       <p></p>
     </footer>
+
+    <link
+      href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js"></script>
+
     <script>
       // HTML 文档的 DOM 树构建完成
       document.addEventListener("DOMContentLoaded", function () {
@@ -265,125 +287,94 @@
       const footerText = document.querySelector("footer p");
       footerText.textContent = `© 2015-${currentYear} zero-ljz. All rights reserved.`;
     </script>
-    
-    <script src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js"></script>
-    <link
-      href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css"
-      rel="stylesheet"
-    />
+
     <script>
-    /*
-      const ap = new APlayer({
-        container: document.getElementById("player"),
-        fixed: true,
-        audio: [
-          {
-            name: "朗朗晴天",
-            artist: "猫瑾",
-            url: "https://i.iapp.run/%E6%9C%97%E6%9C%97%E6%99%B4%E5%A4%A9.mp3",
-            cover:
-              "https://y.qq.com/music/photo_new/T002R300x300M000003R5Lzp0J4xMr_10.jpg?max_age=2592000"
-          },
-          {
-            name: "桃花诺",
-            artist: "G.E.M.邓紫棋",
-            url: "https://dl.stream.qqmusic.qq.com/C400001UVbfz2A0biM.m4a?guid=464323224&vkey=C97D409CC8D5617F13E4451E7AE9768A164D41724494B45FB7D3213FCEA7FF9F4C259EF700C00BFBC69701745330255403B4B6F577974E9A&uin=&fromtag=120032",
-            cover:
-              "https://y.qq.com/music/photo_new/T001R300x300M000001fNHEf1SFEFN_7.jpg?max_age=2592000"
-          }
-        ]
-      });
-      */
-    </script>
-    
-<script>
-  // 创建消息框元素
-  function createMessageBox(message) {
-    var messageBox = document.createElement("div");
-    messageBox.classList.add("blur-box");
+      // 创建消息框元素
+      function createMessageBox(message) {
+        var messageBox = document.createElement("div");
+        messageBox.classList.add("blur-box");
 
-    messageBox.style.position = "fixed";
-    messageBox.style.top = "20px"; // 将消息框的位置移到屏幕的上方
-    messageBox.style.left = "calc(50% - 40px);";
-    messageBox.style.zIndex = "9999";
-    messageBox.style.minWidth = "200px"; // 设置最小宽度
-    messageBox.style.minHeight = "100px"; // 设置最小高度
+        messageBox.style.position = "fixed";
+        messageBox.style.top = "20px"; // 将消息框的位置移到屏幕的上方
+        messageBox.style.left = "calc(50% - 40px);";
+        messageBox.style.zIndex = "9999";
+        messageBox.style.minWidth = "200px"; // 设置最小宽度
+        messageBox.style.minHeight = "100px"; // 设置最小高度
 
-    var messageText = document.createElement("span");
-    messageText.textContent = message.replace(/\n/g, "\r\n"); // 替换换行符为回车换行
-    messageText.style.whiteSpace = "pre-line"; // 设置样式以支持换行
+        var messageText = document.createElement("span");
+        messageText.textContent = message.replace(/\n/g, "\r\n"); // 替换换行符为回车换行
+        messageText.style.whiteSpace = "pre-line"; // 设置样式以支持换行
 
-    messageBox.appendChild(messageText);
+        messageBox.appendChild(messageText);
 
-    var closeButton = document.createElement("button");
-    closeButton.textContent = "关闭";
-    closeButton.style.marginLeft = "10px";
-    closeButton.style.position = "absolute";
-    closeButton.style.bottom = "10px";
-    closeButton.style.right = "10px";
-    closeButton.addEventListener("click", function () {
-      messageBox.style.display = "none";
-    });
-    messageBox.appendChild(closeButton);
+        var closeButton = document.createElement("button");
+        closeButton.textContent = "关闭";
+        closeButton.style.marginLeft = "10px";
+        closeButton.style.position = "absolute";
+        closeButton.style.bottom = "10px";
+        closeButton.style.right = "10px";
+        closeButton.addEventListener("click", function () {
+          messageBox.style.display = "none";
+        });
+        messageBox.appendChild(closeButton);
 
-    document.body.appendChild(messageBox);
+        document.body.appendChild(messageBox);
 
-    return messageBox;
-  }
-
-  // 显示消息框
-  function showMessage(message, duration) {
-    var messageBox = createMessageBox(message);
-    setTimeout(function () {
-      messageBox.style.display = "none";
-    }, duration);
-  }
-
-
-const fetchPlayerList = async () => {
-  try {
-    const response = await fetch("https://api.rainss.cn/x-player/api/palyerlist.php?id=725994751");
-    const data = await response.json();
-    const ap = new APlayer({
-      container: document.getElementById("player"),
-      fixed: true,
-      lrcType: 3,
-      autoplay: true,
-      theme: "#b7daff",
-      audio: data.songs
-    });
-
-    const colorThief = new ColorThief();
-    const image = new Image();
-    const setTheme = async (index) => {
-      if (!ap.list.audios[index].theme) {
-        const response = await fetch(ap.list.audios[index].cover);
-        const blob = await response.blob();
-        const coverUrl = URL.createObjectURL(blob);
-        image.onload = function () {
-          const color = colorThief.getColor(image);
-          ap.theme(`rgb(${color[0]}, ${color[1]}, ${color[2]})`, index);
-          console.log("theme => " + `rgb(${color[0]}, ${color[1]}, ${color[2]})`);
-          URL.revokeObjectURL(coverUrl);
-        };
-        image.src = coverUrl;
+        return messageBox;
       }
-    };
 
-    setTheme(ap.list.index);
-    ap.on("listswitch", (index) => {
-      setTheme(index.index);
-    });
-  } catch (error) {
-    console.log("Error:", error);
-  }
-};
+      // 显示消息框
+      function showMessage(message, duration) {
+        var messageBox = createMessageBox(message);
+        setTimeout(function () {
+          messageBox.style.display = "none";
+        }, duration);
+      }
 
-fetchPlayerList();
+      const fetchPlayerList = async () => {
+        try {
+          const response = await fetch(
+            "https://api.rainss.cn/x-player/api/palyerlist.php?id=725994751"
+          );
+          const data = await response.json();
+          const ap = new APlayer({
+            container: document.getElementById("player"),
+            fixed: true,
+            lrcType: 3,
+            autoplay: true,
+            theme: "#b7daff",
+            audio: data.songs
+          });
 
+          const colorThief = new ColorThief();
+          const image = new Image();
+          const setTheme = async (index) => {
+            if (!ap.list.audios[index].theme) {
+              const response = await fetch(ap.list.audios[index].cover);
+              const blob = await response.blob();
+              const coverUrl = URL.createObjectURL(blob);
+              image.onload = function () {
+                const color = colorThief.getColor(image);
+                ap.theme(`rgb(${color[0]}, ${color[1]}, ${color[2]})`, index);
+                console.log(
+                  "theme => " + `rgb(${color[0]}, ${color[1]}, ${color[2]})`
+                );
+                URL.revokeObjectURL(coverUrl);
+              };
+              image.src = coverUrl;
+            }
+          };
 
-  
-</script>
+          setTheme(ap.list.index);
+          ap.on("listswitch", (index) => {
+            setTheme(index.index);
+          });
+        } catch (error) {
+          console.log("Error:", error);
+        }
+      };
 
+      fetchPlayerList();
+    </script>
   </body>
 </html>
