@@ -266,13 +266,13 @@
       footerText.textContent = `© 2015-${currentYear} zero-ljz. All rights reserved.`;
     </script>
     
-    <!--<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <script src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js"></script>
     <link
-      href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css"
+      href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css"
       rel="stylesheet"
     />
     <script>
-    
+    /*
       const ap = new APlayer({
         container: document.getElementById("player"),
         fixed: true,
@@ -293,8 +293,8 @@
           }
         ]
       });
-      
-    </script>-->
+      */
+    </script>
     
 <script>
   // 创建消息框元素
@@ -338,6 +338,51 @@
       messageBox.style.display = "none";
     }, duration);
   }
+
+
+const fetchPlayerList = async () => {
+  try {
+    const response = await fetch("https://api.rainss.cn/x-player/api/palyerlist.php?id=725994751");
+    const data = await response.json();
+    const ap = new APlayer({
+      container: document.getElementById("player"),
+      fixed: true,
+      lrcType: 3,
+      autoplay: true,
+      theme: "#b7daff",
+      audio: data.songs
+    });
+
+    const colorThief = new ColorThief();
+    const image = new Image();
+    const setTheme = async (index) => {
+      if (!ap.list.audios[index].theme) {
+        const response = await fetch(ap.list.audios[index].cover);
+        const blob = await response.blob();
+        const coverUrl = URL.createObjectURL(blob);
+        image.onload = function () {
+          const color = colorThief.getColor(image);
+          ap.theme(`rgb(${color[0]}, ${color[1]}, ${color[2]})`, index);
+          console.log("theme => " + `rgb(${color[0]}, ${color[1]}, ${color[2]})`);
+          URL.revokeObjectURL(coverUrl);
+        };
+        image.src = coverUrl;
+      }
+    };
+
+    setTheme(ap.list.index);
+    ap.on("listswitch", (index) => {
+      setTheme(index.index);
+    });
+  } catch (error) {
+    console.log("Error:", error);
+  }
+};
+
+fetchPlayerList();
+
+
+  
 </script>
 
   </body>
