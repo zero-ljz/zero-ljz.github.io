@@ -224,6 +224,8 @@
     <script src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js"></script>
     <script src="https://cdn.staticfile.org/color-thief/2.4.0/color-thief.min.js"></script>
 
+    <script src="https://blog-static.cnblogs.com/files/mmzs/cursor-effects.js" defer defer></script>
+
     <script>
       // HTML 文档的 DOM 树构建完成
       document.addEventListener("DOMContentLoaded", function () {
@@ -234,6 +236,46 @@
       // 整个页面及其所有资源都加载完成
       window.addEventListener("load", function () {
         updateDateTime();
+
+var a = ["你干嘛呢"];
+        var a_idx = 0;
+
+        document.body.addEventListener("click", function(e) {
+            var $i = document.createElement("span");
+            $i.textContent = a[a_idx];
+            a_idx = (a_idx + 1) % a.length;
+
+            var x = e.pageX,
+                y = e.pageY;
+
+            $i.style.zIndex = "999999999999999999999999999999999999999999999999999999999999999999999";
+            $i.style.top = y - 20 + "px";
+            $i.style.left = x + "px";
+            $i.style.position = "absolute";
+            $i.style.fontWeight = "bold";
+            $i.style.fontSize = "16px";
+            $i.style.color = "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")";
+
+            document.body.appendChild($i);
+
+            var startTime = performance.now();
+
+            function animate() {
+                var currentTime = performance.now();
+                var progress = (currentTime - startTime) / 1500;
+
+                $i.style.top = (y - 180 + (20 * progress)) + "px";
+                $i.style.opacity = 1 - progress;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    $i.remove();
+                }
+            }
+
+            requestAnimationFrame(animate);
+        });
       });
 
       var siteTitle = document.title;
