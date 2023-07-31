@@ -15,6 +15,23 @@
 
     <title>空心的主页</title>
     <style>
+:root {
+    --xf-linear-color-1: #7e00ff 0%,#00fff6 100%;
+    --xf-linear-color-2: #eb685c,#c5e886,#5c8ceb,#e872de,#0da2aa;
+}
+.xf_copy {
+  font-weight: bold;
+  background: -webkit-linear-gradient(45deg, var(--xf-linear-color-2));
+  background: -moz-linear-gradient(45deg, var(--xf-linear-color-2));
+  background: ms-linear-gradient(45deg, var(--xf-linear-color-2));
+  background: linear-gradient(45deg, var(--xf-linear-color-2));
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: xf_move 20s linear infinite;
+}
+@keyframes xf_move{from{backgroud-position:0}to{background-position:1000px 0}}
+      
       body {
         background-repeat: no-repeat;
         background-size: cover;
@@ -176,8 +193,8 @@
         <h1>欢迎来到我的主页</h1>
         <p>看看这些很棒的网站:</p>
         <ul>
-          <li><a href="http://iapp.run" target="_blank">我的应用</a></li>
-          <li><a href="http://iblog.site" target="_blank">我的博客</a></li>
+          <li><a href="http://iapp.run" target="_blank" class="xf_copy">我的应用</a></li>
+          <li><a href="http://iblog.site" target="_blank" class="xf_copy">我的博客</a></li>
         </ul>
         <div class="buttons">
           <a
