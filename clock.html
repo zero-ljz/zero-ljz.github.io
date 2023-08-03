@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Background Clock and Date</title>
+    <title>背景色切换时钟和日期</title>
     <style>
         body {
             margin: 0;
@@ -20,16 +20,55 @@
             font-weight: bold;
             color: #fff;
             text-align: center;
+            transition: color 1s ease;
+        }
+
+        /* 动画：彩虹渐变颜色 */
+        @keyframes rainbow {
+            0% { color: #ff0000; } /* 红色 */
+            17% { color: #ff7f00; } /* 橙色 */
+            34% { color: #ffff00; } /* 黄色 */
+            51% { color: #00ff00; } /* 绿色 */
+            68% { color: #0000ff; } /* 蓝色 */
+            85% { color: #4b0082; } /* 靛蓝色 */
+            100% { color: #9400d3; } /* 紫色 */
+        }
+
+        .rainbow-animation {
+            animation: rainbow 5s linear infinite;
         }
     </style>
 </head>
 <body>
-    <div class="clock-date">
+    <div class="clock-date" id="clockDate">
         <div class="clock" id="clock"></div>
         <div class="date" id="date"></div>
     </div>
 
     <script>
+        let isRainbow = false;
+
+        // 切换背景颜色
+        function toggleBackgroundColor() {
+            const body = document.body;
+            if (isRainbow) {
+                body.style.backgroundColor = '#000'; // 切换回黑色背景
+            } else {
+                const colors = ['#fff', '#000', 'linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3)'];
+                const currentIndex = colors.indexOf(body.style.backgroundColor);
+                const nextIndex = (currentIndex + 1) % colors.length;
+                body.style.backgroundColor = colors[nextIndex];
+            }
+            isRainbow = !isRainbow;
+        }
+
+        // 切换彩虹渐变效果
+        function toggleRainbow() {
+            const clockDate = document.getElementById('clockDate');
+            clockDate.classList.toggle('rainbow-animation');
+            isRainbow = !isRainbow;
+        }
+
         function updateTime() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
@@ -45,10 +84,14 @@
             document.getElementById('date').textContent = dateString;
         }
 
-        // Update time every second
+        // 添加点击事件处理程序，切换背景颜色和彩虹渐变效果
+        document.body.addEventListener('click', toggleBackgroundColor);
+        document.getElementById('clockDate').addEventListener('click', toggleRainbow);
+
+        // 每秒更新时间
         setInterval(updateTime, 1000);
 
-        // Initial update
+        // 初始更新时间
         updateTime();
     </script>
 </body>
