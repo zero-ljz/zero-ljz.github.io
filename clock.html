@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>背景色切换时钟和日期</title>
+    <title>全屏时钟</title>
     <style>
         body {
             margin: 0;
@@ -16,7 +16,7 @@
         }
 
         .clock-date {
-            font-size: 3em;
+            font-size: 9em;
             font-weight: bold;
             color: #fff;
             text-align: center;
@@ -42,7 +42,7 @@
 <body>
     <div class="clock-date" id="clockDate">
         <div class="clock" id="clock"></div>
-        <div class="date" id="date"></div>
+        <!--<div class="date" id="date"></div>-->
     </div>
 
     <script>
@@ -77,11 +77,11 @@
             const timeString = `${hours}:${minutes}:${seconds}`;
             document.getElementById('clock').textContent = timeString;
 
-            const year = now.getFullYear();
+            /*const year = now.getFullYear();
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const day = String(now.getDate()).padStart(2, '0');
             const dateString = `${year}-${month}-${day}`;
-            document.getElementById('date').textContent = dateString;
+            document.getElementById('date').textContent = dateString;*/
         }
 
         // 添加点击事件处理程序，切换背景颜色和彩虹渐变效果
