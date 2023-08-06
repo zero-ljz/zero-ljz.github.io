@@ -31,8 +31,18 @@
   animation: xf_move 20s linear infinite;
 }
 @keyframes xf_move{from{backgroud-position:0}to{background-position:1000px 0}}
+
+
+        @font-face {
+            font-family: "MiSans";
+            src: url('fonts/MiSans-Regular.ttf') format('truetype'); /* 根据实际路径和字体文件格式调整 */
+            /* 可以添加其他字体格式，如 woff 和 woff2，以支持不同浏览器 */
+            font-weight: normal;
+            font-style: normal;
+        }
       
       body {
+        font-family: "MiSans", Arial, sans-serif;
         background-repeat: no-repeat;
         background-size: cover;
         margin: 0;
