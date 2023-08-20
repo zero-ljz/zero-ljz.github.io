@@ -136,7 +136,7 @@
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      background-image: url(data:image/jpeg;base64,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);
+      background-image: url("https://en.gravatar.com/userimage/109347714/8642448b065336f367b2f0250e084852.jpeg?size=256");
       background-size: cover;
       background-position: center;
       border: 2px solid #fff;
@@ -237,7 +237,7 @@
       border-radius: 1.2rem;
       padding: 2rem;
     ">
-        <div class="avatar"></div>
+        <div class="avatar" style="transition: transform 0.5s ease-in-out; background-color: white;" onclick="this.style.transform = this.style.transform === 'rotate(360deg) scale(1.5)' ? 'none' : 'rotate(360deg) scale(1.5)'; this.style.backgroundColor = this.style.backgroundColor === 'white' ? 'transparent' : 'white';"></div>
         <br />
         <h3>空心(zero-ljz)</h3>
         <p>Python 后端工程师</p>
