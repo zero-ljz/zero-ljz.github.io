@@ -270,12 +270,12 @@ body {
 function changeWallpaper(){
 var newWallpaperUrl = `https://source.unsplash.com/random/2560x1600/?sea,ocean,star-sky,sunrise=${new Date().getTime()}`
         // 创建一个新的背景图像元素
-        var newBackgroundImage = new Image();
-        newBackgroundImage.src = newWallpaperUrl;
+        //var newBackgroundImage = new Image();
+        //newBackgroundImage.src = newWallpaperUrl;
         // 监听过渡完成事件，切换背景图像
-        newBackgroundImage.addEventListener("load", function () {
+        //newBackgroundImage.addEventListener("load", function () {
           document.body.style.backgroundImage = `url("${newWallpaperUrl}")`;
-        });
+        //});
 }
 
  // HTML 文档的 DOM 树构建完成
