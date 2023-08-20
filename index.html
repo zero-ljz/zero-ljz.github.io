@@ -300,7 +300,7 @@ bingWallpaper().then(wallpaperData => {
 console.log(wallpaperData.text)
 
   // 创建并设置壁纸文本的元素
-  const textDiv = document.createElement('div');
+  const textDiv = document.createElement('a');
   textDiv.id = 'wallpaper-text'; // 设置元素的 id
 textDiv.textContent = wallpaperData.text;
 
@@ -309,6 +309,7 @@ textDiv.style.bottom = '20px';
 textDiv.style.right = '20px';
 textDiv.style.fontSize = '14px';
 textDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+textDiv.href = wallpaperData.url;
 
   // 将壁纸文本元素添加到文档中
   document.body.appendChild(textDiv);
