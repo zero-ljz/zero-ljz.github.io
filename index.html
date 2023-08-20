@@ -265,7 +265,8 @@
   <script>
 
     function changeWallpaper() {
-      var newWallpaperUrl = `https://source.unsplash.com/random/2560x1600/?sea,ocean,star-sky,sunrise=${new Date().getTime()}`
+      const host = "http://us.iapp.run/proxy/https://source.unsplash.com"; 
+      var newWallpaperUrl = `${host}/random/2560x1600/?sea,ocean,star-sky,sunrise=${new Date().getTime()}`
       // 创建一个新的背景图像元素
       //var newBackgroundImage = new Image();
       //newBackgroundImage.src = newWallpaperUrl;
@@ -274,7 +275,52 @@
       document.body.style.backgroundImage = `url("${newWallpaperUrl}")`;
       //});
     }
-    changeWallpaper();
+
+    async function bingWallpaper(itx = 0) {
+const host = "http://us.iapp.run/proxy/http://cn.bing.com"; 
+  const response = await fetch(
+    `${host}/HPImageArchive.aspx?format=js&idx=${itx}&n=1&mkt=zh-CN`
+  );
+
+  const data = await response.json();
+
+  // 壁纸文件地址
+  const bgUri = data.images[0].urlbase + "_1920x1080.jpg";
+  const bgUrl = host + bgUri;
+
+  // 壁纸文件名
+  const bgName = bgUrl.match(/\/th\?id=OHR\.(.*?\.jpg)/)[1];
+
+  // 壁纸说明文字
+  const bgText = data.images[0].copyright;
+
+  return { url: bgUrl, name: bgName, text: bgText };
+}
+
+bingWallpaper().then(wallpaperData => {
+  document.body.style.backgroundImage = `url(${wallpaperData.url})`;
+console.log(wallpaperData.text)
+
+  // 创建并设置壁纸文本的元素
+  const textDiv = document.createElement('div');
+  textDiv.id = 'wallpaper-text'; // 设置元素的 id
+textDiv.textContent = wallpaperData.text;
+
+textDiv.classList.add('position-fixed', 'text-white', 'p-3', 'rounded', 'd-none', 'd-md-block');
+textDiv.style.bottom = '20px';
+textDiv.style.right = '20px';
+textDiv.style.fontSize = '14px';
+textDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+
+  // 将壁纸文本元素添加到文档中
+  document.body.appendChild(textDiv);
+
+  setTimeout(() => {
+    textDiv.classList.add('d-md-none');
+  }, 5000);
+
+})
+   
 
     function updateDateTime() {
       var now = new Date();
