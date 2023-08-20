@@ -265,7 +265,7 @@
   <script>
 
     function changeWallpaper() {
-      const host = "http://us.iapp.run/proxy/https://source.unsplash.com"; 
+      const host = "https://source.unsplash.com"; 
       var newWallpaperUrl = `${host}/random/2560x1600/?sea,ocean,star-sky,sunrise=${new Date().getTime()}`
       // 创建一个新的背景图像元素
       //var newBackgroundImage = new Image();
@@ -277,7 +277,7 @@
     }
 
     async function bingWallpaper(itx = 0) {
-const host = "http://us.iapp.run/proxy/http://cn.bing.com"; 
+const host = "https://cn.bing.com"; 
   const response = await fetch(
     `${host}/HPImageArchive.aspx?format=js&idx=${itx}&n=1&mkt=zh-CN`
   );
@@ -286,7 +286,7 @@ const host = "http://us.iapp.run/proxy/http://cn.bing.com";
 
   // 壁纸文件地址
   const bgUri = data.images[0].urlbase + "_1920x1080.jpg";
-  const bgUrl = 'http://cn.bing.com' + bgUri;
+  const bgUrl = 'https://cn.bing.com' + bgUri;
 
   // 壁纸文件名
   const bgName = bgUrl.match(/\/th\?id=OHR\.(.*?\.jpg)/)[1];
