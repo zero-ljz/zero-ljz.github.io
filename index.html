@@ -262,7 +262,7 @@
   <script>
 
     function changeWallpaper() {
-      const host = "https://us.iapp.run/proxy/https://source.unsplash.com"; 
+      const host = "https://source.unsplash.com"; 
       var newWallpaperUrl = `${host}/random/2560x1600/?sea,ocean,star-sky,sunrise`
 
     fetch(newWallpaperUrl,{ method: 'HEAD'}).then(response => {
@@ -270,7 +270,7 @@
         redirected_url = response.url;
 
         document.getElementById('wallpaper_action').href = redirected_url
-        document.body.style.backgroundImage = `url("${redirected_url}")`;
+        document.body.style.backgroundImage = `url("https://us.iapp.run/proxy/${redirected_url}")`;
       }
     })
     }
