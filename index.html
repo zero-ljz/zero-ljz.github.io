@@ -217,8 +217,7 @@
           <a class="nav-link fw-bold py-1 px-0" target="_blank" href="http://iapp.run">应用</a>
           <a class="nav-link fw-bold py-1 px-0" target="_blank"
             href="http://iapp.run:8000/?urls=ws://iapp.run:8000/ws/,ws://us.iapp.run:8000/ws/,ws://jp.iapp.run:3001/ws/,ws://hk.iapp.run:3000/ws/,ws://us2.iapp.run:3000/ws/">服务器</a>
-          <a class="nav-link fw-bold py-1 px-0" target="_blank" href="http://github.com/zero-ljz">Github</a>
-          <a class="nav-link fw-bold py-1 px-0" href="#" onclick="changeWallpaper();">换背景</a>
+          <a class="nav-link fw-bold py-1 px-0" id="wallpaper_action" title="单击更换背景，双击下载"  href="#" onclick="return handleClick();">更换背景</a>
         </nav>
       </div>
     </header>
@@ -264,15 +263,58 @@
 
     function changeWallpaper() {
       const host = "https://us.iapp.run/proxy/https://source.unsplash.com"; 
-      var newWallpaperUrl = `${host}/random/2560x1600/?sea,ocean,star-sky,sunrise=${new Date().getTime()}`
-      // 创建一个新的背景图像元素
-      //var newBackgroundImage = new Image();
-      //newBackgroundImage.src = newWallpaperUrl;
-      // 监听过渡完成事件，切换背景图像
-      //newBackgroundImage.addEventListener("load", function () {
-      document.body.style.backgroundImage = `url("${newWallpaperUrl}")`;
-      //});
+      var newWallpaperUrl = `${host}/random/2560x1600/?sea,ocean,star-sky,sunrise`
+
+    fetch(newWallpaperUrl,{ method: 'HEAD'}).then(response => {
+      if (response.redirected) {
+        redirected_url = response.url;
+
+        document.getElementById('wallpaper_action').href = redirected_url
+        document.body.style.backgroundImage = `url("${redirected_url}")`;
+      }
+    })
     }
+
+
+
+
+var clickCount = 0;
+var clickTimer;
+
+function handleClick() {
+  clickCount++;
+
+  if (clickCount === 1) {
+    // 单击事件
+    clickTimer = setTimeout(function () {
+      clickCount = 0;
+      // 在这里处理单击事件逻辑
+      changeWallpaper();
+
+    }, 400); // 设置一个时间阈值，单位为毫秒
+
+    return false; // 防止打开链接
+  } else if (clickCount === 2) {
+    // 双击事件
+    clearTimeout(clickTimer);
+    clickCount = 0;
+    // 在这里处理双击事件逻辑
+
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     async function bingWallpaper(itx = 0) {
 const host = "https://us.iapp.run/proxy/https://cn.bing.com"; 
