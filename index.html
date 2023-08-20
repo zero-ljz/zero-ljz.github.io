@@ -286,7 +286,7 @@ const host = "http://us.iapp.run/proxy/http://cn.bing.com";
 
   // 壁纸文件地址
   const bgUri = data.images[0].urlbase + "_1920x1080.jpg";
-  const bgUrl = host + bgUri;
+  const bgUrl = 'http://cn.bing.com' + bgUri;
 
   // 壁纸文件名
   const bgName = bgUrl.match(/\/th\?id=OHR\.(.*?\.jpg)/)[1];
