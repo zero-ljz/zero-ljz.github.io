@@ -136,7 +136,7 @@
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAFAAQMAAAD3XjfpAAAABlBMVEUAAAAcHBxCLeLJAAAAAnRSTlMAvy1NYyUAAASZSURBVGje7dmxrtMwFAbgYywlDJbDmMEqr5AxSBW8SiZYM3ZAwogBBiRWBh6ECXljQeIVzMTasUgVlwRf4wSp5/xAEQhqid5K/biu7XNObF+6tEu7tEv7Z1u8d4RcvX90dUDg7UDNFQKPM45Iz9OL+gz07OfXR0GED7++6r3k1LXYSbC+7nMjfkVKrfHiV0xNRwHuyxu26ZDfbRlVvpo8mrtl+PxoyvRpFqpY3nphLFirCWx2+gdNpENhj3bdoXBE4UCltSh0HAzLqUJhJUJ5lfSHBMXwqT8lKIZPdWcFmUhafqaJg/63Qi9Ee4ERg+occAdCdVzD4SR8t4bjCbcqN9UEd78OG1rCZ+4k3JZsnOBzA0xPV5FOUMjqfoLWnoRxCevKAmHbzrA6HS9LaCs6CRdVgoX1AtrJIuXWWOoNCPdIXdY3rWLiuy2QDJf+/QI6rIDX1GMFvOKL+VCgirOWY8LqMPcvQzMvuwbqsuMrbljPqIJhkGCe0SjDkYe+jH+1AELNN/wyluTZkJNh2s1ZEYa5+8Np2C5hE6mG4L1A2iPwdhq8BFOLKNxL6RqEXZD5HvZSpcjQSbU+QyvVxwwrqeIGaUMTv/up+QqgwgDCCEIaJZiTpAfhwUkwra2+MqMA09rqF1aEbZrlqoNgRTduSdDlBRZgCkgLQJu1EBQ4rFGov4PMFgCECoZhDZn9DArH9aeG3ZxVyIlmg8ImQfkw9d3Tt2fPuBo6/O1WT9+RPYergMDGk4rWcjW8XDp8PmbIHT8ORPcOVVl67kvqUOeok64fNHB8ryMI6VD63Ag3GiZvZLbCHckE98C1iw6G6Ihc5Oyb+WE9/+7Aw13j0wWbtKXYzsefq6l5AW5meA+A9QRTyErwKQj1DEcAqrcTHAhoMPw4wYjABxMMEKQ/Bu+j0AqJuqyzyiPQobBH4UikIRhBqEOpukJig/AeYfD253PDbQPCER11VHtsHgN9hqAOX581JEMv1sVS4A/oRe5dMLzpttcybL8Wbwnmh/5Bgxe5Wxmm6rRRt0QY0m3XVl6YGevjBjreBrp6Ly/MV9g88QBUAagAlq5REKDJMEowD2gQoMuZNSIxgdzy9yjs8lw6IHiqNCq+DRlaAUYUhmwq6BKl7MvkU4XmoYZhnkIcKi8HeAvACoW2wABC4qFBoaNvdTSKUB8FmHut36SAEzOhSX+hHcVMcDpIMH26U4f0f6RM2NMWgjrQRs7XOFfbHBpCyjRz+EpQhbSPiiL006Cvjx2Gh2mGHkpQX3d7mzxZIRN0mH8+Djys0ognHagSYJPmU4AmF6dxoFqALoXbyEOXl9h1fKlocxhuOn7r0+dUaXq+AnQ5S+vXPBxJJ6hf8qVizN9MveIrQJk9I0GLwUimwMhmgitlbWBhX8JjYFOmK3BkM2EssGNh7q+WIEFQw3D1tkdhe3bomPxfQcOlNQ5DgRaDHoZcTbEFKhaaFdQcVL8XegZqXyBTUxwK27LaKvCw+ikYEEiT+kthvYQRgbMaGKh/HA4w5Apkv4RcleoWcOQgFTir9uzQodCg0J4DqnUpurRLu7RL+4/bF2tQOlPGeSzxAAAAAElFTkSuQmCC);
+      background-image: url("./img/avatar_transparent.png");
       background-size: cover;
       background-position: center;
       border: 2px solid #fff;
@@ -152,6 +152,18 @@
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
     }
+
+
+    body {
+      cursor: url('./cursors/aero_arrow.cur'), auto;
+    }
+
+    a, button {
+      cursor: url('./cursors/aero_link.cur'), auto;
+    }
+
+
+
 
     .cover-container {
       max-width: 42em;
@@ -235,7 +247,7 @@
       border-radius: 1.2rem;
       padding: 2rem;
     ">
-        <div class="avatar" style="transition: transform 0.5s ease-in-out; background-color: white;"
+        <div class="avatar" style="transition: transform 0.5s ease-in-out; background-color: white; cursor: pointer;"
           onclick="this.style.transform = this.style.transform === 'rotate(360deg) scale(1.5)' ? 'none' : 'rotate(360deg) scale(1.5)'; this.style.backgroundColor = this.style.backgroundColor === 'white' ? 'transparent' : 'white';">
         </div>
         <br />
@@ -451,18 +463,18 @@
     const fetchPlayerList = async () => {
       try {
         const response = await fetch(
-          "https://api.rainss.cn/x-player/api/palyerlist.php?id=19723756"
+          "https://api.rainss.cn/x-player/api/palyerlist.php?id=3091142760"
         );
         const data = await response.json();
-        const ap = new APlayer({
+        const ap = new APlayer({ // https://aplayer.js.org/#/zh-Hans/?id=入门
           container: document.getElementById("player"),
           fixed: true,
           lrcType: 3,
           autoplay: false,
           theme: "#b7daff",
           audio: data.songs,
-          order: 'random',
-          loop: 'all',
+          order: 'random', // 音频循环播放, 可选值: 'all', 'one', 'none'
+          loop: 'all', // 音频循环顺序, 可选值: 'list', 'random'
         });
 
         const colorThief = new ColorThief();
