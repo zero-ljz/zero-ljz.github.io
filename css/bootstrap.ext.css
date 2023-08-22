@@ -1,0 +1,112 @@
+:root {
+    /* 渐变颜色 */
+    --bs-gradient: linear-gradient(90deg, rgba(51, 183, 226, 1), rgba(94, 98, 176, 1), rgba(220, 48, 124, 1));
+    --bs-gradient: linear-gradient(90deg, rgba(133, 193, 233, 1), rgba(187, 143, 206, 1), rgba(241, 148, 138, 1));
+    --bs-font-sans-serif: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+
+    /* 页面背景颜色 */
+    --bs-body-rgb: 242, 242, 247 /*30, 32, 34 */;
+    --bs-body-bg: #f2f2f7 /*#1E2022*/;
+
+    /* 页面文字颜色 */
+    --bs-body-color: #212529 /*#FFF*/;
+
+    /* 浅色 文字和背景 */
+    --bs-light: #f8f9fa /*#343A40*/;
+    --bs-light-rgb: 248, 249, 250 /*52, 58, 64*/;
+
+    /* 深色 文字和背景 */
+    --bs-dark: #212529; /*#FFF*/
+    --bs-dark-rgb: 33, 37, 41 /*255,255,255*/;
+
+    /* 辅色 文字和背景 */
+    --bs-secondary: #6c757d /*#6c757d*/;
+    --bs-secondary-rgb: 108, 117, 125 /*108, 117, 125*/;
+  }
+
+  
+  body {
+    background-image: url("../img/bg.jpg");
+    /* background: var(--bs-gradient); */
+
+    /* background-image: linear-gradient(90deg, #33b7e2, #5e62b0, #dc307c); */
+    /* background-image: url('C:/Users/LJZ/OneDrive/图片/Wallpapers/wallhaven-m3lz2y_3840x2400.png'); */
+    /* background-color: #fff; */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-size: 16px; /* rem = px/字号px */
+  }
+
+  .acrylic-box {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #333;
+  box-shadow: inset 1px 1px rgb(255 255 255 / 20%), inset -1px -1px rgb(255 255 255 / 10%), 1px 3px 24px -1px rgb(0 0 0 / 15%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); */
+  }
+
+  .glass-box {
+  background-image: linear-gradient(125deg, rgba(64, 64, 64, 0.3), rgba(64, 64, 64, 0.2) 70%); 
+  background-image: linear-gradient(125deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2) 70%); 
+  color: #ADADAD;
+  box-shadow: inset 1px 1px rgb(255 255 255 / 20%), inset -1px -1px rgb(255 255 255 / 10%), 1px 3px 24px -1px rgb(0 0 0 / 15%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  }
+
+  .btn-gradient {
+    color: #fff;
+    background: linear-gradient(to right, rgba(3, 169, 244, 1), rgba(244, 65, 165, 1), rgba(255, 235, 59, 1), rgba(9, 168, 244, 1));
+    background-size: 400%;
+  }
+
+  .btn-gradient:hover {
+    color: #eee;
+  }
+
+  .btn-gradient:active, .btn-gradient.active {
+    animation: 4s ease 0s infinite normal none running streamer;
+  }
+
+  @keyframes streamer {
+    100% {
+      background-position: -400% 0;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: var(--bs-secondary);
+  }
+
+  .rounded-6 {
+    border-radius: 0.5rem;
+  }
+
+  .nav-links .nav-link {
+    background: none;
+    border: 0;
+    color: var(--bs-secondary);
+  }
+  .nav-links .nav-link.active,
+  .nav-links .show > .nav-link {
+    color: #0d6efd;
+  }
+
+  .nav-defaults .nav-link {
+    background: none;
+    border: 0;
+    border-bottom: 1px solid #dfdfdf; /* 黑色 12.5透明度 */
+    color: var(--bs-secondary);
+  }
+  .nav-defaults .nav-link.active,
+  .nav-defaults .show > .nav-link {
+    color: #0d6efd;
+    border-bottom: 2px solid #0d6efd;
+  }
+
+  .form-control {
+    box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
+  }
