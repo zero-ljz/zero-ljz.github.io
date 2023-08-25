@@ -223,7 +223,7 @@
           <a class="nav-link fw-bold py-1 px-0" target="_blank" title="我的应用" href="http://iapp.run">应用</a>
           <a class="nav-link fw-bold py-1 px-0" target="_blank" title="我的服务器资源监控"
             href="http://iapp.run:8000/?urls=ws://iapp.run:8000/ws/,ws://47.87.164.126:8000/ws/,ws://jp.iapp.run:3001/ws/,ws://hk.iapp.run:3000/ws/,ws://us2.iapp.run:3000/ws/">服务器</a>
-          <a class="nav-link fw-bold py-1 px-0" target="_blank" id="wallpaper_action" title="单击更换背景，双击下载" href="#"
+          <a class="nav-link fw-bold py-1 px-0" target="_blank" id="wallpaper_action" title="单击更换背景，双击下载，都是我喜欢的" href="#"
             onclick="return handleClick();">换背景</a>
         </nav>
       </div>
@@ -269,8 +269,7 @@
   <script>
 
     function changeWallpaper() {
-      const host = "https://source.unsplash.com";
-      var newWallpaperUrl = `${host}/random/2560x1600/?sea,ocean,star-sky,sunrise`
+      var newWallpaperUrl = `https://source.unsplash.com/user/zeroljz/likes/2560x0/`
 
       fetch(newWallpaperUrl, { method: 'HEAD' }).then(response => {
         if (response.redirected) {
@@ -457,7 +456,7 @@
     const fetchPlayerList = async () => {
       try {
         const response = await fetch(
-          "https://api.rainss.cn/x-player/api/palyerlist.php?id=2665433348"
+          "https://api.rainss.cn/x-player/api/palyerlist.php?id=725994751"
         );
         const data = await response.json();
         const ap = new APlayer({ // https://aplayer.js.org/#/zh-Hans/?id=入门
