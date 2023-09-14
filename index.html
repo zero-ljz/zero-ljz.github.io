@@ -276,7 +276,7 @@
           redirected_url = response.url;
 
           document.getElementById('wallpaper_action').href = redirected_url
-          document.body.style.backgroundImage = `url("https://us.iapp.run/proxy/${redirected_url}")`;
+          document.body.style.backgroundImage = `url("${redirected_url}")`;
         }
       })
     }
@@ -310,7 +310,7 @@
 
 
     async function bingWallpaper(itx = 0) {
-      const host = "https://us.iapp.run/proxy/https://cn.bing.com";
+      const host = "https://p.ljz.one/https://cn.bing.com";
       const response = await fetch(
         `${host}/HPImageArchive.aspx?format=js&idx=${itx}&n=1&mkt=zh-CN`
       );
