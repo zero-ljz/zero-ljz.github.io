@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  h2 {
+    color: #007bff;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .input-group {
+    margin-bottom: 30px;
+    text-align: left;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease-in-out;
+    box-sizing: border-box;
+  }
+
+  input[type="text"]:focus,
+  input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    margin-right: 10px;
+  }
+
+  .btn.secondary {
+    background-color: #ccc;
+    color: #333;
+  }
+
+  .btn.secondary:hover {
+    background-color: #999;
+  }
+</style>
+<title>登录</title>
+</head>
+<body>
+  <div class="container">
+    <h2>登录</h2>
+    <div class="input-group">
+      <label for="username">用户名</label>
+      <input type="text" id="username" placeholder="请输入用户名">
+    </div>
+    <div class="input-group">
+      <label for="password">密码</label>
+      <input type="password" id="password" placeholder="请输入密码">
+    </div>
+    <button class="btn">登录</button>
+    <button class="btn secondary" id="register-btn">注册</button>
+  </div>
+</body>
+</html>
