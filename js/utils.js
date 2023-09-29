@@ -18,3 +18,33 @@ function formatDate2(date) {
     const seconds = date.getSeconds().toString().padStart(2, '0');
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
+
+function showMessageBox(message, title = '提示') {
+    var messageBox = document.createElement("div");
+    messageBox.classList.add("acrylic-box");
+    messageBox.style.cssText = `
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /*background: #fff;*/
+    padding: 20px;
+    /*border: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);*/
+
+    min-width: 200px;
+    min-height: 100px;
+    z-index: 9999;
+    `;
+    messageBox.insertAdjacentHTML('beforeend', `
+    <b>${title}</b>
+    <p style="whiteSpace: pre-line;" contenteditable="true">${message.replace(/\n/g, "\r\n")}</p>
+    `);
+    messageBox.insertAdjacentHTML('beforeend', `
+    <button onclick="document.body.removeChild(this.parentNode);">Close</button>
+    `);
+    document.body.appendChild(messageBox);
+
+    return messageBox;
+}
