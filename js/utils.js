@@ -19,6 +19,34 @@ function formatDate2(date) {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+function formatSeconds(seconds) {
+    let formattedTime = '';
+
+    if (seconds >= 86400) {
+        const days = Math.floor(seconds / 86400);
+        formattedTime += `${days}天 `;
+        seconds %= 86400;
+    }
+
+    if (seconds >= 3600) {
+        const hours = Math.floor(seconds / 3600);
+        formattedTime += `${hours}小时 `;
+        seconds %= 3600;
+    }
+
+    if (seconds >= 60) {
+        const minutes = Math.floor(seconds / 60);
+        formattedTime += `${minutes}分钟 `;
+        seconds %= 60;
+    }
+
+    if (seconds > 0) {
+        formattedTime += `${seconds}秒`;
+    }
+
+    return formattedTime.trim(); // 去除末尾空格
+}
+
 function showMessageBox(message, title = '提示') {
     var messageBox = document.createElement("div");
     messageBox.classList.add("acrylic-box");
