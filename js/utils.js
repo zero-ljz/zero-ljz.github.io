@@ -48,29 +48,31 @@ function formatSeconds(seconds) {
 }
 
 function showMessageBox(message, title = '提示') {
-    var messageBox = document.createElement("div");
+    var messageBox = document.getElementById("message-box");
+    if (!messageBox) {
+        messageBox = document.createElement("div");
+        messageBox.id = "message-box";
+    }
+    messageBox.innerHTML = "";
     messageBox.classList.add("acrylic-box");
+    messageBox.classList.add("rounded-6");
     messageBox.style.cssText = `
     position: fixed;
     top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
 
-    /*background: #fff;*/
     padding: 20px;
-    /*border: 1px solid #ccc;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);*/
-
     min-width: 200px;
     min-height: 100px;
     z-index: 9999;
     `;
     messageBox.insertAdjacentHTML('beforeend', `
-    <b>${title}</b>
+    <b style="margin-right: 30px; /* 防止和关闭按钮重叠 */">${title}</b>
     <p style="whiteSpace: pre-line;" contenteditable="true">${message.replace(/\n/g, "\r\n")}</p>
     `);
     messageBox.insertAdjacentHTML('beforeend', `
-    <button onclick="document.body.removeChild(this.parentNode);">Close</button>
+    <button onclick="document.body.removeChild(this.parentNode);" style="cursor: pointer; position: absolute; margin-left: 10px; top: 10px; right: 10px;">╳</button>
     `);
     document.body.appendChild(messageBox);
 
