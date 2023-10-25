@@ -63,8 +63,11 @@ function showMessageBox(message, title = '提示') {
     transform: translate(-50%, -50%);
 
     padding: 20px;
+    white-space: pre-wrap;
     min-width: 200px;
     min-height: 100px;
+    max-width: 80vw;
+    max-height: 80vh;
     z-index: 9999;
     `;
     messageBox.insertAdjacentHTML('beforeend', `
