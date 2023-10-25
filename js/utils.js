@@ -58,7 +58,7 @@ function showMessageBox(message, title = '提示') {
     messageBox.classList.add("rounded-6");
     messageBox.style.cssText = `
     position: fixed;
-    top: 20%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 
