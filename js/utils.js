@@ -63,16 +63,16 @@ function showMessageBox(message, title = '提示') {
     transform: translate(-50%, -50%);
 
     padding: 20px;
-    white-space: pre-wrap;
     min-width: 200px;
     min-height: 100px;
     max-width: 80vw;
     max-height: 80vh;
+    overflow: auto;
     z-index: 9999;
     `;
     messageBox.insertAdjacentHTML('beforeend', `
     <b style="margin-right: 30px; /* 防止和关闭按钮重叠 */">${title}</b>
-    <p style="whiteSpace: pre-line;" contenteditable="true">${message.replace(/\n/g, "\r\n")}</p>
+    <p style="max-width:100%; white-space: pre-wrap; overflow-wrap: break-word;" contenteditable="true">${message.replace(/\n/g, "\r\n")}</p>
     `);
     messageBox.insertAdjacentHTML('beforeend', `
     <button onclick="document.body.removeChild(this.parentNode);" style="cursor: pointer; position: absolute; margin-left: 10px; top: 10px; right: 10px;">╳</button>
