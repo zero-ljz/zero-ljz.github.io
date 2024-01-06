@@ -81,3 +81,48 @@ function showMessageBox(message, title = '提示') {
 
     return messageBox;
 }
+
+function createTable(rows, cols=[]) {
+    let table = document.createElement('table');
+    table.setAttribute('class', 'table table-striped');
+    table.setAttribute('style', 'min-width: 919px;');
+
+    let thead = document.createElement('thead');
+    let tr = document.createElement('tr');
+    if (cols.length > 0) {
+        // 遍历cols数组来创建表头
+        for (let i = 0; i < cols.length; i++) {
+            let th = document.createElement('th');
+            th.textContent = cols[i];
+            tr.appendChild(th);
+        }
+    } else {
+        // 遍历第一行的对象的key来创建表头
+        for (let key in rows[0]) {
+            let th = document.createElement('th');
+            th.textContent = key;
+            tr.appendChild(th);
+        }
+    }
+
+    thead.appendChild(tr);
+    table.appendChild(thead);
+
+    let tbody = document.createElement('tbody');
+    // 遍历对象数组的每一项来创建表格行
+    for (let i = 0; i < rows.length; i++) {
+        tr = document.createElement('tr');
+        for (let key in rows[i]) {
+            let td = document.createElement('td');
+            td.textContent = rows[i][key];
+            tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+    }
+
+    table.appendChild(tbody);
+    return table;
+}
+
+// let table_element = createTable([{"id": 1, "name": "hello"}, {"id": 2, "name": "world"}])
+// document.body.appendChild(table_element)
