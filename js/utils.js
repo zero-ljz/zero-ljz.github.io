@@ -47,40 +47,42 @@ function formatSeconds(seconds) {
     return formattedTime.trim(); // 去除末尾空格
 }
 
-function showMessageBox(message, title = '提示') {
-    var messageBox = document.getElementById("message-box");
-    if (!messageBox) {
-        messageBox = document.createElement("div");
-        messageBox.id = "message-box";
+showMessageBox = (message, title = "提示") => {
+    var box = document.getElementById("message-box");
+    if (!box) {
+        box = document.createElement("div");
+        box.id = "message-box";
     }
-    messageBox.innerHTML = "";
-    messageBox.classList.add("acrylic-box");
-    messageBox.classList.add("rounded-6");
-    messageBox.style.cssText = `
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    box.style.cssText = `
+      all: revert; 
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -20%);
+      padding: 0px 0px 0;
 
-    padding: 20px;
-    min-width: 200px;
-    min-height: 100px;
-    max-width: 80vw;
-    max-height: 80vh;
-    overflow: auto;
-    z-index: 9999;
+    background-color: rgba(255, 255, 255, 0.6);
+  color: #333;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+        border: 1px solid #b7b8b9;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+
+      border-radius: 0.5rem;
+      z-index: 9999;
+      min-width: 33%;
     `;
-    messageBox.insertAdjacentHTML('beforeend', `
-    <b style="margin-right: 30px; /* 防止和关闭按钮重叠 */">${title}</b>
-    <p style="padding: 5px; max-width:100%; white-space: pre-wrap; overflow-wrap: break-word;" contenteditable="true">${message.replace(/\n/g, "\r\n")}</p>
-    `);
-    messageBox.insertAdjacentHTML('beforeend', `
-    <button onclick="document.body.removeChild(this.parentNode);" style="cursor: pointer; position: absolute; margin-left: 10px; top: 10px; right: 10px;">╳</button>
-    `);
-    document.body.appendChild(messageBox);
+    box.innerHTML = `
+      <div style="all: revert; display: flex; flex-direction: row; justify-content: space-between; padding: 5px;">
+        <b style="all: revert;">${title}</b><button onclick="document.body.removeChild(this.parentNode.parentNode);" style="all: revert; cursor: pointer;">╳</button>
+      </div>
+      <div style="all: revert; max-width: 80vw; max-height: 80vh; overflow-y: auto; white-space: pre-wrap; padding: 5px; margin: 5px" contenteditable="true">${message.replace(/\n/g, "\r\n")}</div>
+    `;
+    document.body.appendChild(box);
+    return box;
+  };
 
-    return messageBox;
-}
+
 
 function createTable(rows, cols=[]) {
     let table = document.createElement('table');
