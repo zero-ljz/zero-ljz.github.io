@@ -1,316 +1,571 @@
-<!doctype html>
-<html lang="zh-Hans" class="h-100">
-
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="">
-  <meta name="author" content="zero-ljz">
-  <!-- <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"/>
-    <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"/>-->
-  <link href="https://gcore.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://gcore.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" rel="stylesheet" />
-  <link href="./css/bootstrap.ext.css" rel="stylesheet" />
-  <!-- <script type="text/javascript" src="https://gcore.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script> -->
-  <script type="text/javascript" src="./js/utils.js"></script>
-  <link rel="icon" href="data:," />
-  <title>空心 · 主页</title>
-  <style>
-    .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人主页 | Personal Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-      }
-    }
-
-    .b-example-divider {
-      width: 100%;
-      height: 3rem;
-      background-color: rgba(0, 0, 0, .1);
-      border: solid rgba(0, 0, 0, .15);
-      border-width: 1px 0;
-      box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-    }
-
-    .b-example-vr {
-      flex-shrink: 0;
-      width: 1.5rem;
-      height: 100vh;
-    }
-
-    .bi {
-      vertical-align: -.125em;
-      fill: currentColor;
-    }
-
-    .nav-scroller {
-      position: relative;
-      z-index: 2;
-      height: 2.75rem;
-      overflow-y: hidden;
-    }
-
-    .nav-scroller .nav {
-      display: flex;
-      flex-wrap: nowrap;
-      padding-bottom: 1rem;
-      margin-top: -1px;
-      overflow-x: auto;
-      text-align: center;
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .btn-bd-primary {
-      --bd-violet-bg: #712cf9;
-      --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-
-      --bs-btn-font-weight: 600;
-      --bs-btn-color: var(--bs-white);
-      --bs-btn-bg: var(--bd-violet-bg);
-      --bs-btn-border-color: var(--bd-violet-bg);
-      --bs-btn-hover-color: var(--bs-white);
-      --bs-btn-hover-bg: #6528e0;
-      --bs-btn-hover-border-color: #6528e0;
-      --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-      --bs-btn-active-color: var(--bs-btn-hover-color);
-      --bs-btn-active-bg: #5a23c8;
-      --bs-btn-active-border-color: #5a23c8;
-    }
-
-    .bd-mode-toggle {
-      z-index: 1500;
-    }
+    <link href="https://gcore.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" rel="stylesheet" />
 
 
-
-    /*
- * Globals
- */
-
-
-    /* Custom default button */
-    .btn-light,
-    .btn-light:hover,
-    .btn-light:focus {
-      color: #333;
-      text-shadow: none;
-      /* Prevent inheritance from `body` */
-    }
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* 深邃的背景，突显亚克力效果 */
+            /* background: radial-gradient(circle at top left, #1e1b4b, #0f172a, #000000); */
+            min-height: 100vh;
+            color: #e2e8f0;
 
 
-    /*
- * Base structure
- */
+            text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+            box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
 
-    body {
-      text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
-      box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            /* background-image: linear-gradient(90deg, #33b7e2, #5e62b0, #dc307c); */
 
-      /* background-image: linear-gradient(90deg, #33b7e2, #5e62b0, #dc307c); */
-
-      background-repeat: no-repeat;
-      background-size: cover;
-      transition: background-image 0.5s ease-in-out;
-    }
-
-    .clock {
-      font-size: 24px;
-      color: rgba(255, 255, 255, 0.8);
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-      font-family: "Courier New", monospace;
-      z-index: 9999;
-    }
-
-
-    .avatar {
-      position: absolute;
-      top: -40px;
-      left: calc(50% - 40px);
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background-image: url("./img/avatar.png");
-      background-size: cover;
-      background-position: center;
-      border: 2px solid #fff;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      animation: fade-in 1s ease-out;
-    }
-
-
-
-
-    body {
-      cursor: url('./cursors/aero_arrow.cur'), auto;
-      user-select: none;
-    }
-
-    a, button {
-      cursor: url('./cursors/aero_link.cur'), auto;
-    }
-
-
-
-
-    .cover-container {
-      max-width: 42em;
-    }
-
-
-    /*
- * Header
- */
-
-    .nav-masthead .nav-link {
-      color: rgba(255, 255, 255, .5);
-      border-bottom: .25rem solid transparent;
-    }
-
-    .nav-masthead .nav-link:hover,
-    .nav-masthead .nav-link:focus {
-      border-bottom-color: rgba(255, 255, 255, .25);
-    }
-
-    .nav-masthead .nav-link+.nav-link {
-      margin-left: 1rem;
-    }
-
-    .nav-masthead .active {
-      color: #fff;
-      border-bottom-color: #fff;
-    }
-  </style>
-
-
-</head>
-
-<body class="d-flex h-100 text-center">
-  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-    <symbol id="check2" viewBox="0 0 16 16">
-      <path
-        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-    </symbol>
-    <symbol id="circle-half" viewBox="0 0 16 16">
-      <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z" />
-    </symbol>
-    <symbol id="moon-stars-fill" viewBox="0 0 16 16">
-      <path
-        d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
-      <path
-        d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z" />
-    </symbol>
-    <symbol id="sun-fill" viewBox="0 0 16 16">
-      <path
-        d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
-    </symbol>
-  </svg>
-
-
-  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-    <header class="mb-auto">
-      <div>
-        <h3 class="float-md-start mb-0 text-light">空心</h3>
-        <nav class="nav nav-masthead justify-content-center float-md-end">
-          <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="#">主页</a>
-          <a class="nav-link fw-bold py-1 px-0" target="_blank" title="空心的网络日志" href="http://520999.xyz">博客</a>
-          <a class="nav-link fw-bold py-1 px-0" target="_blank" title="我的应用" href="http://iapp.run">应用</a>
-          <a class="nav-link fw-bold py-1 px-0" target="_blank" title="我的服务器资源监控"
-            href="http://x.iapp.run:8100/?urls=ws://iapp.run:8100/ws/,ws://jp.iapp.run:8100/ws/,ws://us.iapp.run:8100/ws/,ws://kr.iapp.run:8100/ws/,ws://hk.iapp.run:8100/ws/,ws://us2.iapp.run:8100/ws/">服务器</a>
-          <a class="nav-link fw-bold py-1 px-0" target="_blank" id="wallpaper_action" title="单击时随机更换一张我收藏的壁纸，双击下载" href="#"
-            onclick="return handleClick();">换背景</a>
-        </nav>
-      </div>
-    </header>
-
-    <main class="px-3">
-
-      <div class="glass-box" style="
-      width: 360px;
-      position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-      text-align: center;
-      border-radius: 1.2rem;
-      padding: 2rem;
-    ">
-        <div class="avatar" style="transition: transform 0.5s ease-in-out; background-color: white; cursor: pointer;"
-          onclick="this.style.transform = this.style.transform === 'rotate(360deg) scale(1.5)' ? 'none' : 'rotate(360deg) scale(1.5)'; this.style.backgroundColor = this.style.backgroundColor === 'white' ? 'transparent' : 'white';">
-        </div>
-        <br />
-        <h3 class="text-light">空心</h3>
-        <p style="color: #dddddd;">Python 后端开发者</p>
-        <p style="color: #dddddd;">95后 / 现居湖南长沙</p>
-        <p class="lead">
-          <a href="mailto:hi@iapp.run" class="btn btn-lg btn-light fw-bold border-white bg-white rounded-pill">联系我</a>
-        </p>
-      </div>
-
-      <div id="player"></div>
-    </main>
-
-    <footer class="mt-auto text-white-50 mb-5">
-      <span class="clock" id="clock" style="cursor: pointer;" onclick="window.open('clock.html', '_blank');"></span>
-      <p>HomePage by <a href="https://i.iapp.run" class="text-white">@空心</a>.</p>
-    </footer>
-  </div>
-
-  <script src="https://gcore.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-  <script src="https://gcore.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
-  <script src="https://cdn.bootcdn.net/ajax/libs/color-thief/2.4.0/color-thief.min.js"></script>
-
-  <script>
-
-    function changeWallpaper() {
-      var newWallpaperUrl = `https://source.unsplash.com/user/zeroljz/likes/2560x0/`
-
-      fetch(newWallpaperUrl, { method: 'HEAD' }).then(response => {
-        if (response.redirected) {
-          redirected_url = response.url;
-
-          document.getElementById('wallpaper_action').href = redirected_url
-          document.body.style.backgroundImage = `url("${redirected_url}")`;
+            background-repeat: no-repeat;
+            background-size: cover;
+            transition: background-image 0.5s ease-in-out;
         }
-      })
+        
+        /* 隐藏滚动条但保持功能 (Chrome/Safari) */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        /* 亚克力通用类 - 玻璃拟态 */
+        .acrylic {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .acrylic-hover:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+
+       /* 上下文菜单基础动画 */
+.context-menu-enter {
+    opacity: 0;
+    transform: scale(0.95);
+}
+.context-menu-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.1s ease-out, transform 0.1s ease-out;
+}
+
+/* 菜单专用亚克力样式：比全局亚克力颜色更深，保证文字清晰 */
+.acrylic-menu {
+    /* 背景颜色加深，防止太透 */
+    background: rgba(20, 20, 30, 0.75); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* 子菜单容器 */
+.submenu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: -0.25rem; /* 稍微向上对齐，视觉更好 */
+    margin-left: 0.5rem; /* 视觉间距 */
+    min-width: 160px;
+    border-radius: 0.75rem;
+    padding: 0.25rem 0;
+    z-index: 50;
+}
+
+/* 核心修复：使用伪元素填充间隙，防止鼠标经过间隙时菜单消失 */
+.submenu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -1rem; /* 向左延伸，覆盖 margin-left 的间隙 */
+    width: 1rem; 
+    background: transparent; /* 透明，但在鼠标感应范围内 */
+}
+
+/* 悬停显示逻辑 */
+.menu-item:hover > .submenu {
+    display: block;
+    animation: submenu-fade 0.2s ease-out forwards;
+}
+
+@keyframes submenu-fade {
+    from { opacity: 0; transform: translateX(-5px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+    </style>
+</head>
+<body x-data="appData()" class="overflow-x-hidden">
+
+    <!-- 背景光晕装饰 -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[10%] right-[-5%] w-[400px] h-[400px] bg-blue-600/20 rounded-full blur-[100px]"></div>
+    </div>
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- 移动端菜单按钮 -->
+        <div class="lg:hidden fixed top-4 right-4 z-50">
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="acrylic p-2 rounded-lg text-white">
+                <i data-lucide="menu" x-show="!mobileMenuOpen"></i>
+                <i data-lucide="x" x-show="mobileMenuOpen"></i>
+            </button>
+        </div>
+
+        <!-- 左侧导航 Sidebar -->
+        <aside :class="mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'" 
+               class="fixed lg:static inset-y-0 left-0 z-40 w-72 acrylic transition-transform duration-300 ease-in-out flex flex-col h-full border-r-0 lg:border-r border-white/10">
+            
+            <!-- Profile Area -->
+            <div class="p-8 flex flex-col items-center border-b border-white/5">
+                <div class="w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-purple-500 to-blue-500 mb-4 shadow-lg">
+                    <img src="http://i.iapp.run/img/avatar.png" alt="Avatar" class="w-full h-full rounded-full bg-slate-900">
+                </div>
+                <h2 class="text-2xl font-bold text-white tracking-tight">zero-ljz</h2>
+                <p class="text-sm text-gray-400 mt-1">全栈开发者 / 设计师</p>
+                
+                <!-- 地区显示 -->
+                <div class="mt-4 flex items-center space-x-2 text-xs px-3 py-1 rounded-full bg-white/5 border border-white/10">
+                    <i data-lucide="map-pin" class="w-3 h-3 text-purple-400"></i>
+                    <span>Changsha, CN</span>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+                <template x-for="item in navItems" :key="item.name">
+                    <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-200 group">
+                        <i :data-lucide="item.icon" class="w-5 h-5 text-gray-400 group-hover:text-purple-400 transition-colors"></i>
+                        <span x-text="item.name" class="font-medium"></span>
+                    </a>
+                </template>
+            </nav>
+
+            <!-- Social Footer -->
+            <div class="p-6 border-t border-white/5">
+                <div class="flex justify-center space-x-4">
+                    <a href="https://github.com/zero-ljz" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                </div>
+                <p class="text-center text-xs text-gray-600 mt-4">&copy; 2025 Alex Dev.</p>
+            </div>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <main class="flex-1 h-full overflow-y-auto no-scrollbar relative scroll-smooth">
+            <div class="max-w-7xl mx-auto p-6 lg:p-10 space-y-8">
+
+                <!-- Grid Layout -->
+                <div class="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-6">
+
+                    <!-- Hero Section (占据很大空间) -->
+                    <div class="col-span-1 md:col-span-6 lg:col-span-8 acrylic rounded-3xl p-8 flex flex-col justify-center relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-600/20 to-transparent rounded-full blur-3xl -mr-16 -mt-16 transition-all duration-700 group-hover:bg-purple-600/30"></div>
+                        <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4 relative z-10">你好, 我是 空心 👋</h1>
+                        <p class="text-lg text-gray-300 mb-8 max-w-xl relative z-10 leading-relaxed">
+                            热爱创造优雅的代码与直观的设计。专注于构建高性能 Web 应用与探索人工智能的前沿边界。
+                        </p>
+                        <div class="flex flex-wrap gap-4 relative z-10">
+                            <button onclick="window.location.href='mailto:hi@iapp.run'" class="px-6 py-2.5 rounded-xl bg-white text-black font-semibold hover:bg-gray-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.3)]">联系我</button>
+                            <button class="px-6 py-2.5 rounded-xl acrylic border border-white/20 hover:bg-white/10 transition-colors">下载简历</button>
+                        </div>
+                    </div>
+
+                    <!-- Clock & Time (圆形带秒针时钟) -->
+                    <div class="col-span-1 md:col-span-3 lg:col-span-4 acrylic rounded-3xl p-6 flex flex-col items-center justify-center relative" x-data="clockWidget()" x-init="startClock()">
+                        <div class="relative w-40 h-40 rounded-full border-4 border-white/10 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] bg-black/20 backdrop-blur-sm mb-4">
+                            <!-- 刻度 -->
+                            <template x-for="i in 12">
+                                <div class="absolute w-full h-full top-0 left-0" :style="`transform: rotate(${i * 30}deg)`">
+                                    <div class="w-1 h-2 bg-white/30 mx-auto mt-1"></div>
+                                </div>
+                            </template>
+                            <!-- 指针 -->
+                            <div class="absolute top-1/2 left-1/2 w-1.5 h-10 bg-white rounded-full origin-bottom -mt-10 -ml-[3px]" :style="`transform: rotate(${h}deg)`"></div>
+                            <div class="absolute top-1/2 left-1/2 w-1 h-14 bg-gray-300 rounded-full origin-bottom -mt-14 -ml-[2px]" :style="`transform: rotate(${m}deg)`"></div>
+                            <div class="absolute top-1/2 left-1/2 w-0.5 h-16 bg-purple-500 rounded-full origin-bottom -mt-16 -ml-[1px]" :style="`transform: rotate(${s}deg)`"></div>
+                            <!-- 中心点 -->
+                            <div class="absolute top-1/2 left-1/2 w-3 h-3 bg-purple-500 rounded-full -translate-x-1/2 -translate-y-1/2 shadow-lg border-2 border-white/20"></div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-3xl font-bold text-white font-mono tracking-wider" x-text="timeString"></p>
+                            <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest" x-text="dateString"></p>
+                        </div>
+                    </div>
+
+                    <!-- Tech Stack (技术栈) -->
+                    <div class="col-span-1 md:col-span-3 lg:col-span-4 acrylic rounded-3xl p-6">
+                        <div class="flex items-center mb-4 space-x-2">
+                            <i data-lucide="cpu" class="text-purple-400 w-5 h-5"></i>
+                            <h3 class="text-lg font-semibold text-white">技术栈</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <template x-for="tech in techStack" :key="tech">
+                                <span class="px-3 py-1.5 rounded-lg text-xs font-medium bg-white/5 border border-white/10 hover:bg-white/10 hover:border-purple-500/50 transition-all cursor-default" x-text="tech"></span>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Software Projects (软件项目) -->
+                    <div class="col-span-1 md:col-span-6 lg:col-span-8 acrylic rounded-3xl p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="folder-git-2" class="text-blue-400 w-5 h-5"></i>
+                                <h3 class="text-lg font-semibold text-white">精选项目</h3>
+                            </div>
+                            <a href="#" class="text-xs text-gray-400 hover:text-white transition-colors">查看全部</a>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <template x-for="project in projects" :key="project.title">
+                                <a :href="project.link" class="block p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all group">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="p-2 rounded-lg" :class="project.colorBg">
+                                            <i :data-lucide="project.icon" class="w-5 h-5 text-white"></i>
+                                        </div>
+                                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-gray-500 group-hover:text-white transition-colors"></i>
+                                    </div>
+                                    <h4 class="text-base font-bold text-white mb-1" x-text="project.title"></h4>
+                                    <p class="text-xs text-gray-400 line-clamp-2" x-text="project.desc"></p>
+                                </a>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Recent Plans (近期计划) -->
+                    <div class="col-span-1 md:col-span-3 lg:col-span-4 acrylic rounded-3xl p-6 flex flex-col">
+                        <div class="flex items-center mb-4 space-x-2">
+                            <i data-lucide="list-todo" class="text-green-400 w-5 h-5"></i>
+                            <h3 class="text-lg font-semibold text-white">近期计划</h3>
+                        </div>
+                        <div class="space-y-3 flex-1">
+                            <template x-for="plan in plans" :key="plan.text">
+                                <div class="flex items-start space-x-3 p-2 rounded-lg hover:bg-white/5 transition-colors">
+                                    <div class="mt-1 w-4 h-4 rounded border flex items-center justify-center"
+                                         :class="plan.done ? 'bg-green-500 border-green-500' : 'border-gray-500'">
+                                        <i x-show="plan.done" data-lucide="check" class="w-3 h-3 text-white"></i>
+                                    </div>
+                                    <span class="text-sm" :class="plan.done ? 'text-gray-500 line-through' : 'text-gray-300'" x-text="plan.text"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Recent Articles (最近文章) -->
+                    <div class="col-span-1 md:col-span-4 lg:col-span-5 acrylic rounded-3xl p-6">
+                        <div class="flex items-center mb-4 space-x-2">
+                            <i data-lucide="pen-tool" class="text-orange-400 w-5 h-5"></i>
+                            <h3 class="text-lg font-semibold text-white">最近文章</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <template x-for="article in articles" :key="article.title">
+                                <a href="#" class="flex flex-col space-y-1 pb-3 border-b border-white/5 last:border-0 hover:pl-2 transition-all duration-300">
+                                    <span class="text-sm font-medium text-gray-200 group-hover:text-white" x-text="article.title"></span>
+                                    <div class="flex items-center space-x-2 text-xs text-gray-500">
+                                        <span x-text="article.date"></span>
+                                        <span class="w-1 h-1 rounded-full bg-gray-600"></span>
+                                        <span x-text="article.tag"></span>
+                                    </div>
+                                </a>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <!-- Friend Links (友链) -->
+                    <div class="col-span-1 md:col-span-5 lg:col-span-7 acrylic rounded-3xl p-6">
+                        <div class="flex items-center mb-4 space-x-2">
+                            <i data-lucide="link" class="text-pink-400 w-5 h-5"></i>
+                            <h3 class="text-lg font-semibold text-white">友链</h3>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                            <template x-for="friend in friends" :key="friend.name">
+                                <a :href="friend.url" class="flex items-center space-x-2 p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-transparent hover:border-white/10">
+                                    <img :src="friend.avatar" class="w-8 h-8 rounded-full bg-gray-700" alt="Avatar">
+                                    <span class="text-xs font-medium text-gray-300 truncate" x-text="friend.name"></span>
+                                </a>
+                            </template>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer Credit -->
+                <div class="text-center text-gray-500 text-sm py-8">
+                    Built with TailwindCSS & Alpine.js
+                </div>
+            </div>
+
+<!-- 全局右键菜单 -->
+<div x-data="contextMenu()" 
+     x-show="isOpen"
+     @contextmenu.window.prevent="openMenu($event)"
+     @click.window="closeMenu()"
+     @keydown.escape.window="closeMenu()"
+     x-transition:enter="transition ease-out duration-100"
+     x-transition:enter-start="opacity-0 scale-95"
+     x-transition:enter-end="opacity-100 scale-100"
+     x-transition:leave="transition ease-in duration-75"
+     x-transition:leave-start="opacity-100 scale-100"
+     x-transition:leave-end="opacity-0 scale-95"
+     /* 注意这里：原本是 acrylic，现在改为 acrylic-menu 以获得更深的背景 */
+     class="fixed z-[100] min-w-[180px] text-sm text-gray-200 rounded-xl acrylic-menu overflow-visible"
+     :style="`top: ${position.y}px; left: ${position.x}px`"
+     style="display: none;">
+    
+    <div x-html="menuHtml" class="py-1"></div>
+</div>
+
+            <div id="player"></div>
+        </main>
+    </div>
+
+    <!-- Logic Script -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        function appData() {
+            return {
+                mobileMenuOpen: false,
+                navItems: [
+                    { name: '首页', icon: 'home' },
+                    { name: '关于我', icon: 'user' },
+                    { name: '项目集', icon: 'layers' },
+                    { name: '博客文章', icon: 'file-text' },
+                    { name: '摄影作品', icon: 'camera' },
+                    { name: '联系方式', icon: 'mail' }
+                ],
+                techStack: ['Python3.10', 'JavaScript', 'Django/FastAPI', 'PySide6', 'React', 'Alpine.js', 'htmlx', 'Bulma CSS', 'Shadcn UI', 'Pico CSS', 'Tailwind CSS', 'Docker' ],
+                projects: [
+                    { title: 'AI 写作助手', desc: '基于 GPT-4 的智能写作辅助工具，支持多语言翻译与润色。', icon: 'bot', colorBg: 'bg-purple-500/20', link: '#' },
+                    { title: 'E-Commerce Pro', desc: '高性能的无头电商解决方案，集成 Stripe 支付。', icon: 'shopping-bag', colorBg: 'bg-blue-500/20', link: '#' },
+                    { title: 'Task Master', desc: '极简主义的任务管理应用，支持跨平台同步。', icon: 'check-square', colorBg: 'bg-green-500/20', link: '#' },
+                    { title: 'Weather Glass', desc: '具有亚克力风格UI的实时天气应用。', icon: 'cloud-rain', colorBg: 'bg-orange-500/20', link: '#' },
+                ],
+                plans: [
+                    { text: '学习 Javascript 语言基础', done: true },
+                    { text: '发布新的开源组件库', done: false },
+                ],
+                articles: [
+                    { title: '如何在 2025 年构建现代前端架构', date: '10月 24, 2025', tag: 'Frontend' },
+                    { title: '深入理解 Tailwind CSS 的原子化设计', date: '10月 10, 2025', tag: 'CSS' },
+                    { title: 'Alpine.js: 轻量级框架的最佳实践', date: '09月 28, 2025', tag: 'JavaScript' },
+                    { title: '从零开始部署 Docker 容器化应用', date: '09月 15, 2025', tag: 'DevOps' },
+                ],
+                friends: [
+                    { name: 'Evan You', url: '#', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Evan' },
+                    { name: 'Sarah Drasner', url: '#', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah' },
+                    { name: 'Guillermo', url: '#', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Guillermo' },
+                    { name: 'Lee Robinson', url: '#', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Lee' },
+                    { name: 'Addy Osmani', url: '#', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Addy' },
+                ]
+            }
+        }
+
+        function clockWidget() {
+            return {
+                h: 0,
+                m: 0,
+                s: 0,
+                timeString: '',
+                dateString: '',
+                startClock() {
+                    const update = () => {
+                        const now = new Date();
+                        
+                        // 模拟时钟角度
+                        const seconds = now.getSeconds();
+                        const minutes = now.getMinutes();
+                        const hours = now.getHours();
+                        
+                        this.s = seconds * 6; // 360 / 60
+                        this.m = minutes * 6 + seconds * 0.1; // 360 / 60
+                        this.h = (hours % 12) * 30 + minutes * 0.5; // 360 / 12
+
+                        // 数字时间
+                        this.timeString = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+                        this.dateString = now.toLocaleDateString('zh-CN', { weekday: 'long', month: 'short', day: 'numeric' });
+                    };
+                    
+                    update();
+                    setInterval(update, 1000);
+                }
+            }
+        }
+
+
+function contextMenu() {
+    return {
+        isOpen: false,
+        position: { x: 0, y: 0 },
+        menuHtml: '',
+        
+        // 定义菜单数据结构 (支持无限嵌套)
+        menuData: [
+            { label: '刷新页面', icon: 'refresh-cw', action: 'location.reload()' },
+            { label: '返回首页', icon: 'home', action: "window.location.href='/'" },
+            { type: 'separator' },
+            { 
+                label: '外观设置', 
+                icon: 'palette', 
+                children: [
+                    { label: '高亮模式', icon: 'sun', action: "console.log('Light Mode')" },
+                    { label: '暗黑模式', icon: 'moon', action: "console.log('Dark Mode')" },
+                    { type: 'separator' },
+                    { 
+                        label: '高级配色', 
+                        icon: 'wand-2',
+                        children: [
+                            { label: '赛博朋克', action: "console.log('Cyberpunk')" },
+                            { label: '蒸汽波', action: "console.log('Vaporwave')" },
+                            {
+                                label: '深度递归测试',
+                                children: [
+                                    { label: '第一层', children: [{ label: '第二层', children: [{label: '无限层级...'}] }] }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            { 
+                label: '开发工具', 
+                icon: 'code', 
+                children: [
+                    { label: '查看源码', icon: 'file-code', action: "window.open('https://github.com/zero-ljz', '_blank')" },
+                    { label: '复制配置', icon: 'copy', action: "navigator.clipboard.writeText(JSON.stringify(appData()))" }
+                ]
+            },
+            { type: 'separator' },
+            { label: '关于作者', icon: 'user', action: "window.open('https://github.com/zero-ljz')" }
+        ],
+
+        init() {
+            // 初始化时生成HTML结构
+            this.menuHtml = this.buildMenuTree(this.menuData);
+        },
+
+        openMenu(e) {
+            this.isOpen = true;
+            
+            // 计算位置，防止菜单溢出屏幕右侧或底部
+            let x = e.clientX;
+            let y = e.clientY;
+            const menuWidth = 200; // 估算宽度
+            const menuHeight = 300; // 估算高度
+
+            if (x + menuWidth > window.innerWidth) x -= menuWidth;
+            if (y + menuHeight > window.innerHeight) y -= menuHeight;
+
+            this.position = { x, y };
+            
+            // 菜单显示后重新渲染图标 (因为内容是动态注入的)
+            this.$nextTick(() => {
+                lucide.createIcons();
+            });
+        },
+
+        closeMenu() {
+            this.isOpen = false;
+        },
+
+        // 递归构建 HTML 字符串 (修复版)
+buildMenuTree(items) {
+    let html = '';
+    
+    items.forEach(item => {
+        if (item.type === 'separator') {
+            // 分割线颜色稍微加深
+            html += `<div class="h-px bg-white/10 my-1 mx-2"></div>`;
+        } else {
+            const hasChildren = item.children && item.children.length > 0;
+            // 点击事件
+            const clickAction = item.action 
+                ? `onclick="${item.action}; document.dispatchEvent(new CustomEvent('close-menu'))"` 
+                : '';
+            
+            html += `
+            <div class="menu-item relative group px-1">
+                <!-- 菜单项主体 -->
+                <div class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/20 cursor-pointer transition-colors text-gray-200 hover:text-white"
+                     ${!hasChildren ? clickAction : ''}>
+                    
+                    <div class="flex items-center gap-3">
+                        ${item.icon ? `<i data-lucide="${item.icon}" class="w-4 h-4"></i>` : '<span class="w-4"></span>'}
+                        <span>${item.label}</span>
+                    </div>
+                    
+                    ${hasChildren ? `<i data-lucide="chevron-right" class="w-3 h-3 text-gray-400 group-hover:text-white"></i>` : ''}
+                </div>
+
+                <!-- 子菜单 (递归) -->
+                ${hasChildren ? `
+                    <div class="submenu acrylic-menu">
+                        ${this.buildMenuTree(item.children)}
+                    </div>
+                ` : ''}
+            </div>
+            `;
+        }
+    });
+
+    return html;
+}
     }
+}
+
+// 监听自定义关闭事件（用于点击菜单项后关闭菜单）
+document.addEventListener('close-menu', () => {
+    // 获取 x-data 对应的组件并关闭，或者简单地模拟点击 body
+    document.body.click();
+});
 
 
-    var clickCount = 0;
-    var clickTimer;
 
-    function handleClick() {
-      clickCount++;
 
-      if (clickCount === 1) {
-        // 单击事件
-        clickTimer = setTimeout(function () {
-          clickCount = 0;
-          // 在这里处理单击事件逻辑
-          changeWallpaper();
 
-        }, 240); // 设置一个时间阈值，单位为毫秒
 
-        return false; // 防止打开链接
-      } else if (clickCount === 2) {
-        // 双击事件
-        clearTimeout(clickTimer);
-        clickCount = 0;
-        // 在这里处理双击事件逻辑
 
-      }
-    }
 
+
+
+
+
+
+
+
+
+
+
+    // HTML 文档的 DOM 树构建完成
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log("DOM fully loaded and parsed");
 
 
     async function bingWallpaper(itx = 0) {
@@ -334,7 +589,16 @@
       return { url: bgUrl, name: bgName, text: bgText };
     }
 
-    bingWallpaper().then(wallpaperData => {
+    let itx = 0; // 今天的壁纸
+    // 每次刷新页面itx加1，获取昨天、前天的壁纸
+    if (window.localStorage.getItem('itx')) {
+      itx = parseInt(window.localStorage.getItem('itx')) + 1;
+      if (itx > 7) {
+        itx = 0; // 最多获取过去7天的壁纸
+      }
+    }
+    window.localStorage.setItem('itx', itx);
+    bingWallpaper(itx).then(wallpaperData => {
       document.body.style.backgroundImage = `url(${wallpaperData.url})`;
       console.log(wallpaperData.text)
 
@@ -342,8 +606,22 @@
       const textDiv = document.createElement('a');
       textDiv.id = 'wallpaper-text'; // 设置元素的 id
       textDiv.textContent = wallpaperData.text;
+      textDiv.style.position = 'fixed';
+      textDiv.style.color = "#fff";
+      textDiv.style.padding = "1rem";
+      textDiv.style.borderRadius = "0.25rem";
 
-      textDiv.classList.add('position-fixed', 'text-white', 'p-3', 'rounded', 'd-none', 'd-md-block');
+    // 手机端隐藏文字
+    function updateDisplay() {
+        if (window.innerWidth >= 768) {
+            textDiv.style.display = "block";
+        } else {
+            textDiv.style.display = "none";
+        }
+    }
+    updateDisplay();
+    window.addEventListener("resize", updateDisplay);
+
       textDiv.style.bottom = '20px';
       textDiv.style.right = '20px';
       textDiv.style.fontSize = '14px';
@@ -354,45 +632,92 @@
       document.body.appendChild(textDiv);
 
       setTimeout(() => {
-        textDiv.classList.add('d-md-none');
+        textDiv.style.display = "none";
       }, 5000);
 
     })
 
-
-    function updateDateTime() {
-      var now = new Date();
-      var dateOptions = {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-      };
-      var timeOptions = {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
-      };
-      document.getElementById("clock").textContent = now.toLocaleDateString("zh-CN", dateOptions).replace(/\//g, "-") + " " + now.toLocaleTimeString("zh-CN", timeOptions);
-      // 每秒更新一次日期和时钟
-      setTimeout(updateDateTime, 1000);
-    }
-    updateDateTime();
-
-
-    // HTML 文档的 DOM 树构建完成
-    document.addEventListener("DOMContentLoaded", function () {
-      console.log("DOM fully loaded and parsed");
-
-
     });
+
+
+
+    
 
     // 整个页面及其所有资源都加载完成
     window.addEventListener("load", function () {
       console.log("Page fully loaded");
 
+    
 
     });
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://gcore.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+ <script src="https://cdn.bootcdn.net/ajax/libs/color-thief/2.4.0/color-thief.min.js"></script>
+  <script>
+    const fetchPlayerList = async () => {
+      try {
+        const response = await fetch(
+          "https://api.rainss.cn/x-player/api/palyerlist.php?id=725994751"
+        );
+        const data = await response.json();
+        const ap = new APlayer({ // https://aplayer.js.org/#/zh-Hans/?id=入门
+          container: document.getElementById("player"),
+          fixed: true,
+          lrcType: 3,
+          autoplay: false,
+          theme: "#b7daff",
+          audio: data.songs,
+          order: 'random', // 音频循环播放, 可选值: 'all', 'one', 'none'
+          loop: 'all', // 音频循环顺序, 可选值: 'list', 'random'
+        });
+
+        const colorThief = new ColorThief();
+        const image = new Image();
+        const setTheme = async (index) => {
+          if (!ap.list.audios[index].theme) {
+            const response = await fetch(ap.list.audios[index].cover);
+            const blob = await response.blob();
+            const coverUrl = URL.createObjectURL(blob);
+            image.onload = function () {
+              const color = colorThief.getColor(image);
+              ap.theme(`rgb(${color[0]}, ${color[1]}, ${color[2]})`, index);
+              // console.log(
+              //   "theme => " + `rgb(${color[0]}, ${color[1]}, ${color[2]})`
+              // );
+              URL.revokeObjectURL(coverUrl);
+            };
+            image.src = coverUrl;
+          }
+        };
+
+        setTheme(ap.list.index);
+        ap.on("listswitch", (index) => {
+          setTheme(index.index);
+        });
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    };
+
+    fetchPlayerList();
+
   </script>
+
 
   <script>
     var a = [
@@ -450,64 +775,7 @@
   </script>
 
 
-<style>
-  /* 解决bootstrap5导致播放器歌曲列表居中对齐的问题 */
-  #player>div.aplayer-list {
-    text-align: left;
-  }
-</style>
-  <script>
-    const fetchPlayerList = async () => {
-      try {
-        const response = await fetch(
-          "https://api.rainss.cn/x-player/api/palyerlist.php?id=725994751"
-        );
-        const data = await response.json();
-        const ap = new APlayer({ // https://aplayer.js.org/#/zh-Hans/?id=入门
-          container: document.getElementById("player"),
-          fixed: true,
-          lrcType: 3,
-          autoplay: false,
-          theme: "#b7daff",
-          audio: data.songs,
-          order: 'random', // 音频循环播放, 可选值: 'all', 'one', 'none'
-          loop: 'all', // 音频循环顺序, 可选值: 'list', 'random'
-        });
-
-        const colorThief = new ColorThief();
-        const image = new Image();
-        const setTheme = async (index) => {
-          if (!ap.list.audios[index].theme) {
-            const response = await fetch(ap.list.audios[index].cover);
-            const blob = await response.blob();
-            const coverUrl = URL.createObjectURL(blob);
-            image.onload = function () {
-              const color = colorThief.getColor(image);
-              ap.theme(`rgb(${color[0]}, ${color[1]}, ${color[2]})`, index);
-              // console.log(
-              //   "theme => " + `rgb(${color[0]}, ${color[1]}, ${color[2]})`
-              // );
-              URL.revokeObjectURL(coverUrl);
-            };
-            image.src = coverUrl;
-          }
-        };
-
-        setTheme(ap.list.index);
-        ap.on("listswitch", (index) => {
-          setTheme(index.index);
-        });
-      } catch (error) {
-        console.log("Error:", error);
-      }
-    };
-
-    fetchPlayerList();
-
-  </script>
-
-
-  <script>
+ <script>
     class Circle {
       constructor({ origin, speed, color, angle, context }) {
         this.origin = origin
@@ -666,7 +934,5 @@
   </script>
 
 
-
 </body>
-
 </html>

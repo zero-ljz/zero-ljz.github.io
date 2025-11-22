@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="zh-Hans" class="h-100">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="">
+  <meta name="author" content="zero-ljz">
+  <!-- <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"/>
+    <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"/>-->
+  <link href="https://gcore.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://gcore.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" rel="stylesheet" />
+  <link href="./css/bootstrap.ext.css" rel="stylesheet" />
+  <!-- <script type="text/javascript" src="https://gcore.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script> -->
+  <script type="text/javascript" src="./js/utils.js"></script>
+  <link rel="icon" href="data:," />
+  <title>空心 · 主页</title>
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+
+    .b-example-divider {
+      width: 100%;
+      height: 3rem;
+      background-color: rgba(0, 0, 0, .1);
+      border: solid rgba(0, 0, 0, .15);
+      border-width: 1px 0;
+      box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+    }
+
+    .b-example-vr {
+      flex-shrink: 0;
+      width: 1.5rem;
+      height: 100vh;
+    }
+
+    .bi {
+      vertical-align: -.125em;
+      fill: currentColor;
+    }
+
+    .nav-scroller {
+      position: relative;
+      z-index: 2;
+      height: 2.75rem;
+      overflow-y: hidden;
+    }
+
+    .nav-scroller .nav {
+      display: flex;
+      flex-wrap: nowrap;
+      padding-bottom: 1rem;
+      margin-top: -1px;
+      overflow-x: auto;
+      text-align: center;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .btn-bd-primary {
+      --bd-violet-bg: #712cf9;
+      --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+      --bs-btn-font-weight: 600;
+      --bs-btn-color: var(--bs-white);
+      --bs-btn-bg: var(--bd-violet-bg);
+      --bs-btn-border-color: var(--bd-violet-bg);
+      --bs-btn-hover-color: var(--bs-white);
+      --bs-btn-hover-bg: #6528e0;
+      --bs-btn-hover-border-color: #6528e0;
+      --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+      --bs-btn-active-color: var(--bs-btn-hover-color);
+      --bs-btn-active-bg: #5a23c8;
+      --bs-btn-active-border-color: #5a23c8;
+    }
+
+    .bd-mode-toggle {
+      z-index: 1500;
+    }
+
+
+
+    /*
+ * Globals
+ */
+
+
+    /* Custom default button */
+    .btn-light,
+    .btn-light:hover,
+    .btn-light:focus {
+      color: #333;
+      text-shadow: none;
+      /* Prevent inheritance from `body` */
+    }
+
+
+    /*
+ * Base structure
+ */
+
+    body {
+      text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+      box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+      /* background-image: linear-gradient(90deg, #33b7e2, #5e62b0, #dc307c); */
+
+      background-repeat: no-repeat;
+      background-size: cover;
+      transition: background-image 0.5s ease-in-out;
+    }
+
+    .clock {
+      font-size: 24px;
+      color: rgba(255, 255, 255, 0.8);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      font-family: "Courier New", monospace;
+      z-index: 9999;
+    }
+
+
+    .avatar {
+      position: absolute;
+      top: -40px;
+      left: calc(50% - 40px);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-image: url("./img/avatar.png");
+      background-size: cover;
+      background-position: center;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      animation: fade-in 1s ease-out;
+    }
+
+
+
+
+    body {
+      cursor: url('./cursors/aero_arrow.cur'), auto;
+      user-select: none;
+    }
+
+    a, button {
+      cursor: url('./cursors/aero_link.cur'), auto;
+    }
+
+
+
+
+    .cover-container {
+      max-width: 42em;
+    }
+
+
+    /*
+ * Header
+ */
+
+    .nav-masthead .nav-link {
+      color: rgba(255, 255, 255, .5);
+      border-bottom: .25rem solid transparent;
+    }
+
+    .nav-masthead .nav-link:hover,
+    .nav-masthead .nav-link:focus {
+      border-bottom-color: rgba(255, 255, 255, .25);
+    }
+
+    .nav-masthead .nav-link+.nav-link {
+      margin-left: 1rem;
+    }
+
+    .nav-masthead .active {
+      color: #fff;
+      border-bottom-color: #fff;
+    }
+  </style>
+
+
+</head>
+
+<body class="d-flex h-100 text-center">
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+    <symbol id="check2" viewBox="0 0 16 16">
+      <path
+        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+    </symbol>
+    <symbol id="circle-half" viewBox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z" />
+    </symbol>
+    <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+      <path
+        d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
+      <path
+        d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z" />
+    </symbol>
+    <symbol id="sun-fill" viewBox="0 0 16 16">
+      <path
+        d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
+    </symbol>
+  </svg>
+
+
+  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <header class="mb-auto">
+      <div>
+        <h3 class="float-md-start mb-0 text-light">空心</h3>
+        <nav class="nav nav-masthead justify-content-center float-md-end">
+          <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="#">主页</a>
+          <a class="nav-link fw-bold py-1 px-0" target="_blank" title="空心的网络日志" href="http://520999.xyz">博客</a>
+          <a class="nav-link fw-bold py-1 px-0" target="_blank" title="我的应用" href="http://iapp.run">应用</a>
+          <a class="nav-link fw-bold py-1 px-0" target="_blank" title="我的服务器资源监控"
+            href="http://x.iapp.run:8100/?urls=ws://iapp.run:8100/ws/,ws://jp.iapp.run:8100/ws/,ws://us.iapp.run:8100/ws/,ws://kr.iapp.run:8100/ws/,ws://hk.iapp.run:8100/ws/,ws://us2.iapp.run:8100/ws/">服务器</a>
+          <a class="nav-link fw-bold py-1 px-0" target="_blank" id="wallpaper_action" title="单击时随机更换一张我收藏的壁纸，双击下载" href="#"
+            onclick="return handleClick();">换背景</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="px-3">
+
+      <div class="glass-box" style="
+      width: 360px;
+      position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+      text-align: center;
+      border-radius: 1.2rem;
+      padding: 2rem;
+    ">
+        <div class="avatar" style="transition: transform 0.5s ease-in-out; background-color: white; cursor: pointer;"
+          onclick="this.style.transform = this.style.transform === 'rotate(360deg) scale(1.5)' ? 'none' : 'rotate(360deg) scale(1.5)'; this.style.backgroundColor = this.style.backgroundColor === 'white' ? 'transparent' : 'white';">
+        </div>
+        <br />
+        <h3 class="text-light">空心</h3>
+        <p style="color: #dddddd;">Python 后端开发者</p>
+        <p style="color: #dddddd;">95后 / 现居湖南长沙</p>
+        <p class="lead">
+          <a href="mailto:hi@iapp.run" class="btn btn-lg btn-light fw-bold border-white bg-white rounded-pill">联系我</a>
+        </p>
+      </div>
+
+      <div id="player"></div>
+    </main>
+
+    <footer class="mt-auto text-white-50 mb-5">
+      <span class="clock" id="clock" style="cursor: pointer;" onclick="window.open('clock.html', '_blank');"></span>
+      <p>HomePage by <a href="https://i.iapp.run" class="text-white">@空心</a>.</p>
+    </footer>
+  </div>
+
+  <script src="https://gcore.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://gcore.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/color-thief/2.4.0/color-thief.min.js"></script>
+
+  <script>
+
+    function changeWallpaper() {
+      var newWallpaperUrl = `https://source.unsplash.com/user/zeroljz/likes/2560x0/`
+
+      fetch(newWallpaperUrl, { method: 'HEAD' }).then(response => {
+        if (response.redirected) {
+          redirected_url = response.url;
+
+          document.getElementById('wallpaper_action').href = redirected_url
+          document.body.style.backgroundImage = `url("${redirected_url}")`;
+        }
+      })
+    }
+
+
+    var clickCount = 0;
+    var clickTimer;
+
+    function handleClick() {
+      clickCount++;
+
+      if (clickCount === 1) {
+        // 单击事件
+        clickTimer = setTimeout(function () {
+          clickCount = 0;
+          // 在这里处理单击事件逻辑
+          changeWallpaper();
+
+        }, 240); // 设置一个时间阈值，单位为毫秒
+
+        return false; // 防止打开链接
+      } else if (clickCount === 2) {
+        // 双击事件
+        clearTimeout(clickTimer);
+        clickCount = 0;
+        // 在这里处理双击事件逻辑
+
+      }
+    }
+
+
+
+    async function bingWallpaper(itx = 0) {
+      const host = "https://p.520999.xyz/https://cn.bing.com";
+      const response = await fetch(
+        `${host}/HPImageArchive.aspx?format=js&idx=${itx}&n=1&mkt=zh-CN`
+      );
+
+      const data = await response.json();
+
+      // 壁纸文件地址
+      const bgUri = data.images[0].urlbase + "_1920x1080.jpg";
+      const bgUrl = 'https://cn.bing.com' + bgUri;
+
+      // 壁纸文件名
+      const bgName = bgUrl.match(/\/th\?id=OHR\.(.*?\.jpg)/)[1];
+
+      // 壁纸说明文字
+      const bgText = data.images[0].copyright;
+
+      return { url: bgUrl, name: bgName, text: bgText };
+    }
+
+    bingWallpaper().then(wallpaperData => {
+      document.body.style.backgroundImage = `url(${wallpaperData.url})`;
+      console.log(wallpaperData.text)
+
+      // 创建并设置壁纸文本的元素
+      const textDiv = document.createElement('a');
+      textDiv.id = 'wallpaper-text'; // 设置元素的 id
+      textDiv.textContent = wallpaperData.text;
+
+      textDiv.classList.add('position-fixed', 'text-white', 'p-3', 'rounded', 'd-none', 'd-md-block');
+      textDiv.style.bottom = '20px';
+      textDiv.style.right = '20px';
+      textDiv.style.fontSize = '14px';
+      textDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+      textDiv.href = wallpaperData.url;
+
+      // 将壁纸文本元素添加到文档中
+      document.body.appendChild(textDiv);
+
+      setTimeout(() => {
+        textDiv.classList.add('d-md-none');
+      }, 5000);
+
+    })
+
+
+    function updateDateTime() {
+      var now = new Date();
+      var dateOptions = {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      };
+      var timeOptions = {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      };
+      document.getElementById("clock").textContent = now.toLocaleDateString("zh-CN", dateOptions).replace(/\//g, "-") + " " + now.toLocaleTimeString("zh-CN", timeOptions);
+      // 每秒更新一次日期和时钟
+      setTimeout(updateDateTime, 1000);
+    }
+    updateDateTime();
+
+
+    // HTML 文档的 DOM 树构建完成
+    document.addEventListener("DOMContentLoaded", function () {
+      console.log("DOM fully loaded and parsed");
+
+
+    });
+
+    // 整个页面及其所有资源都加载完成
+    window.addEventListener("load", function () {
+      console.log("Page fully loaded");
+
+
+    });
+  </script>
+
+  <script>
+    var a = [
+      "活在当下",
+      "勇往直前",
+      "智慧胜于力量",
+      "人生如戏",
+      "心想事成",
+      "笑口常开",
+      "少而精",
+      "与时俱进",
+      "不忘初心",
+      "静心观察",
+    ];
+    var a_idx = 0;
+
+    document.body.addEventListener("click", function (e) {
+      var $i = document.createElement("span");
+      $i.textContent = a[a_idx];
+      a_idx = (a_idx + 1) % a.length;
+
+      var x = e.pageX,
+        y = e.pageY;
+
+      $i.style.zIndex = "999999999999999999999999999999999999999999999999999999999999999999999";
+      $i.style.top = y - 20 + "px";
+      $i.style.left = x + "px";
+      $i.style.position = "absolute";
+      $i.style.fontWeight = "bold";
+      $i.style.fontSize = "16px";
+      $i.style.color = "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")";
+
+      document.body.appendChild($i);
+
+      var startTime = performance.now();
+
+      function animate() {
+        var currentTime = performance.now();
+        var progress = (currentTime - startTime) / 1500;
+
+        $i.style.top = (y - 180 + (20 * progress)) + "px";
+        $i.style.opacity = 1 - progress;
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          $i.remove();
+        }
+      }
+
+      requestAnimationFrame(animate);
+
+    });
+
+  </script>
+
+
+<style>
+  /* 解决bootstrap5导致播放器歌曲列表居中对齐的问题 */
+  #player>div.aplayer-list {
+    text-align: left;
+  }
+</style>
+  <script>
+    const fetchPlayerList = async () => {
+      try {
+        const response = await fetch(
+          "https://api.rainss.cn/x-player/api/palyerlist.php?id=725994751"
+        );
+        const data = await response.json();
+        const ap = new APlayer({ // https://aplayer.js.org/#/zh-Hans/?id=入门
+          container: document.getElementById("player"),
+          fixed: true,
+          lrcType: 3,
+          autoplay: false,
+          theme: "#b7daff",
+          audio: data.songs,
+          order: 'random', // 音频循环播放, 可选值: 'all', 'one', 'none'
+          loop: 'all', // 音频循环顺序, 可选值: 'list', 'random'
+        });
+
+        const colorThief = new ColorThief();
+        const image = new Image();
+        const setTheme = async (index) => {
+          if (!ap.list.audios[index].theme) {
+            const response = await fetch(ap.list.audios[index].cover);
+            const blob = await response.blob();
+            const coverUrl = URL.createObjectURL(blob);
+            image.onload = function () {
+              const color = colorThief.getColor(image);
+              ap.theme(`rgb(${color[0]}, ${color[1]}, ${color[2]})`, index);
+              // console.log(
+              //   "theme => " + `rgb(${color[0]}, ${color[1]}, ${color[2]})`
+              // );
+              URL.revokeObjectURL(coverUrl);
+            };
+            image.src = coverUrl;
+          }
+        };
+
+        setTheme(ap.list.index);
+        ap.on("listswitch", (index) => {
+          setTheme(index.index);
+        });
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    };
+
+    fetchPlayerList();
+
+  </script>
+
+
+  <script>
+    class Circle {
+      constructor({ origin, speed, color, angle, context }) {
+        this.origin = origin
+        this.position = { ...this.origin }
+        this.color = color
+        this.speed = speed
+        this.angle = angle
+        this.context = context
+        this.renderCount = 0
+      }
+
+      draw() {
+        this.context.fillStyle = this.color
+        this.context.beginPath()
+        this.context.arc(this.position.x, this.position.y, 2, 0, Math.PI * 2)
+        this.context.fill()
+      }
+
+      move() {
+        this.position.x = (Math.sin(this.angle) * this.speed) + this.position.x
+        this.position.y = (Math.cos(this.angle) * this.speed) + this.position.y + (this.renderCount * 0.3)
+        this.renderCount++
+      }
+    }
+
+    class Boom {
+      constructor({ origin, context, circleCount = 10, area }) {
+        this.origin = origin
+        this.context = context
+        this.circleCount = circleCount
+        this.area = area
+        this.stop = false
+        this.circles = []
+      }
+
+      randomArray(range) {
+        const length = range.length
+        const randomIndex = Math.floor(length * Math.random())
+        return range[randomIndex]
+      }
+
+      randomColor() {
+        const range = ['8', '9', 'A', 'B', 'C', 'D', 'E', 'F']
+        return '#' + this.randomArray(range) + this.randomArray(range) + this.randomArray(range) + this.randomArray(range) + this.randomArray(range) + this.randomArray(range)
+      }
+
+      randomRange(start, end) {
+        return (end - start) * Math.random() + start
+      }
+
+      init() {
+        for (let i = 0; i < this.circleCount; i++) {
+          const circle = new Circle({
+            context: this.context,
+            origin: this.origin,
+            color: this.randomColor(),
+            angle: this.randomRange(Math.PI - 1, Math.PI + 1),
+            speed: this.randomRange(1, 6)
+          })
+          this.circles.push(circle)
+        }
+      }
+
+      move() {
+        this.circles.forEach((circle, index) => {
+          if (circle.position.x > this.area.width || circle.position.y > this.area.height) {
+            return this.circles.splice(index, 1)
+          }
+          circle.move()
+        })
+        if (this.circles.length == 0) {
+          this.stop = true
+        }
+      }
+
+      draw() {
+        this.circles.forEach(circle => circle.draw())
+      }
+    }
+
+    class CursorSpecialEffects {
+      constructor() {
+        this.computerCanvas = document.createElement('canvas')
+        this.renderCanvas = document.createElement('canvas')
+
+        this.computerContext = this.computerCanvas.getContext('2d')
+        this.renderContext = this.renderCanvas.getContext('2d')
+
+        this.globalWidth = window.innerWidth
+        this.globalHeight = window.innerHeight
+
+        this.booms = []
+        this.running = false
+      }
+
+      handleMouseDown(e) {
+        const boom = new Boom({
+          origin: { x: e.clientX, y: e.clientY },
+          context: this.computerContext,
+          area: {
+            width: this.globalWidth,
+            height: this.globalHeight
+          }
+        })
+        boom.init()
+        this.booms.push(boom)
+        this.running || this.run()
+      }
+
+      handlePageHide() {
+        this.booms = []
+        this.running = false
+      }
+
+      init() {
+        const style = this.renderCanvas.style
+        style.position = 'fixed'
+        style.top = style.left = 0
+        style.zIndex = '999999999999999999999999999999999999999999'
+        style.pointerEvents = 'none'
+
+        style.width = this.renderCanvas.width = this.computerCanvas.width = this.globalWidth
+        style.height = this.renderCanvas.height = this.computerCanvas.height = this.globalHeight
+
+        document.body.append(this.renderCanvas)
+
+        window.addEventListener('mousedown', this.handleMouseDown.bind(this))
+        window.addEventListener('pagehide', this.handlePageHide.bind(this))
+      }
+
+      run() {
+        this.running = true
+        if (this.booms.length == 0) {
+          return this.running = false
+        }
+
+        requestAnimationFrame(this.run.bind(this))
+
+        this.computerContext.clearRect(0, 0, this.globalWidth, this.globalHeight)
+        this.renderContext.clearRect(0, 0, this.globalWidth, this.globalHeight)
+
+        this.booms.forEach((boom, index) => {
+          if (boom.stop) {
+            return this.booms.splice(index, 1)
+          }
+          boom.move()
+          boom.draw()
+        })
+        this.renderContext.drawImage(this.computerCanvas, 0, 0, this.globalWidth, this.globalHeight)
+      }
+    }
+
+    const cursorSpecialEffects = new CursorSpecialEffects()
+    cursorSpecialEffects.init()
+
+  </script>
+
+
+
+</body>
+
+</html>
