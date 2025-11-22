@@ -1,17 +1,7 @@
 [
   {
-    "name": "fern.jpg",
-    "path": "./photos/fern.jpg",
-    "date": "2021-03-06 10:38"
-  },
-  {
     "name": "field.jpg",
     "path": "./photos/field.jpg",
-    "date": "2021-03-06 10:38"
-  },
-  {
-    "name": "gradient.jpg",
-    "path": "./photos/gradient.jpg",
     "date": "2021-03-06 10:38"
   },
   {
@@ -35,16 +25,6 @@
     "date": "2021-03-06 10:38"
   },
   {
-    "name": "beach.jpg",
-    "path": "./photos/beach.jpg",
-    "date": "2021-03-06 10:38"
-  },
-  {
-    "name": "desert.jpg",
-    "path": "./photos/desert.jpg",
-    "date": "2021-03-06 10:38"
-  },
-  {
     "name": "bg16.jpg",
     "path": "./photos/bg16.jpg",
     "date": "2021-02-06 09:55"
@@ -62,11 +42,6 @@
   {
     "name": "bg19.jpg",
     "path": "./photos/bg19.jpg",
-    "date": "2021-02-06 09:55"
-  },
-  {
-    "name": "bg1a.jpg",
-    "path": "./photos/bg1a.jpg",
     "date": "2021-02-06 09:55"
   }
 ]

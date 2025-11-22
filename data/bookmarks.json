@@ -1,0 +1,709 @@
+{
+   "checksum": "00000000000000000000000000000000",
+   "roots": {
+      "bookmark_bar": {
+         "children": [
+            {
+               "children": [
+                  {
+                     "name": "Google",
+                     "type": "url",
+                     "url": "https://www.google.com/"
+                  },
+                  {
+                     "name": "Baidu 百度",
+                     "type": "url",
+                     "url": "https://www.baidu.com/"
+                  },
+                  {
+                     "name": "ChatGPT",
+                     "type": "url",
+                     "url": "https://chatgpt.com/"
+                  },
+                  {
+                     "name": "YouTube",
+                     "type": "url",
+                     "url": "https://www.youtube.com/"
+                  },
+                  {
+                     "name": "GitHub",
+                     "type": "url",
+                     "url": "https://github.com/"
+                  },
+                  {
+                     "name": "Bilibili 哔哩哔哩",
+                     "type": "url",
+                     "url": "https://www.bilibili.com/"
+                  },
+                  {
+                     "name": "TaoBao 淘宝",
+                     "type": "url",
+                     "url": "https://www.taobao.com/"
+                  },
+                  {
+                     "name": "Amazon",
+                     "type": "url",
+                     "url": "https://www.amazon.com/"
+                  },
+                  {
+                     "name": "Gmail",
+                     "type": "url",
+                     "url": "https://mail.google.com/"
+                  },
+                  {
+                     "name": "Weibo 微博",
+                     "type": "url",
+                     "url": "https://weibo.com/"
+                  }
+               ],
+               "name": "🌟 每日必看 (Top Hits)",
+               "type": "folder"
+            },
+            {
+               "children": [
+                  {
+                     "name": "Google Search",
+                     "type": "url",
+                     "url": "https://www.google.com/"
+                  },
+                  {
+                     "name": "Baidu 百度搜索",
+                     "type": "url",
+                     "url": "https://www.baidu.com/"
+                  },
+                  {
+                     "name": "Bing (International)",
+                     "type": "url",
+                     "url": "https://www.bing.com/"
+                  },
+                  {
+                     "name": "ChatGPT (OpenAI)",
+                     "type": "url",
+                     "url": "https://chatgpt.com/"
+                  },
+                  {
+                     "name": "Claude (Anthropic)",
+                     "type": "url",
+                     "url": "https://claude.ai/"
+                  },
+                  {
+                     "name": "DeepL (最强翻译)",
+                     "type": "url",
+                     "url": "https://www.deepl.com/translator"
+                  },
+                  {
+                     "name": "Perplexity (AI搜索)",
+                     "type": "url",
+                     "url": "https://www.perplexity.ai/"
+                  },
+                  {
+                     "name": "Gemini (Google AI)",
+                     "type": "url",
+                     "url": "https://gemini.google.com/"
+                  },
+                  {
+                     "name": "Hugging Face (模型库)",
+                     "type": "url",
+                     "url": "https://huggingface.co/"
+                  },
+                  {
+                     "name": "秘塔AI搜索",
+                     "type": "url",
+                     "url": "https://metaso.cn/"
+                  },
+                  {
+                     "name": "Kimi 智能助手",
+                     "type": "url",
+                     "url": "https://kimi.moonshot.cn/"
+                  }
+               ],
+               "name": "🧠 AI与搜索引擎",
+               "type": "folder"
+            },
+            {
+               "children": [
+                  {
+                     "name": "GitHub",
+                     "type": "url",
+                     "url": "https://github.com/"
+                  },
+                  {
+                     "name": "Stack Overflow",
+                     "type": "url",
+                     "url": "https://stackoverflow.com/"
+                  },
+                  {
+                     "name": "CSDN",
+                     "type": "url",
+                     "url": "https://www.csdn.net/"
+                  },
+                  {
+                     "name": "Juejin 掘金",
+                     "type": "url",
+                     "url": "https://juejin.cn/"
+                  },
+                  {
+                     "name": "V2EX",
+                     "type": "url",
+                     "url": "https://www.v2ex.com/"
+                  },
+                  {
+                     "name": "Gitee (码云)",
+                     "type": "url",
+                     "url": "https://gitee.com/"
+                  },
+                  {
+                     "name": "MDN Web Docs",
+                     "type": "url",
+                     "url": "https://developer.mozilla.org/"
+                  },
+                  {
+                     "name": "LeetCode (力扣)",
+                     "type": "url",
+                     "url": "https://leetcode.cn/"
+                  },
+                  {
+                     "name": "Runoob (菜鸟教程)",
+                     "type": "url",
+                     "url": "https://www.runoob.com/"
+                  },
+                  {
+                     "name": "InfoQ",
+                     "type": "url",
+                     "url": "https://www.infoq.cn/"
+                  },
+                  {
+                     "name": "OSChina (开源中国)",
+                     "type": "url",
+                     "url": "https://www.oschina.net/"
+                  }
+               ],
+               "name": "💻 编程与开发",
+               "type": "folder"
+            },
+            {
+               "children": [
+                  {
+                     "name": "YouTube",
+                     "type": "url",
+                     "url": "https://www.youtube.com/"
+                  },
+                  {
+                     "name": "Bilibili",
+                     "type": "url",
+                     "url": "https://www.bilibili.com/"
+                  },
+                  {
+                     "name": "Netflix",
+                     "type": "url",
+                     "url": "https://www.netflix.com/"
+                  },
+                  {
+                     "name": "TikTok",
+                     "type": "url",
+                     "url": "https://www.tiktok.com/"
+                  },
+                  {
+                     "name": "Douyin 抖音网页版",
+                     "type": "url",
+                     "url": "https://www.douyin.com/"
+                  },
+                  {
+                     "name": "Twitch (直播)",
+                     "type": "url",
+                     "url": "https://www.twitch.tv/"
+                  },
+                  {
+                     "name": "Tencent Video 腾讯视频",
+                     "type": "url",
+                     "url": "https://v.qq.com/"
+                  },
+                  {
+                     "name": "iQiyi 爱奇艺",
+                     "type": "url",
+                     "url": "https://www.iqiyi.com/"
+                  },
+                  {
+                     "name": "Youku 优酷",
+                     "type": "url",
+                     "url": "https://www.youku.com/"
+                  },
+                  {
+                     "name": "Spotify (音乐)",
+                     "type": "url",
+                     "url": "https://open.spotify.com/"
+                  },
+                  {
+                     "name": "NetEase Cloud Music 网易云音乐",
+                     "type": "url",
+                     "url": "https://music.163.com/"
+                  }
+               ],
+               "name": "🎬 视频与流媒体",
+               "type": "folder"
+            },
+            {
+               "children": [
+                  {
+                     "name": "Twitter (X)",
+                     "type": "url",
+                     "url": "https://x.com/"
+                  },
+                  {
+                     "name": "Facebook",
+                     "type": "url",
+                     "url": "https://www.facebook.com/"
+                  },
+                  {
+                     "name": "Instagram",
+                     "type": "url",
+                     "url": "https://www.instagram.com/"
+                  },
+                  {
+                     "name": "Weibo 新浪微博",
+                     "type": "url",
+                     "url": "https://weibo.com/"
+                  },
+                  {
+                     "name": "Zhihu 知乎",
+                     "type": "url",
+                     "url": "https://www.zhihu.com/"
+                  },
+                  {
+                     "name": "Reddit",
+                     "type": "url",
+                     "url": "https://www.reddit.com/"
+                  },
+                  {
+                     "name": "Xiaohongshu 小红书",
+                     "type": "url",
+                     "url": "https://www.xiaohongshu.com/explore"
+                  },
+                  {
+                     "name": "Douban 豆瓣",
+                     "type": "url",
+                     "url": "https://www.douban.com/"
+                  },
+                  {
+                     "name": "LinkedIn 领英",
+                     "type": "url",
+                     "url": "https://www.linkedin.com/"
+                  },
+                  {
+                     "name": "Discord",
+                     "type": "url",
+                     "url": "https://discord.com/"
+                  },
+                  {
+                     "name": "Telegram Web",
+                     "type": "url",
+                     "url": "https://web.telegram.org/"
+                  },
+                  {
+                     "name": "Baidu Tieba 百度贴吧",
+                     "type": "url",
+                     "url": "https://tieba.baidu.com/"
+                  }
+               ],
+               "name": "💬 社交与社区",
+               "type": "folder"
+            },
+            {
+               "children": [
+                  {
+                     "name": "Gmail",
+                     "type": "url",
+                     "url": "https://mail.google.com/"
+                  },
+                  {
+                     "name": "Outlook / Hotmail",
+                     "type": "url",
+                     "url": "https://outlook.live.com/"
+                  },
+                  {
+                     "name": "Google Drive",
+                     "type": "url",
+                     "url": "https://drive.google.com/"
+                  },
+                  {
+                     "name": "Baidu Netdisk 百度网盘",
+                     "type": "url",
+                     "url": "https://pan.baidu.com/"
+                  },
+                  {
+                     "name": "Notion",
+                     "type": "url",
+                     "url": "https://www.notion.so/"
+                  },
+                  {
+                     "name": "Feishu 飞书",
+                     "type": "url",
+                     "url": "https://www.feishu.cn/"
+                  },
+                  {
+                     "name": "Aliyun 阿里云",
+                     "type": "url",
+                     "url": "https://www.aliyun.com/"
+                  },
+                  {
+                     "name": "Tencent Cloud 腾讯云",
+                     "type": "url",
+                     "url": "https://cloud.tencent.com/"
+                  },
+                  {
+                     "name": "Speedtest (网速测试)",
+                     "type": "url",
+                     "url": "https://www.speedtest.net/"
+                  },
+                  {
+                     "name": "TinyPNG (图片压缩)",
+                     "type": "url",
+                     "url": "https://tinypng.com/"
+                  },
+                  {
+                     "name": "Convertio (文件转换)",
+                     "type": "url",
+                     "url": "https://convertio.co/"
+                  }
+               ],
+               "name": "🛠️ 工具与效率",
+               "type": "folder"
+            },
+            {
+               "children": [
+                  {
+                     "name": "Amazon",
+                     "type": "url",
+                     "url": "https://www.amazon.com/"
+                  },
+                  {
+                     "name": "Taobao 淘宝",
+                     "type": "url",
+                     "url": "https://www.taobao.com/"
+                  },
+                  {
+                     "name": "JD 京东",
+                     "type": "url",
+                     "url": "https://www.jd.com/"
+                  },
+                  {
+                     "name": "Pinduoduo 拼多多",
+                     "type": "url",
+                     "url": "https://www.pinduoduo.com/"
+                  },
+                  {
+                     "name": "Smzdm 什么值得买",
+                     "type": "url",
+                     "url": "https://www.smzdm.com/"
+                  },
+                  {
+                     "name": "eBay",
+                     "type": "url",
+                     "url": "https://www.ebay.com/"
+                  },
+                  {
+                     "name": "AliExpress 速卖通",
+                     "type": "url",
+                     "url": "https://www.aliexpress.com/"
+                  }
+               ],
+               "name": "🛒 购物与电商",
+               "type": "folder"
+            },
+            {
+               "children": [
+                  {
+                     "name": "BBC News",
+                     "type": "url",
+                     "url": "https://www.bbc.com/news"
+                  },
+                  {
+                     "name": "CNN",
+                     "type": "url",
+                     "url": "https://edition.cnn.com/"
+                  },
+                  {
+                     "name": "Sina 新浪",
+                     "type": "url",
+                     "url": "https://www.sina.com.cn/"
+                  },
+                  {
+                     "name": "Tencent News 腾讯新闻",
+                     "type": "url",
+                     "url": "https://news.qq.com/"
+                  },
+                  {
+                     "name": "Hacker News (Tech)",
+                     "type": "url",
+                     "url": "https://news.ycombinator.com/"
+                  },
+                  {
+                     "name": "36Kr 36氪",
+                     "type": "url",
+                     "url": "https://36kr.com/"
+                  },
+                  {
+                     "name": "SSPAI 少数派",
+                     "type": "url",
+                     "url": "https://sspai.com/"
+                  },
+                  {
+                     "name": "Solidot",
+                     "type": "url",
+                     "url": "https://www.solidot.org/"
+                  },
+                  {
+                     "name": "Caixin 财新",
+                     "type": "url",
+                     "url": "https://www.caixin.com/"
+                  },
+                  {
+                     "name": "Ithome IT之家",
+                     "type": "url",
+                     "url": "https://www.ithome.com/"
+                  }
+               ],
+               "name": "📰 新闻与资讯",
+               "type": "folder"
+            },
+            {
+               "children": [
+                  {
+                     "name": "Figma",
+                     "type": "url",
+                     "url": "https://www.figma.com/"
+                  },
+                  {
+                     "name": "Canva",
+                     "type": "url",
+                     "url": "https://www.canva.com/"
+                  },
+                  {
+                     "name": "Behance",
+                     "type": "url",
+                     "url": "https://www.behance.net/"
+                  },
+                  {
+                     "name": "Dribbble",
+                     "type": "url",
+                     "url": "https://dribbble.com/"
+                  },
+                  {
+                     "name": "Pinterest",
+                     "type": "url",
+                     "url": "https://www.pinterest.com/"
+                  },
+                  {
+                     "name": "Unsplash (免费图库)",
+                     "type": "url",
+                     "url": "https://unsplash.com/"
+                  },
+                  {
+                     "name": "Huaban 花瓣",
+                     "type": "url",
+                     "url": "https://huaban.com/"
+                  },
+                  {
+                     "name": "Iconfont 阿里图标",
+                     "type": "url",
+                     "url": "https://www.iconfont.cn/"
+                  }
+               ],
+               "name": "🎨 设计与素材",
+               "type": "folder"
+            },
+            {
+               "children": [
+                  {
+                     "name": "Wikipedia 维基百科",
+                     "type": "url",
+                     "url": "https://www.wikipedia.org/"
+                  },
+                  {
+                     "name": "Coursera",
+                     "type": "url",
+                     "url": "https://www.coursera.org/"
+                  },
+                  {
+                     "name": "edX",
+                     "type": "url",
+                     "url": "https://www.edx.org/"
+                  },
+                  {
+                     "name": "Khan Academy",
+                     "type": "url",
+                     "url": "https://www.khanacademy.org/"
+                  },
+                  {
+                     "name": "MOOC 中国大学",
+                     "type": "url",
+                     "url": "https://www.icourse163.org/"
+                  },
+                  {
+                     "name": "TED Talks",
+                     "type": "url",
+                     "url": "https://www.ted.com/"
+                  }
+               ],
+               "name": "🎓 学习与知识",
+               "type": "folder"
+            },
+            {
+               "children": [
+                  {
+                     "name": "Steam",
+                     "type": "url",
+                     "url": "https://store.steampowered.com/"
+                  },
+                  {
+                     "name": "Epic Games",
+                     "type": "url",
+                     "url": "https://store.epicgames.com/"
+                  },
+                  {
+                     "name": "IGN",
+                     "type": "url",
+                     "url": "https://www.ign.com/"
+                  },
+                  {
+                     "name": "G-Cores 机核",
+                     "type": "url",
+                     "url": "https://www.gcores.com/"
+                  },
+                  {
+                     "name": "NGA 玩家社区",
+                     "type": "url",
+                     "url": "https://bbs.nga.cn/"
+                  },
+                  {
+                     "name": "Gamersky 游民星空",
+                     "type": "url",
+                     "url": "https://www.gamersky.com/"
+                  },
+                  {
+                     "name": "3DMGame",
+                     "type": "url",
+                     "url": "https://www.3dmgame.com/"
+                  }
+               ],
+               "name": "🎮 游戏与娱乐",
+               "type": "folder"
+            },
+            {
+   "children": [
+      {
+         "name": "CyberChef (瑞士军刀)",
+         "type": "url",
+         "url": "https://gchq.github.io/CyberChef/"
+      },
+      {
+         "name": "JSON Editor Online",
+         "type": "url",
+         "url": "https://jsoneditoronline.org/"
+      },
+      {
+         "name": "Regex101 (正则调试)",
+         "type": "url",
+         "url": "https://regex101.com/"
+      },
+      {
+         "name": "JWT.io (Token调试)",
+         "type": "url",
+         "url": "https://jwt.io/"
+      },
+      {
+         "name": "Can I Use (浏览器兼容性)",
+         "type": "url",
+         "url": "https://caniuse.com/"
+      },
+      {
+         "name": "Carbon (代码转图片)",
+         "type": "url",
+         "url": "https://carbon.now.sh/"
+      },
+      {
+         "name": "Excalidraw (手绘风白板)",
+         "type": "url",
+         "url": "https://excalidraw.com/"
+      },
+      {
+         "name": "Draw.io (流程图)",
+         "type": "url",
+         "url": "https://app.diagrams.net/"
+      },
+      {
+         "name": "Hoppscotch (API调试)",
+         "type": "url",
+         "url": "https://hoppscotch.io/"
+      },
+      {
+         "name": "Crontab Guru (Cron表达式)",
+         "type": "url",
+         "url": "https://crontab.guru/"
+      },
+      {
+         "name": "CodePen (前端演练)",
+         "type": "url",
+         "url": "https://codepen.io/"
+      },
+      {
+         "name": "StackBlitz (在线IDE)",
+         "type": "url",
+         "url": "https://stackblitz.com/"
+      },
+      {
+         "name": "DevDocs (全文档速查)",
+         "type": "url",
+         "url": "https://devdocs.io/"
+      },
+      {
+         "name": "Transform (代码格式转换)",
+         "type": "url",
+         "url": "https://transform.tools/"
+      },
+      {
+         "name": "Squoosh (谷歌图片压缩)",
+         "type": "url",
+         "url": "https://squoosh.app/"
+      },
+      {
+         "name": "Diffchecker (文本对比)",
+         "type": "url",
+         "url": "https://www.diffchecker.com/"
+      },
+      {
+         "name": "Git Explorer (Git命令速查)",
+         "type": "url",
+         "url": "https://gitexplorer.com/"
+      },
+      {
+         "name": "Lorem Ipsum (乱数假文)",
+         "type": "url",
+         "url": "https://loremipsum.io/"
+      },
+      {
+         "name": "Shields.io (徽章制作)",
+         "type": "url",
+         "url": "https://shields.io/"
+      },
+      {
+         "name": "TinyHelper (工具合集)",
+         "type": "url",
+         "url": "https://tiny-helpers.dev/"
+      }
+   ],
+   "name": "🧰 在线开发神器",
+   "type": "folder"
+}
+         ],
+         "name": "Bookmarks Bar",
+         "type": "folder"
+      },
+      "other": {
+         "children": [],
+         "name": "Other Bookmarks",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}
