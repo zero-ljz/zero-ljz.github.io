@@ -1,0 +1,72 @@
+[
+  {
+    "name": "fern.jpg",
+    "path": "./photos/fern.jpg",
+    "date": "2021-03-06 10:38"
+  },
+  {
+    "name": "field.jpg",
+    "path": "./photos/field.jpg",
+    "date": "2021-03-06 10:38"
+  },
+  {
+    "name": "gradient.jpg",
+    "path": "./photos/gradient.jpg",
+    "date": "2021-03-06 10:38"
+  },
+  {
+    "name": "lighthouse.jpg",
+    "path": "./photos/lighthouse.jpg",
+    "date": "2021-03-06 10:38"
+  },
+  {
+    "name": "safari.jpg",
+    "path": "./photos/safari.jpg",
+    "date": "2021-03-06 10:38"
+  },
+  {
+    "name": "sea.jpg",
+    "path": "./photos/sea.jpg",
+    "date": "2021-03-06 10:38"
+  },
+  {
+    "name": "tv_tower.jpg",
+    "path": "./photos/tv_tower.jpg",
+    "date": "2021-03-06 10:38"
+  },
+  {
+    "name": "beach.jpg",
+    "path": "./photos/beach.jpg",
+    "date": "2021-03-06 10:38"
+  },
+  {
+    "name": "desert.jpg",
+    "path": "./photos/desert.jpg",
+    "date": "2021-03-06 10:38"
+  },
+  {
+    "name": "bg16.jpg",
+    "path": "./photos/bg16.jpg",
+    "date": "2021-02-06 09:55"
+  },
+  {
+    "name": "bg17.jpg",
+    "path": "./photos/bg17.jpg",
+    "date": "2021-02-06 09:55"
+  },
+  {
+    "name": "bg18.jpg",
+    "path": "./photos/bg18.jpg",
+    "date": "2021-02-06 09:55"
+  },
+  {
+    "name": "bg19.jpg",
+    "path": "./photos/bg19.jpg",
+    "date": "2021-02-06 09:55"
+  },
+  {
+    "name": "bg1a.jpg",
+    "path": "./photos/bg1a.jpg",
+    "date": "2021-02-06 09:55"
+  }
+]
