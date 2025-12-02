@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Alpine.js + Lucide 响应式导航</title>
+    
+    <!-- 1. 引入 Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- 2. 引入 Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- 3. 引入 UI Kit 样式 -->
+    <link rel="stylesheet" href="css/ui-kit.css">
+
+    <style>
+        /* --- 覆盖与新增样式 --- */
+        
+        /* Lucide 图标通用样式 */
+        .lucide { width: 20px; height: 20px; stroke-width: 2px; vertical-align: middle; }
+        
+        /* 侧边栏布局微调 */
+        .ui-sidebar-nav {
+            position: fixed; top: 0; left: 0; height: 100%;
+            background: #fff; border-right: 1px solid var(--ui-border);
+            z-index: 100; display: flex; flex-direction: column;
+            transition: width 0.3s ease;
+            overflow-y: auto; scrollbar-width: none;
+        }
+        .ui-sidebar-nav::-webkit-scrollbar { display: none; }
+
+        .ui-sidebar-item {
+            display: flex; align-items: center; padding: 12px 20px;
+            cursor: pointer; color: #666; transition: all 0.2s;
+            height: 50px; box-sizing: border-box; text-decoration: none;
+        }
+        .ui-sidebar-item:hover { background-color: #f9fafb; color: var(--ui-primary); }
+        .ui-sidebar-item.active { background-color: #eef2ff; color: var(--ui-primary); border-right: 3px solid var(--ui-primary); }
+        
+        /* 图标与文字间距 */
+        .ui-sidebar-item .lucide { margin-right: 12px; transition: margin 0.3s; }
+        .ui-sidebar-item .nav-text { font-size: 14px; white-space: nowrap; opacity: 1; transition: opacity 0.2s; }
+
+        /* 底部 Tabbar */
+        .ui-bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 55px;
+            background: #fff; border-top: 1px solid var(--ui-border);
+            z-index: 100; display: none; /* 默认隐藏 */
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .ui-bottom-item {
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #999; cursor: pointer; -webkit-tap-highlight-color: transparent; gap: 4px;
+        }
+        .ui-bottom-item.active { color: var(--ui-primary); }
+        .ui-bottom-item .nav-text { font-size: 10px; }
+
+        /* 内容区域布局 */
+        .main-content { padding: 20px; transition: padding-left 0.3s ease; }
+        
+        /* --- 响应式断点逻辑 (CSS控制布局显示) --- */
+        
+        /* Desktop (> 992px) */
+        @media (min-width: 992px) {
+            .ui-sidebar-nav { width: 240px; }
+            .main-content { padding-left: 240px; }
+            .ui-bottom-nav { display: none !important; } /* 强制隐藏底部栏 */
+        }
+
+        /* Tablet (768px - 991px) */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .ui-sidebar-nav { width: 64px; }
+            .ui-sidebar-item { justify-content: center; padding: 0; }
+            .ui-sidebar-item .lucide { margin-right: 0; width: 24px; height: 24px; }
+            .ui-sidebar-item .nav-text { display: none; }
+            .logo-area span { display: none; } /* 隐藏Logo文字 */
+            .main-content { padding-left: 64px; }
+            .ui-bottom-nav { display: none !important; }
+        }
+
+        /* Mobile (< 768px) */
+        @media (max-width: 767px) {
+            .ui-sidebar-nav { display: none !important; } /* 强制隐藏侧边栏 */
+            .ui-bottom-nav { display: flex !important; }
+            .main-content { padding-left: 0; padding-bottom: 70px; }
+        }
+
+        /* 动画过渡 */
+        .fade-enter { animation: ui-fade-in 0.3s ease; }
+    </style>
+</head>
+<body style="margin:0; background:#f4f6f8;">
+
+    <!-- 4. Alpine 应用根节点 -->
+    <div x-data="appLayout()" x-init="initApp()" class="app-container">
+
+        <!-- A. 左侧导航栏 (Desktop/Tablet) -->
+        <nav class="ui-sidebar-nav">
+            <!-- Logo -->
+            <div class="logo-area" style="height:60px; display:flex; align-items:center; justify-content:center; border-bottom:1px solid #eee;">
+                <i data-lucide="layers" style="color:#007bff; width:28px; height:28px;"></i>
+                <span style="margin-left:10px; font-weight:bold; font-size:18px; color:#333;">Admin</span>
+            </div>
+            
+            <!-- 列表循环 -->
+            <template x-for="item in navItems" :key="item.id">
+                <a class="ui-sidebar-item" 
+                   :class="{ 'active': activeTab === item.id }"
+                   @click="switchTab(item.id)">
+                    <!-- data-lucide 属性用于生成图标 -->
+                    <i :data-lucide="item.icon"></i>
+                    <span class="nav-text" x-text="item.label"></span>
+                </a>
+            </template>
+        </nav>
+
+        <!-- B. 底部 Tabbar (Mobile) -->
+        <nav class="ui-bottom-nav">
+            <!-- 显示前 4 个 -->
+            <template x-for="item in visibleBottomItems" :key="item.id">
+                <div class="ui-bottom-item" 
+                     :class="{ 'active': activeTab === item.id }"
+                     @click="switchTab(item.id)">
+                    <i :data-lucide="item.icon"></i>
+                    <span class="nav-text" x-text="item.label"></span>
+                </div>
+            </template>
+
+            <!-- 更多按钮 (如果超过4个) -->
+            <template x-if="hiddenBottomItems.length > 0">
+                <div class="ui-bottom-item" 
+                     :class="{ 'active': isMoreActive }"
+                     @click="openMoreMenu()">
+                    <i data-lucide="more-horizontal"></i>
+                    <span class="nav-text">更多</span>
+                </div>
+            </template>
+        </nav>
+
+        <!-- C. 主内容区域 (路由视图) -->
+        <main class="main-content">
+            
+            <!-- 顶部标题栏 -->
+            <header style="background:#fff; padding:15px 20px; border-radius:8px; margin-bottom:20px; box-shadow:0 1px 3px rgba(0,0,0,0.05); display:flex; align-items:center; justify-content:space-between;">
+                <h2 style="margin:0; font-size:18px;" x-text="currentPageLabel"></h2>
+                <div style="font-size:12px; color:#999;">
+                    当前视图: <span x-text="activeTab"></span>
+                </div>
+            </header>
+
+            <!-- 页面内容切换 (x-show 路由) -->
+            
+            <div x-show="activeTab === 'dashboard'" class="fade-enter">
+                <div style="height:200px; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius:12px; color:white; display:flex; align-items:center; justify-content:center; margin-bottom:20px;">
+                    <h3>仪表盘概览</h3>
+                </div>
+                <p>这里是 Dashboard 页面内容...</p>
+            </div>
+
+            <div x-show="activeTab === 'projects'" class="fade-enter">
+                <div style="padding:20px; background:#fff; border-radius:8px;">
+                    <h3>项目列表</h3>
+                    <ul><li>项目 A - 进行中</li><li>项目 B - 已完成</li></ul>
+                </div>
+            </div>
+
+            <div x-show="activeTab === 'messages'" class="fade-enter">
+                <div style="padding:20px; background:#fff; border-radius:8px;">
+                    <h3>消息中心</h3>
+                    <p>暂无新消息。</p>
+                </div>
+            </div>
+
+            <!-- 通用缺省页 (用于演示其他 tab) -->
+            <div x-show="!['dashboard','projects','messages'].includes(activeTab)" class="fade-enter">
+                <div style="padding:40px; text-align:center; background:#fff; border-radius:8px;">
+                    <i :data-lucide="getCurrentIcon()" style="width:48px; height:48px; color:#ccc; margin-bottom:10px;"></i>
+                    <h3 x-text="currentPageLabel"></h3>
+                    <p style="color:#666;">这是 <span x-text="currentPageLabel"></span> 的功能页面。</p>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- 5. 引入 UI Kit 逻辑库 -->
+    <script src="js/ui-kit.js"></script>
+
+    <!-- 6. Alpine 逻辑脚本 -->
+    <script>
+        function appLayout() {
+            return {
+                activeTab: 'dashboard',
+                
+                // 定义导航数据 (使用 Lucide 图标名称)
+                navItems: [
+                    { id: 'dashboard', label: '仪表盘', icon: 'layout-dashboard' },
+                    { id: 'projects', label: '项目管理', icon: 'folder-kanban' },
+                    { id: 'messages', label: '消息通知', icon: 'bell' },
+                    { id: 'analytics', label: '数据分析', icon: 'pie-chart' },
+                    // --- 分界线：以下内容在手机端进入"更多" ---
+                    { id: 'team', label: '团队成员', icon: 'users' },
+                    { id: 'files', label: '文件柜', icon: 'file-text' },
+                    { id: 'settings', label: '系统设置', icon: 'settings' },
+                    { id: 'profile', label: '个人中心', icon: 'user' }
+                ],
+
+                // 计算属性：底部显示的4个
+                get visibleBottomItems() {
+                    return this.navItems.slice(0, 4);
+                },
+
+                // 计算属性：隐藏在"更多"里的
+                get hiddenBottomItems() {
+                    return this.navItems.slice(4);
+                },
+
+                // 计算属性：判断"更多"按钮是否高亮
+                get isMoreActive() {
+                    return this.hiddenBottomItems.some(item => item.id === this.activeTab);
+                },
+
+                // 计算属性：当前页标题
+                get currentPageLabel() {
+                    const item = this.navItems.find(i => i.id === this.activeTab);
+                    return item ? item.label : '未知页面';
+                },
+
+                // 初始化
+                initApp() {
+                    // 渲染初始图标
+                    this.$nextTick(() => {
+                        lucide.createIcons();
+                    });
+                },
+
+                // 辅助：获取当前Tab的图标名
+                getCurrentIcon() {
+                    const item = this.navItems.find(i => i.id === this.activeTab);
+                    return item ? item.icon : 'circle-help';
+                },
+
+                // 切换 Tab 逻辑
+                switchTab(id) {
+                    this.activeTab = id;
+                    
+                    // Alpine 更新 DOM 是异步的，等待 DOM 变更后刷新图标 (针对 x-if/x-show 内部的新图标)
+                    this.$nextTick(() => {
+                        lucide.createIcons();
+                    });
+                    
+                    // 可选：使用 UI Kit 的 Toast 反馈
+                    // UIKit.toast(`切换到: ${this.currentPageLabel}`);
+                },
+
+                // 打开更多菜单 (集成 UI Kit Action Sheet)
+                openMoreMenu() {
+                    // 构建 Action Sheet 数据
+                    const actions = this.hiddenBottomItems.map(item => ({
+                        // 构造 HTML 字符串包含 Lucide 图标的占位符
+                        // 注意：ActionSheet 渲染后，我们必须再次调用 createIcons
+                        text: `<div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+                                <i data-lucide="${item.icon}" style="width:18px;height:18px;"></i>
+                                ${item.label}
+                                ${this.activeTab === item.id ? '<span style="color:var(--ui-primary);font-size:12px;">(当前)</span>' : ''}
+                               </div>`,
+                        
+                        // 点击回调
+                        onClick: () => {
+                            this.switchTab(item.id);
+                        }
+                    }));
+
+                    // 调用 UIKit
+                    UIKit.actionSheet(actions);
+
+                    // 关键点：ActionSheet 是通过 JS 动态插入到 DOM 的
+                    // 我们需要等待它插入 DOM 后，立即让 Lucide 扫描并渲染图标
+                    setTimeout(() => {
+                        lucide.createIcons();
+                    }, 50); // 50ms 延时确保 DOM 已就绪
+                }
+            }
+        }
+    </script>
+</body>
+</html>

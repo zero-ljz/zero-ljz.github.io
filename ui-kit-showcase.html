@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 关键：移动端视口设置，适配 ActionSheet 等组件 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>原生 JS UI 库 - 完整功能测试</title>
+    
+    <!-- 1. 引入核心样式库 -->
+    <link rel="stylesheet" href="css/ui-kit.css">
+
+    <!-- 仅用于演示页面的布局样式 -->
+    <style>
+        body { margin: 0; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f6f8; color: #333; padding-bottom: 80px; }
+        h1 { text-align: center; margin-bottom: 30px; font-weight: 300; }
+        h3 { margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; font-size: 16px; color: #555; }
+        
+        /* 演示区块卡片 */
+        .demo-section { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .demo-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+        
+        /* 上下文菜单测试区 */
+        .ctx-area {
+            width: 100%; height: 120px; 
+            background: #eef2f5; border: 2px dashed #cbd5e0; 
+            border-radius: 6px; display: flex; align-items: center; justify-content: center;
+            color: #666; cursor: context-menu; user-select: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Native JS UI Kit Test Suite</h1>
+
+    <!-- 1. 弹窗与抽屉 (Dialogs & Drawers) -->
+    <div class="demo-section">
+        <h3>1. 弹窗与抽屉 (Dialogs & Drawers)</h3>
+        <div class="demo-row">
+            <button class="ui-btn ui-btn--primary" onclick="testAlert()">Alert</button>
+            <button class="ui-btn" onclick="testConfirm()">Confirm</button>
+            <button class="ui-btn" onclick="testPrompt()">Prompt</button>
+            <button class="ui-btn" onclick="testModal()">Modal</button>
+        </div>
+        <div class="demo-row">
+            <!-- 测试 Drawer 的左右方向 -->
+            <button class="ui-btn" onclick="testDrawer('right')">Right Drawer</button>
+            <button class="ui-btn ui-btn--danger" onclick="testDrawer('left')">Left Drawer</button>
+        </div>
+    </div>
+
+    <!-- 2. 消息反馈 (Feedback) -->
+    <div class="demo-section">
+        <h3>2. 消息反馈 (Feedback)</h3>
+        <div class="demo-row">
+            <button class="ui-btn" onclick="UIKit.toast('操作成功', 'success')">Toast Success</button>
+            <button class="ui-btn" onclick="UIKit.toast('操作失败', 'error')">Toast Error</button>
+            <button class="ui-btn" onclick="UIKit.notify('系统通知', '服务器将在今晚 02:00 进行维护。')">Notification</button>
+            <button class="ui-btn" onclick="testLoading()">Global Loading (2s)</button>
+        </div>
+    </div>
+
+    <!-- 3. 悬浮交互 (Floating & Action) -->
+    <div class="demo-section">
+        <h3>3. 悬浮交互 (Tooltip / Popover / ActionSheet / Image)</h3>
+        <div class="demo-row">
+            <!-- Tooltip: 纯 HTML 属性驱动 -->
+            <button class="ui-btn" data-ui-tooltip="这是一个自动绑定的工具提示">Hover Me (Tooltip)</button>
+            
+            <button class="ui-btn" id="btn-popover">Click Me (Popover)</button>
+            
+            <button class="ui-btn" onclick="testActionSheet()">Action Sheet</button>
+
+            <button class="ui-btn" onclick="UIKit.previewImage('https://via.placeholder.com/800x600?text=UI+Kit+Image+Preview')">Image Viewer</button>
+        </div>
+    </div>
+
+    <!-- 4. 导航与折叠 (Navigation) -->
+    <div class="demo-section">
+        <h3>4. 导航与折叠 (Tabs & Accordion & Breadcrumb)</h3>
+        
+        <!-- Breadcrumb Container -->
+        <div id="breadcrumb-demo" style="margin-bottom: 15px;"></div>
+
+        <!-- Tabs Structure -->
+        <div class="ui-tabs-group" style="margin-bottom: 20px;">
+            <div class="ui-tabs">
+                <div class="ui-tab-item active">基本信息</div>
+                <div class="ui-tab-item">高级设置</div>
+            </div>
+            <div class="ui-tab-content">
+                <div class="ui-tab-pane active" style="padding:10px; background:#fafafa;">这是“基本信息”的内容面板。</div>
+                <div class="ui-tab-pane" style="padding:10px; background:#fafafa;">这是“高级设置”的内容面板。</div>
+            </div>
+        </div>
+
+        <!-- Accordion Structure -->
+        <div class="ui-accordion">
+            <div class="ui-accordion__item active">
+                <div class="ui-accordion__header">折叠面板 1 (默认展开)</div>
+                <div class="ui-accordion__body">内容区域：支持原生 JS 的手风琴组件。</div>
+            </div>
+            <div class="ui-accordion__item">
+                <div class="ui-accordion__header">折叠面板 2</div>
+                <div class="ui-accordion__body">内容区域：点击头部即可展开或收起。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 上下文菜单 (Context Menu) - 放在这里是为了上方有足够的内容导致页面滚动 -->
+    <div class="demo-section">
+        <h3>5. 上下文菜单 (Context Menu)</h3>
+        <div class="ctx-area" id="ctx-area">
+            在此区域点击鼠标右键 (Right Click Here)
+        </div>
+    </div>
+
+    <!-- 6. 表单录入 (Form & Pagination) -->
+    <div class="demo-section">
+        <h3>6. 表单组件 (Select, Switch, Pagination)</h3>
+        <div class="demo-row" style="align-items: flex-start;">
+            
+            <!-- Select -->
+            <div style="width: 250px; margin-right: 20px;">
+                <label style="font-size:12px; color:#999;">Select:</label>
+                <div id="select-demo"></div>
+            </div>
+
+            <!-- Switch -->
+            <div>
+                <label style="font-size:12px; color:#999; display:block; margin-bottom:5px;">Switch:</label>
+                <label class="ui-switch">
+                    <input type="checkbox" onchange="UIKit.toast('开关状态: ' + this.checked)">
+                    <span class="ui-switch__slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div style="margin-top: 20px;">
+            <label style="font-size:12px; color:#999;">Pagination:</label>
+            <div id="pagination-demo"></div>
+        </div>
+    </div>
+
+
+    <!-- 2. 引入核心 JS 库 -->
+    <script src="js/ui-kit.js"></script>
+
+    <!-- 3. 测试脚本逻辑 -->
+    <script>
+        // --- A. 弹窗类测试 ---
+        function testAlert() { 
+            UIKit.alert('这是一条普通的警告信息。'); 
+        }
+        function testConfirm() { 
+            UIKit.confirm('确定要删除这条记录吗？', '危险操作').then(ok => {
+                if(ok) UIKit.toast('已执行删除', 'success');
+                else UIKit.toast('已取消操作', 'info');
+            }); 
+        }
+        function testPrompt() { 
+            UIKit.prompt('请输入您的邮箱地址：', 'example@mail.com').then(val => {
+                if(val) UIKit.toast('输入内容: ' + val);
+            }); 
+        }
+        function testModal() {
+            UIKit.modal({
+                title: '用户协议',
+                width: '500px',
+                content: `
+                    <div style="height:150px; overflow-y:auto; line-height:1.6;">
+                        <p>1. 本库是一个原生 JS 实现的 UI 库。</p>
+                        <p>2. 不依赖 Vue, React, jQuery。</p>
+                        <p>3. 支持弹窗、抽屉、表单等多种组件。</p>
+                        <p>4. 这是一个演示模态框内容的滚动区域。</p>
+                    </div>
+                `
+            });
+        }
+
+        // --- B. 抽屉测试 (验证 Left Drawer 修复) ---
+        function testDrawer(placement) {
+            UIKit.drawer({
+                title: placement.toUpperCase() + ' DRAWER',
+                placement: placement,
+                content: `<div style="padding:15px;">
+                            <p>这是从<b>${placement}</b>侧滑出的抽屉。</p>
+                            <button class="ui-btn" onclick="UIKit.toast('点击了抽屉内的按钮')">测试按钮</button>
+                          </div>`
+            });
+        }
+
+        // --- C. 加载与 ActionSheet ---
+        function testLoading() {
+            UIKit.showLoading('数据加载中...');
+            setTimeout(() => UIKit.hideLoading(), 2000);
+        }
+        function testActionSheet() {
+            UIKit.actionSheet([
+                { text: '发送给朋友' },
+                { text: '收藏', onClick: () => UIKit.toast('已收藏') },
+                { text: '删除', type: 'danger', onClick: () => UIKit.toast('已删除', 'error') }
+            ]).then(index => console.log('Action Sheet Index:', index));
+        }
+
+        // --- D. Popover ---
+        document.getElementById('btn-popover').onclick = function(e) {
+            const html = `
+                <div style="width:200px;">
+                    <h4 style="margin:0 0 8px 0;">气泡标题</h4>
+                    <p style="margin:0; font-size:13px; color:#666;">这里是气泡卡片的详细内容，支持 HTML 结构。</p>
+                </div>
+            `;
+            UIKit.popover(this, html);
+        };
+
+        // --- E. Context Menu (验证 Scroll Offset 修复) ---
+        document.getElementById('ctx-area').oncontextmenu = function(e) {
+            UIKit.contextMenu(e, [
+                { label: '复制 (Copy)', action: () => UIKit.toast('复制成功') },
+                { label: '粘贴 (Paste)', action: () => UIKit.toast('粘贴成功') },
+                { label: '重新加载', action: () => window.location.reload() }
+            ]);
+        };
+
+        // --- F. 静态组件渲染 (Select, Breadcrumb, Pagination) ---
+        
+        // 1. Breadcrumb
+        UIKit.renderBreadcrumb(document.getElementById('breadcrumb-demo'), [
+            { label: '首页', href: '#' },
+            { label: '组件演示', href: '#' },
+            { label: '完整测试' }
+        ]);
+
+        // 2. Custom Select
+        UIKit.renderSelect(document.getElementById('select-demo'), {
+            defaultValue: 'option2',
+            placeholder: '请选择一项',
+            data: [
+                { label: '选项一 (Option 1)', value: 'option1' },
+                { label: '选项二 (Option 2)', value: 'option2' },
+                { label: '选项三 (Option 3)', value: 'option3' }
+            ],
+            onChange: (val, item) => {
+                UIKit.toast(`选中了: ${item.label}`);
+            }
+        });
+
+        // 3. Pagination
+        UIKit.renderPagination(document.getElementById('pagination-demo'), {
+            current: 1, 
+            total: 100, 
+            pageSize: 10
+        }, (page) => {
+            console.log('Page:', page);
+            UIKit.toast(`切换到第 ${page} 页`);
+        });
+
+        // --- G. 初始化页面现有组件 (Tabs, Accordion) ---
+        // 注意：Tabs 和 Accordion 是基于 DOM 结构的，需要手动初始化
+        UIKit.initTabs();
+        UIKit.initAccordions();
+
+    </script>
+</body>
+</html>
