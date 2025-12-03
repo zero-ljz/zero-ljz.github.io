@@ -31,7 +31,7 @@
         }
 
         // ==========================================
-        // 1. 对话框核心 (Dialog Core) - 用于 Alert, Confirm, Prompt, Modal
+        // 对话框核心 (Dialog Core) - 用于 Alert, Confirm, Prompt, Modal
         // ==========================================
         _createDialog(options) {
             return new Promise((resolve) => {
@@ -133,7 +133,7 @@
 
 
         // ==========================================
-        // 2. 通知消息 (Toast)
+        // 通知消息 (Toast)
         // ==========================================
         toast(message, type = 'info', duration = 3000) {
             if (!this.toastContainer) {
@@ -156,7 +156,7 @@
 
 
         // ==========================================
-        // 3. 加载提示 (Loading)
+        // 加载提示 (Loading)
         // ==========================================
         showLoading(text = '加载中...') {
             if (this.loadingEl) return; // 防止重复
@@ -182,34 +182,9 @@
             }
         }
 
-
-        // ==========================================
-        // 4. 工具提示 (Tooltip) - 自动绑定模式
-        // ==========================================
-        initTooltips() {
-            // 使用事件委托，监听所有带有 data-ui-tooltip 的元素
-            document.body.addEventListener('mouseover', (e) => {
-                const target = e.target.closest('[data-ui-tooltip]');
-                if (!target) return;
-
-                const text = target.getAttribute('data-ui-tooltip');
-                if (!text) return;
-
-                const tooltip = Utils.createElement('div', 'ui-tooltip', text);
-                document.body.appendChild(tooltip);
-                
-                Utils.computePosition(target, tooltip);
-
-                const remove = () => {
-                    Utils.removeElement(tooltip);
-                    target.removeEventListener('mouseleave', remove);
-                };
-                target.addEventListener('mouseleave', remove);
-            });
-        }
         
         // ==========================================
-        // 5. 气泡卡片 (Popover)
+        // 气泡卡片 (Popover)
         // ==========================================
         popover(target, contentHtml) {
             // 移除现有的 popover
@@ -243,7 +218,7 @@
         }
 
         // ==========================================
-        // 6. 上下文菜单 (Context Menu)
+        // 上下文菜单 (Context Menu)
         // ==========================================
         contextMenu(e, menuItems) {
             e.preventDefault();
@@ -341,14 +316,6 @@
                 drawer.querySelector('.ui-drawer__close').onclick = close;
             });
         }
-
-
-
-
-
-
-
-
 
         previewImage(src) {
             const mask = Utils.createElement('div', 'ui-mask');
@@ -713,7 +680,7 @@
 
 
 
-        // --- 8. 文件上传 (File Upload) ---
+        // --- 文件上传 (File Upload) ---
         initUploads(selector = '.ui-upload', onUpload) {
             const uploads = document.querySelectorAll(selector);
             uploads.forEach(upload => {
@@ -745,7 +712,7 @@
             });
         }
 
-        // --- 9. 复制到剪贴板工具 ---
+        // --- 复制到剪贴板工具 ---
         copyToClipboard(text) {
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(text).then(() => {
@@ -766,8 +733,5 @@
 
     // 导出实例
     window.UIKit = new UIKitClass();
-    
-    // 初始化 Tooltip 监听
-    window.UIKit.initTooltips();
 
 })(window);
