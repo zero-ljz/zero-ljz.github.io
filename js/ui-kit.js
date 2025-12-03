@@ -342,6 +342,16 @@
             });
         }
 
+
+
+
+
+
+
+
+
+
+        
         // 自动初始化页面中符合结构的 Tabs
         initTabs(selector = '.ui-tabs-group') {
             const groups = document.querySelectorAll(selector);
@@ -644,7 +654,6 @@
         }
 
 
-        // 在 UIKitClass 内部添加
 
         /**
          * 渲染响应式导航
@@ -738,6 +747,59 @@
             // 重新渲染以更新高亮状态 (简单粗暴但有效)
             // 实际项目中可能只需要 toggle class，但考虑到 "更多" 里面的状态，重绘最安全
             this.renderResponsiveNav(items, activeId);
+        }
+
+
+
+
+        // --- 8. 文件上传 (File Upload) ---
+        initUploads(selector = '.ui-upload', onUpload) {
+            const uploads = document.querySelectorAll(selector);
+            uploads.forEach(upload => {
+                const input = upload.querySelector('input[type="file"]');
+                const text = upload.querySelector('.ui-upload__text');
+                
+                // 点击触发
+                upload.onclick = () => input.click();
+                
+                // Input Change
+                input.onchange = (e) => handleFiles(e.target.files);
+
+                // Drag & Drop
+                upload.ondragover = (e) => { e.preventDefault(); upload.classList.add('drag-over'); };
+                upload.ondragleave = (e) => { e.preventDefault(); upload.classList.remove('drag-over'); };
+                upload.ondrop = (e) => {
+                    e.preventDefault();
+                    upload.classList.remove('drag-over');
+                    handleFiles(e.dataTransfer.files);
+                };
+
+                function handleFiles(files) {
+                    if (files.length > 0) {
+                        // 简单的文件名显示逻辑，实际需配合回调
+                        text.innerText = `已选择: ${files[0].name} (${(files[0].size/1024).toFixed(1)}KB)`;
+                        if (onUpload) onUpload(files);
+                    }
+                }
+            });
+        }
+
+        // --- 9. 复制到剪贴板工具 ---
+        copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    this.toast('复制成功', 'success');
+                });
+            } else {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                this.toast('复制成功', 'success');
+            }
         }
     }
 

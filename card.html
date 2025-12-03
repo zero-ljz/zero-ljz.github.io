@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Card Systems</title>
+    <link rel="stylesheet" href="css/card.css">
+    <style>
+        /* 基础重置 */
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            
+            /* 动态背景，用于测试透明度 */
+            background: 
+                radial-gradient(at 0% 0%, hsla(340, 100%, 85%, 1) 0, transparent 50%),   /* 粉色 */
+                radial-gradient(at 50% 0%, hsla(40, 100%, 85%, 1) 0, transparent 50%),   /* 杏橙 */
+                radial-gradient(at 100% 0%, hsla(60, 100%, 85%, 1) 0, transparent 50%),  /* 柠檬黄 */
+                radial-gradient(at 0% 100%, hsla(160, 100%, 85%, 1) 0, transparent 50%), /* 薄荷绿 */
+                radial-gradient(at 50% 100%, hsla(200, 100%, 85%, 1) 0, transparent 50%),/* 天空蓝 */
+                radial-gradient(at 100% 100%, hsla(260, 100%, 85%, 1) 0, transparent 50%);/* 薰衣草紫 */
+            background-color: #fffaf8;
+            background: url('C:/Users/zero-/OneDrive/%E5%9B%BE%E7%89%87/Wallpapers/pexels-lisa-fotios-1048273.jpg');
+            background-size: 200% 200%;
+            animation: gradientMove 15s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            padding: 40px;
+            width: 100%;
+            max-width: 1400px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 1. 标准卡片 -->
+    <div class="card card-standard">
+        <h3>Standard Card</h3>
+        <p>这是最通用的设计。使用纯色背景、适度的阴影和清晰的边框。适用于传递明确信息的 B 端界面。</p>
+        <button>View Details</button>
+    </div>
+
+    <!-- 2. 亚克力卡片 -->
+    <div class="card card-acrylic">
+        <h3>Acrylic Card</h3>
+        <p>基于 Fluent Design。高斯模糊与高饱和度混合，带有细腻的噪点纹理，呈现出磨砂玻璃的质感。</p>
+        <button style="background: rgba(255,255,255,0.5)">Explore</button>
+    </div>
+
+    <!-- 3. 云母卡片 -->
+    <div class="card card-mica">
+        <h3>Mica Card</h3>
+        <p>温润如玉。模拟材质对环境光的反射，比亚克力更厚重、更柔和，适合长时间阅读的背景。</p>
+        <button style="background: rgba(0,0,0,0.05)">Learn More</button>
+    </div>
+
+    <!-- 4. 烟雾卡片 -->
+    <div class="card card-smoke">
+        <h3>Smoke Card</h3>
+        <p>空灵、神秘。利用内阴影和半透明渐变制造出烟雾缭绕的体积感，适合展示艺术性内容。</p>
+        <button>Discover</button>
+    </div>
+
+    <!-- 5. 全息玻璃卡片 -->
+    <div class="card card-holographic">
+        <h3>Holographic</h3>
+        <p>梦幻光泽。在磨砂玻璃的基础上加入了动态的光线折射效果。悬停即可看到光线扫过卡片表面。</p>
+        <button style="background: rgba(255,255,255,0.3); border:1px solid white;">View Art</button>
+    </div>
+
+    <!-- 6. 极光风格卡片 -->
+    <div class="card card-aurora">
+        <h3>Aurora Gradient</h3>
+        <p>充满活力。使用动画网格渐变来创建令人着迷的视觉焦点。最适合创意标题。</p>
+        <button>See Magic</button>
+    </div>
+</div>
+
+</body>
+</html>

@@ -318,3 +318,16 @@
     .ui-bottom-nav { display: flex; }
     .ui-app-layout { padding-left: 0; padding-bottom: 60px; } /* 给底部留位 */
 }
+
+
+/* 文件上传区域 */
+.ui-upload {
+    border: 2px dashed var(--ui-border); border-radius: var(--ui-radius);
+    padding: 30px; text-align: center; cursor: pointer; transition: all 0.2s;
+    background: #fafafa; position: relative;
+}
+.ui-upload:hover, .ui-upload.drag-over { border-color: var(--ui-primary); background: rgba(var(--ui-primary-rgb), 0.05); }
+.ui-upload__icon { font-size: 32px; color: #ccc; margin-bottom: 10px; }
+.ui-upload__text { font-size: 14px; color: #666; }
+.ui-upload input { display: none; }
+

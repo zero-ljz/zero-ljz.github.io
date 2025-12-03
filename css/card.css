@@ -1,0 +1,261 @@
+/* =========================================
+    1. 全局变量定义 (Design Tokens)
+    ========================================= */
+:root {
+    /* 尺寸 & 间距 */
+    --card-padding: 24px;
+    --card-radius: 10px; /* 16 ^/
+    --transition-speed: 0.4s;
+    
+    /* 字体颜色 */
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    
+    /* 标准卡片变量 */
+    --std-bg: #ffffff;
+    --std-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --std-border: 1px solid rgba(0,0,0,0.05);
+
+    /* 亚克力变量 */
+    --acr-bg: rgba(255, 255, 255, 0.65);
+    --acr-blur: blur(20px) saturate(180%);
+    --acr-border: 1px solid rgba(255, 255, 255, 0.4);
+    
+    /* 云母变量 */
+    --mica-bg: radial-gradient(circle at top left, rgba(255,255,255,0.8), rgba(245,245,245,0.4));
+    --mica-blur: blur(40px);
+    --mica-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    
+    /* 烟雾变量 */
+    --smk-bg: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%);
+    --smk-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.15),
+        inset 0 0 30px rgba(255,255,255,0.2);
+
+    /* 5. 全息变量 */
+    --holo-bg: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%);
+    --holo-border: 1px solid rgba(255,255,255,0.5);
+    --holo-sheen: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.4) 45%, rgba(255, 255, 255, 0.2) 50%, transparent 55%);
+
+
+    /* 6. 极光弥散 */
+    --aurora-bg: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+
+}
+
+/* =========================================
+    2. 卡片基类 (Base Component)
+    ========================================= */
+.card {
+    position: relative;
+    padding: var(--card-padding);
+    border-radius: var(--card-radius);
+    color: var(--text-primary);
+    transition: all var(--transition-speed) cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.card h3 { margin: 0; font-size: 1.25rem; font-weight: 600; }
+.card p { margin: 0; font-size: 0.95rem; line-height: 1.5; color: var(--text-secondary); }
+.card button {
+    margin-top: auto;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+/* =========================================
+    3. 风格变体 (Variants)
+    ========================================= */
+
+/* --- 风格 A: 标准 (Standard) --- 
+    适用：B端后台、数据展示、电商卡片
+*/
+.card-standard {
+    background: var(--std-bg);
+    box-shadow: var(--std-shadow);
+    border: var(--std-border);
+}
+.card-standard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+.card-standard button { background: #f3f4f6; color: #111; }
+.card-standard button:hover { background: #e5e7eb; }
+
+
+/* --- 风格 B: 亚克力 (Acrylic) --- 
+    适用：macOS/iOS风格应用、浮层、模态框
+    核心：高饱和度的背景模糊 + 白边高光
+*/
+.card-acrylic {
+    background: var(--acr-bg);
+    backdrop-filter: var(--acr-blur);
+    -webkit-backdrop-filter: var(--acr-blur); /* Safari 支持 */
+    border: var(--acr-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+}
+/* 模拟噪点 (可选，增加质感) */
+.card-acrylic::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+.card-acrylic:hover {
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+    border-color: rgba(255,255,255,0.8);
+}
+
+
+/* --- 风格 C: 云母 (Mica) --- 
+    适用：Win11 风格、沉浸式背景、底层面板
+    核心：微妙的渐变模拟光照 + 极柔和的模糊
+*/
+.card-mica {
+    background: var(--mica-bg);
+    backdrop-filter: var(--mica-blur);
+    -webkit-backdrop-filter: var(--mica-blur);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: var(--mica-shadow);
+}
+.card-mica:hover {
+    background: radial-gradient(circle at top left, rgba(255,255,255,0.9), rgba(250,250,250,0.6));
+}
+
+
+/* --- 风格 D: 烟雾 (Smoke) --- 
+    适用：Web3、游戏、创意作品集
+    核心：内发光 (Inset Shadow) + 极高的模糊边缘 + 幽灵般的渐变
+*/
+.card-smoke {
+    background: var(--smk-bg);
+    box-shadow: var(--smk-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px); /* 轻微模糊保留背景轮廓 */
+    color: #fff; /* 烟雾通常在深色背景，强制白字 */
+}
+.card-smoke p { color: rgba(255,255,255,0.7); }
+
+/* 烟雾流光动画效果 */
+.card-smoke::after {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.6s, transform 0.6s;
+    pointer-events: none;
+}
+.card-smoke:hover {
+    box-shadow: 
+        0 15px 40px 0 rgba(31, 38, 135, 0.4),
+        inset 0 0 50px rgba(255,255,255,0.3);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+.card-smoke:hover::after {
+    opacity: 1;
+    transform: scale(1);
+}
+.card-smoke button {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+.card-smoke button:hover {
+    background: rgba(255,255,255,0.2);
+    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
+
+/* --- 风格 E: 全息玻璃 (Holographic) --- 
+适用：NFT展示、时尚、梦幻主题
+核心：覆盖层混合模式 + 移动的光泽动画
+*/
+.card-holographic {
+    background: var(--holo-bg);
+    border: var(--holo-border);
+    backdrop-filter: blur(10px);
+    overflow: hidden; /* 限制光泽溢出 */
+}
+/* 模拟彩虹反光 */
+.card-holographic::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        125deg, 
+        transparent 0%, 
+        rgba(255,0,0,0.05) 30%, 
+        rgba(0,255,0,0.05) 50%, 
+        rgba(0,0,255,0.05) 70%, 
+        transparent 100%
+    );
+    z-index: -1;
+    opacity: 0.8;
+}
+/* 扫光动画层 */
+.card-holographic::after {
+    content: "";
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+    transform: skewX(-25deg);
+    transition: 0.5s;
+    pointer-events: none;
+}
+.card-holographic:hover::after {
+    left: 150%;
+    transition: 1s ease-in-out;
+}
+.card-holographic:hover {
+    box-shadow: 0 10px 40px rgba(255, 255, 255, 0.4);
+    border-color: rgba(255,255,255,0.9);
+}
+
+
+/* --- 风格 F: 极光弥散 (Aurora) --- 
+适用：着陆页头图、创意展示、时尚
+核心：流动的渐变背景 + 磨砂前景 (可选) + 白色文字
+*/
+.card-aurora {
+    background: var(--aurora-bg);
+    background-size: 400% 400%; /* 放大背景以实现流动 */
+    animation: auroraMove 10s ease infinite; /* 背景流动动画 */
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+/* 定义流动动画 */
+@keyframes auroraMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.card-aurora p {
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+}
+.card-aurora button {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: white;
+}
+.card-aurora button:hover {
+    background: white;
+    color: #e73c7e;
+}
