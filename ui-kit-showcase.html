@@ -74,36 +74,14 @@
         </div>
     </div>
 
-    <!-- 4. 导航与折叠 (Navigation) -->
+    <!-- 4. 导航 (Navigation) -->
     <div class="demo-section">
-        <h3>4. 导航与折叠 (Tabs & Accordion & Breadcrumb)</h3>
+        <h3>4. 导航</h3>
         
         <!-- Breadcrumb Container -->
         <div id="breadcrumb-demo" style="margin-bottom: 15px;"></div>
 
-        <!-- Tabs Structure -->
-        <div class="ui-tabs-group" style="margin-bottom: 20px;">
-            <div class="ui-tabs">
-                <div class="ui-tab-item active">基本信息</div>
-                <div class="ui-tab-item">高级设置</div>
-            </div>
-            <div class="ui-tab-content">
-                <div class="ui-tab-pane active" style="padding:10px; background:#fafafa;">这是“基本信息”的内容面板。</div>
-                <div class="ui-tab-pane" style="padding:10px; background:#fafafa;">这是“高级设置”的内容面板。</div>
-            </div>
-        </div>
-
-        <!-- Accordion Structure -->
-        <div class="ui-accordion">
-            <div class="ui-accordion__item active">
-                <div class="ui-accordion__header">折叠面板 1 (默认展开)</div>
-                <div class="ui-accordion__body">内容区域：支持原生 JS 的手风琴组件。</div>
-            </div>
-            <div class="ui-accordion__item">
-                <div class="ui-accordion__header">折叠面板 2</div>
-                <div class="ui-accordion__body">内容区域：点击头部即可展开或收起。</div>
-            </div>
-        </div>
+        
     </div>
 
     <!-- 5. 上下文菜单 (Context Menu) - 放在这里是为了上方有足够的内容导致页面滚动 -->
@@ -256,10 +234,7 @@
             UIKit.toast(`切换到第 ${page} 页`);
         });
 
-        // --- G. 初始化页面现有组件 (Tabs, Accordion) ---
-        // 注意：Tabs 和 Accordion 是基于 DOM 结构的，需要手动初始化
-        UIKit.initTabs();
-        UIKit.initAccordions();
+
 
     </script>
 </body>

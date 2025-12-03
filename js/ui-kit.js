@@ -350,30 +350,6 @@
 
 
 
-
-        
-        // 自动初始化页面中符合结构的 Tabs
-        initTabs(selector = '.ui-tabs-group') {
-            const groups = document.querySelectorAll(selector);
-            groups.forEach(group => {
-                const header = group.querySelector('.ui-tabs');
-                const items = header.querySelectorAll('.ui-tab-item');
-                const contents = group.querySelectorAll('.ui-tab-pane');
-
-                items.forEach((item, index) => {
-                    item.onclick = () => {
-                        // 移除所有 active
-                        items.forEach(i => i.classList.remove('active'));
-                        contents.forEach(c => c.classList.remove('active'));
-                        
-                        // 激活当前
-                        item.classList.add('active');
-                        if (contents[index]) contents[index].classList.add('active');
-                    };
-                });
-            });
-        }
-
         previewImage(src) {
             const mask = Utils.createElement('div', 'ui-mask');
             mask.style.background = 'rgba(0,0,0,0.9)'; // 深色背景
@@ -405,21 +381,6 @@
             };
         }
 
-        initAccordions(selector = '.ui-accordion') {
-            const accordions = document.querySelectorAll(selector);
-            accordions.forEach(acc => {
-                const items = acc.querySelectorAll('.ui-accordion__item');
-                items.forEach(item => {
-                    const header = item.querySelector('.ui-accordion__header');
-                    header.onclick = () => {
-                        // 如果需要“手风琴效果”（每次只展开一个），则先关闭其他
-                        // items.forEach(i => i !== item && i.classList.remove('active'));
-                        
-                        item.classList.toggle('active');
-                    };
-                });
-            });
-        }
 
         // 初始化下拉框
         // container: DOM容器
