@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Master - SPA Demo</title>
+    <link rel="stylesheet" href="css/ui-kit.css">
+    
+    <!-- 业务层样式 (App Specific Styles) -->
+    <style>
+        /* 布局微调 */
+        body { background-color: #f7f9fc; }
+        
+        /* 页面容器 */
+        #app-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            /* 配合 UI Kit 的 Sidebar padding */
+            transition: padding-left 0.3s; 
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: #fff;
+            border-radius: var(--ui-radius);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .card-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;
+        }
+        .card-title { font-size: 18px; font-weight: bold; margin: 0; }
+
+        /* 数据概览卡片 */
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .stat-card { background: #fff; padding: 20px; border-radius: 8px; border-left: 4px solid var(--ui-primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .stat-card h3 { font-size: 12px; color: #999; margin: 0 0 5px 0; text-transform: uppercase; }
+        .stat-card .value { font-size: 24px; font-weight: bold; color: #333; }
+
+        /* 任务列表表格 */
+        .data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .data-table th, .data-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        .data-table th { background-color: #f8f9fa; font-weight: 600; color: #666; }
+        .data-table tr:hover { background-color: #f1f8ff; cursor: context-menu; }
+        
+        /* 状态徽标 */
+        .badge { padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+        .badge-todo { background: #eef; color: #668; }
+        .badge-doing { background: #fff8e1; color: #f57c00; }
+        .badge-done { background: #e6fffa; color: #00bfa5; }
+
+        /* 搜索栏 */
+        .toolbar { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .search-input { padding: 8px; border: 1px solid var(--ui-border); border-radius: 4px; min-width: 250px; }
+
+        /* 模拟表单样式 */
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 14px; }
+        .form-control { width: 100%; padding: 8px; border: 1px solid var(--ui-border); border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <!-- 主内容挂载点 -->
+    <div id="app-container">
+        <!-- 动态内容将渲染在这里 -->
+    </div>
+
+    <script src="js/ui-kit.js"></script>
+    
+    <!-- 业务逻辑脚本 (App Logic) -->
+    <script>
+        /**
+         * 1. 模拟后端数据服务 (Store)
+         * 使用 LocalStorage 进行数据持久化
+         */
+        const Store = {
+            KEY: 'TASK_MASTER_DATA',
+            
+            getAll() {
+                const data = localStorage.getItem(this.KEY);
+                return data ? JSON.parse(data) : this._seedData();
+            },
+
+            save(data) {
+                localStorage.setItem(this.KEY, JSON.stringify(data));
+            },
+
+            // 生成初始假数据
+            _seedData() {
+                const initial = [
+                    { id: 1, title: '设计新版 UI 原型', status: 'doing', priority: 'high', date: '2023-10-25' },
+                    { id: 2, title: '修复登录页 Bug', status: 'todo', priority: 'high', date: '2023-10-26' },
+                    { id: 3, title: '更新 API 文档', status: 'done', priority: 'low', date: '2023-10-24' },
+                    { id: 4, title: '周会报告准备', status: 'todo', priority: 'mid', date: '2023-10-27' },
+                ];
+                // 生成更多数据以测试分页
+                for(let i=5; i<=25; i++) {
+                    initial.push({
+                        id: i, 
+                        title: `测试任务项 #${i}`, 
+                        status: ['todo','doing','done'][i%3], 
+                        priority: ['low','mid','high'][i%3], 
+                        date: '2023-11-01'
+                    });
+                }
+                this.save(initial);
+                return initial;
+            },
+
+            addTask(task) {
+                const tasks = this.getAll();
+                task.id = Date.now(); // 简单 ID 生成
+                tasks.unshift(task);
+                this.save(tasks);
+                return task;
+            },
+
+            updateTask(id, updates) {
+                let tasks = this.getAll();
+                tasks = tasks.map(t => t.id == id ? { ...t, ...updates } : t);
+                this.save(tasks);
+            },
+
+            deleteTask(id) {
+                let tasks = this.getAll();
+                tasks = tasks.filter(t => t.id != id);
+                this.save(tasks);
+            }
+        };
+
+        /**
+         * 2. 页面视图控制器 (Views)
+         * 包含具体的页面渲染逻辑
+         */
+        const Views = {
+            // --- 仪表盘视图 ---
+            dashboard: () => {
+                const tasks = Store.getAll();
+                const total = tasks.length;
+                const done = tasks.filter(t => t.status === 'done').length;
+                const pending = total - done;
+
+                return `
+                    <div class="stat-grid">
+                        <div class="stat-card" style="border-color: #007bff">
+                            <h3>总任务</h3>
+                            <div class="value">${total}</div>
+                        </div>
+                        <div class="stat-card" style="border-color: #28a745">
+                            <h3>已完成</h3>
+                            <div class="value">${done}</div>
+                        </div>
+                        <div class="stat-card" style="border-color: #ffc107">
+                            <h3>进行中/待办</h3>
+                            <div class="value">${pending}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">最近更新</h2>
+                            <button class="ui-btn ui-btn--default" onclick="Router.go('tasks')">查看全部 &rarr;</button>
+                        </div>
+                        <p style="color:#666; font-size:14px;">这里可以放置图表组件，或者简略的任务列表。</p>
+                        <div style="height: 200px; background: #f9f9f9; display: flex; align-items: center; justify-content: center; border-radius: 4px; border: 2px dashed #eee;">
+                            图表区域占位符
+                        </div>
+                    </div>
+                `;
+            },
+
+            // --- 任务列表视图 (核心功能) ---
+            tasks: (container) => {
+                let currentPage = 1;
+                const pageSize = 8;
+                let currentFilter = '';
+
+                // 渲染主结构
+                container.innerHTML = `
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">任务管理</h2>
+                            <button class="ui-btn ui-btn--primary" id="btn-add-task">+ 新建任务</button>
+                        </div>
+                        
+                        <div class="toolbar">
+                            <input type="text" class="search-input" placeholder="搜索任务标题..." id="task-search">
+                            <div id="filter-select-container" style="width: 150px;"></div>
+                        </div>
+
+                        <div style="overflow-x: auto;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>标题</th>
+                                        <th>优先级</th>
+                                        <th>状态</th>
+                                        <th>截止日期</th>
+                                        <th style="text-align:right">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="task-table-body"></tbody>
+                            </table>
+                        </div>
+
+                        <div id="pagination-container" style="margin-top: 20px; display: flex; justify-content: flex-end;"></div>
+                    </div>
+                `;
+
+                // 绑定新建按钮
+                document.getElementById('btn-add-task').onclick = () => Actions.openTaskModal();
+
+                // 渲染筛选下拉框
+                UIKit.renderSelect(document.getElementById('filter-select-container'), {
+                    placeholder: '所有状态',
+                    data: [
+                        { label: '所有状态', value: '' },
+                        { label: '待办 (Todo)', value: 'todo' },
+                        { label: '进行中 (Doing)', value: 'doing' },
+                        { label: '已完成 (Done)', value: 'done' }
+                    ],
+                    onChange: (val) => {
+                        currentFilter = val;
+                        currentPage = 1;
+                        renderTable();
+                    }
+                });
+
+                // 绑定搜索
+                document.getElementById('task-search').oninput = (e) => {
+                    currentFilter = e.target.value.toLowerCase(); // 简单复用 filter 变量逻辑
+                    currentPage = 1;
+                    renderTable();
+                };
+
+                // 内部渲染表格函数
+                const renderTable = () => {
+                    const allTasks = Store.getAll();
+                    
+                    // 过滤逻辑 (混合了搜索和状态筛选，演示用)
+                    const filtered = allTasks.filter(t => {
+                        const matchText = t.title.toLowerCase().includes(document.getElementById('task-search').value.toLowerCase());
+                        const statusVal = document.querySelector('#filter-select-container input')?.value;
+                        const matchStatus = statusVal ? t.status === statusVal : true;
+                        return matchText && matchStatus;
+                    });
+
+                    // 分页逻辑
+                    const start = (currentPage - 1) * pageSize;
+                    const pageData = filtered.slice(start, start + pageSize);
+                    
+                    const tbody = document.getElementById('task-table-body');
+                    tbody.innerHTML = '';
+
+                    if (pageData.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:#999">暂无数据</td></tr>';
+                    }
+
+                    pageData.forEach(task => {
+                        const tr = document.createElement('tr');
+                        
+                        // 状态徽标映射
+                        const badgeClass = { 'todo': 'badge-todo', 'doing': 'badge-doing', 'done': 'badge-done' };
+                        const statusText = { 'todo': '待办', 'doing': '进行中', 'done': '已完成' };
+
+                        tr.innerHTML = `
+                            <td>#${task.id}</td>
+                            <td><span style="font-weight:500">${task.title}</span></td>
+                            <td>${task.priority === 'high' ? '<span style="color:var(--ui-danger)">High</span>' : task.priority === 'mid' ? 'Medium' : 'Low'}</td>
+                            <td><span class="badge ${badgeClass[task.status]}">${statusText[task.status]}</span></td>
+                            <td>${task.date}</td>
+                            <td style="text-align:right">
+                                <button class="ui-btn ui-btn--default" style="padding:4px 8px; font-size:12px;" onclick="Actions.editTask(${task.id})">编辑</button>
+                            </td>
+                        `;
+
+                        // 右键菜单集成
+                        tr.addEventListener('contextmenu', (e) => {
+                            UIKit.contextMenu(e, [
+                                { label: '✏️ 编辑任务', action: () => Actions.editTask(task.id) },
+                                { label: '📋 复制标题', action: () => UIKit.copyToClipboard(task.title) },
+                                { label: '🗑️ 删除', action: () => Actions.deleteTask(task.id, renderTable) }
+                            ]);
+                        });
+
+                        tbody.appendChild(tr);
+                    });
+
+                    // 渲染分页
+                    UIKit.renderPagination(document.getElementById('pagination-container'), {
+                        current: currentPage,
+                        total: filtered.length,
+                        pageSize: pageSize
+                    }, (page) => {
+                        currentPage = page;
+                        renderTable();
+                    });
+                };
+
+                renderTable(); // 初始执行
+            },
+
+            // --- 设置视图 ---
+            settings: (container) => {
+                container.innerHTML = `
+                    <div class="card">
+                        <div class="card-header"><h2 class="card-title">个人设置</h2></div>
+                        
+                        <div style="display:flex; gap:30px; flex-wrap:wrap;">
+                            <div style="flex:1; min-width:300px;">
+                                <div class="form-group">
+                                    <label class="form-label">头像上传</label>
+                                    <div class="ui-upload" id="avatar-upload">
+                                        <div class="ui-upload__icon">📷</div>
+                                        <div class="ui-upload__text">点击更换头像</div>
+                                        <input type="file" accept="image/*">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">显示名称</label>
+                                    <input type="text" class="form-control" value="Admin User">
+                                </div>
+                            </div>
+
+                            <div style="flex:1; min-width:300px;">
+                                <div class="form-group" style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span>启用邮件通知</span>
+                                    <label class="ui-switch"><input type="checkbox" checked><span class="ui-switch__slider"></span></label>
+                                </div>
+                                <div class="form-group" style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span>深色模式 (Beta)</span>
+                                    <label class="ui-switch"><input type="checkbox"><span class="ui-switch__slider"></span></label>
+                                </div>
+                                <hr style="border:0; border-top:1px solid #eee; margin:20px 0;">
+                                <button class="ui-btn ui-btn--primary" onclick="UIKit.showLoading('保存中...'); setTimeout(() => { UIKit.hideLoading(); UIKit.toast('设置已保存','success') }, 1000)">保存设置</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // 绑定上传事件
+                UIKit.initUploads('#avatar-upload', (files) => {
+                    UIKit.toast('头像上传模拟成功', 'success');
+                    // 实际场景这里会调用 UIKit.previewImage(URL.createObjectURL(files[0]))
+                });
+            }
+        };
+
+        /**
+         * 3. 业务动作处理 (Actions)
+         * 处理弹窗、提交表单等交互逻辑
+         */
+        const Actions = {
+            // 打开任务模态框 (新建或编辑)
+            openTaskModal: (task = null) => {
+                const isEdit = !!task;
+                
+                // 动态构建表单 HTML
+                const formHtml = `
+                    <div id="task-form">
+                        <div class="form-group">
+                            <label class="form-label">任务标题</label>
+                            <input type="text" name="title" class="form-control" value="${task ? task.title : ''}" placeholder="输入要做什么...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">优先级</label>
+                            <div id="modal-priority-select"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">截止日期</label>
+                            <input type="date" name="date" class="form-control" value="${task ? task.date : new Date().toISOString().split('T')[0]}">
+                        </div>
+                    </div>
+                `;
+
+                // 打开 Modal
+                UIKit.modal({
+                    title: isEdit ? '编辑任务' : '新建任务',
+                    content: formHtml,
+                    width: '500px'
+                }).then((result) => {
+                    if (result === true) { // 点击了确定
+                        handleSubmit();
+                    }
+                });
+
+                // 需要在 Modal 渲染后初始化 Select 组件 (因为 Select 需要 DOM 节点)
+                // 这里使用 setTimeout 0 让 event loop 跑完 DOM 插入
+                setTimeout(() => {
+                    const selectContainer = document.getElementById('modal-priority-select');
+                    UIKit.renderSelect(selectContainer, {
+                        name: 'priority',
+                        data: [
+                            { label: 'Low', value: 'low' },
+                            { label: 'Medium', value: 'mid' },
+                            { label: 'High', value: 'high' }
+                        ],
+                        defaultValue: task ? task.priority : 'mid'
+                    });
+                }, 0);
+
+                // 处理表单提交逻辑
+                const handleSubmit = () => {
+                    const title = document.querySelector('#task-form input[name="title"]').value;
+                    const date = document.querySelector('#task-form input[name="date"]').value;
+                    const priority = document.querySelector('#task-form input[name="priority"]').value;
+
+                    if (!title) {
+                        UIKit.toast('标题不能为空', 'error');
+                        return;
+                    }
+
+                    if (isEdit) {
+                        Store.updateTask(task.id, { title, date, priority });
+                        UIKit.toast('任务已更新', 'success');
+                    } else {
+                        Store.addTask({ title, date, priority, status: 'todo' });
+                        UIKit.toast('任务已创建', 'success');
+                    }
+
+                    // 刷新当前页面
+                    Router.refresh();
+                };
+            },
+
+            editTask: (id) => {
+                const task = Store.getAll().find(t => t.id === id);
+                if (task) Actions.openTaskModal(task);
+            },
+
+            deleteTask: (id, callback) => {
+                UIKit.confirm('确定要删除这个任务吗？此操作无法撤销。', '删除警告')
+                    .then(yes => {
+                        if (yes) {
+                            Store.deleteTask(id);
+                            UIKit.toast('已删除', 'success');
+                            if (callback) callback();
+                            else Router.refresh();
+                        }
+                    });
+            }
+        };
+
+        /**
+         * 4. 路由管理器 (Router)
+         */
+        const Router = {
+            routes: {
+                'dashboard': Views.dashboard,
+                'tasks': Views.tasks,
+                'settings': Views.settings
+            },
+            
+            init() {
+                window.addEventListener('hashchange', () => this.load());
+                this.load();
+                this.renderNav();
+            },
+
+            go(hash) {
+                window.location.hash = hash;
+            },
+
+            load() {
+                const hash = window.location.hash.replace('#', '') || 'dashboard';
+                const container = document.getElementById('app-container');
+                const viewFn = this.routes[hash];
+
+                if (viewFn) {
+                    // 清空容器
+                    container.innerHTML = '';
+                    
+                    // 渲染视图 (支持返回 HTML 字符串或操作 DOM)
+                    const content = viewFn(container);
+                    if (typeof content === 'string') {
+                        container.innerHTML = content;
+                    }
+
+                    // 更新导航高亮
+                    this.renderNav(hash);
+                } else {
+                    container.innerHTML = '<h1>404 Not Found</h1>';
+                }
+            },
+            
+            refresh() {
+                this.load();
+            },
+
+            renderNav(activeId = '') {
+                // 如果是初始化，activeId 可能为空，从 URL 获取
+                if (!activeId) activeId = window.location.hash.replace('#', '') || 'dashboard';
+
+                UIKit.renderResponsiveNav([
+                    { label: '仪表盘', icon: '📊', id: 'dashboard', onClick: () => this.go('dashboard') },
+                    { label: '任务列表', icon: '📝', id: 'tasks', onClick: () => this.go('tasks') },
+                    { label: '设置', icon: '⚙️', id: 'settings', onClick: () => this.go('settings') },
+                    { label: '帮助', icon: '❓', id: 'help', onClick: () => UIKit.alert('这是基于 UI Kit 构建的 SPA 演示。') }
+                ], activeId);
+            }
+        };
+
+        // --- 启动应用 ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // 模拟 API 延迟加载
+            UIKit.showLoading('系统初始化...');
+            setTimeout(() => {
+                UIKit.hideLoading();
+                Router.init();
+            }, 800);
+        });
+
+    </script>
+</body>
+</html>
