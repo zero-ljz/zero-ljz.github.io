@@ -91,5 +91,44 @@
     </div>
 </div>
 
+
+<script>
+    (function() {
+        // -------------------------------------------------------
+        // 配置区域：在这里填入你喜欢的 API 地址
+        // -------------------------------------------------------
+        
+        // 选项1: Lorem Picsum (风景/生活/随机，非常稳定)
+        const wallpaperApi = 'https://www.dmoe.cc/random.php'; 
+
+        // -------------------------------------------------------
+        // 代码逻辑
+        // -------------------------------------------------------
+        function setBackground() {
+            // 获取当前时间戳，用于防止浏览器缓存旧图片
+            const timestamp = new Date().getTime();
+            
+            // 判断 API 链接中是否已经包含了 '?'
+            const symbol = wallpaperApi.includes('?') ? '&' : '?';
+            
+            // 拼接最终 URL (例如: ...api.php?t=123456)
+            const finalUrl = `${wallpaperApi}${symbol}t=${timestamp}`;
+
+            // 创建一个新的 Image 对象来预加载图片，防止页面闪烁
+            const img = new Image();
+            img.src = finalUrl;
+            
+            img.onload = function() {
+                // 图片加载完成后，设置为 body 背景
+                // 解释：rgba(0, 0, 0, 0.5) 中的 0.5 代表透明度（0是全透，1是全黑），你可以把 0.5 改成 0.3（亮一点）或 0.7（暗一点）
+                document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${finalUrl}')`;
+            };
+        }
+
+        // 页面加载时执行
+        window.onload = setBackground;
+    })();
+</script>
+
 </body>
 </html>
