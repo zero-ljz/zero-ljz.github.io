@@ -242,7 +242,7 @@
         _open() {
             // 打开前先计算位置
             this._updatePosition();
-            
+
             this.state.isOpen = true;
             this.dropdown.classList.add('is-open');
             this.container.classList.add('active');
@@ -402,7 +402,7 @@
                 document.body.appendChild(this.toastContainer);
             }
 
-            const toast = Utils.createElement('div', `ui-toast ui-toast--${type}`, message);
+            const toast = Utils.createElement('div', `ui-toast ui-toast--${type} ui-panel`, message);
             this.toastContainer.appendChild(toast);
 
             setTimeout(() => {
