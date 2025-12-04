@@ -819,19 +819,15 @@
             // 3. 生成页码数组 (核心简化逻辑：只分3种情况)
             let pages = [];
             if (totalPages <= 6) {
-                // [场景1] 页数很少：直接铺开 [1, 2, 3, 4, 5, 6]
                 pages = Array.from({ length: totalPages }, (_, i) => i + 1);
             } else {
                 // 页数很多：保证只显示 6 个元素
                 if (current < 4) {
-                    // [场景2] 靠前：[1, 2, 3, 4, '...', 100]
-                    pages = [1, 2, 3, 4, '...', totalPages];
+                    pages = [1, 2, 3, 4, totalPages];
                 } else if (current > totalPages - 3) {
-                    // [场景3] 靠后：[1, '...', 97, 98, 99, 100]
-                    pages = [1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+                    pages = [1, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
                 } else {
-                    // [场景4] 在中间：[1, '...', 49, 50, '...', 100]
-                    pages = [1, '...', current - 1, current, '...', totalPages];
+                    pages = [1,  current - 1, current, current + 1 , totalPages];
                 }
             }
 
