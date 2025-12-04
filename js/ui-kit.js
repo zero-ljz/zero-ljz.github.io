@@ -13,16 +13,7 @@
         removeElement(el) {
             if (el && el.parentNode) el.parentNode.removeChild(el);
         },
-        // 计算绝对位置，防止溢出屏幕
-        computePosition(target, tooltip, placement = 'top') {
-            const rect = target.getBoundingClientRect();
-            // 简单实现 top-center, 实际项目中可增加更多方向逻辑
-            let top = rect.top + window.scrollY - tooltip.offsetHeight - 8;
-            let left = rect.left + window.scrollX + (rect.width / 2);
-            
-            tooltip.style.top = `${top}px`;
-            tooltip.style.left = `${left}px`;
-        },
+
         // 新增：防抖函数 (用于搜索)
         debounce(func, wait) {
             let timeout;
@@ -30,6 +21,66 @@
                 clearTimeout(timeout);
                 timeout = setTimeout(() => func.apply(this, args), wait);
             };
+        },
+
+        /**
+         * 智能定位 (核心复用逻辑)
+         * @param {HTMLElement} trigger - 触发元素 (按钮/输入框)
+         * @param {HTMLElement} popup - 弹出的悬浮层
+         * @param {Object} options - 配置 { offset: 间距, placement: 默认位置 }
+         */
+        smartPosition(trigger, popup, options = {}) {
+            const { offset = 8, placement = 'bottom-start' } = options;
+            
+            // 1. 获取尺寸信息
+            const tr = trigger.getBoundingClientRect(); // 触发器位置
+            const pr = popup.getBoundingClientRect();   // 弹窗尺寸 (注意：弹窗必须已挂载到DOM且非display:none)
+            const winW = window.innerWidth;
+            const winH = window.innerHeight;
+            const scrollX = window.scrollX;
+            const scrollY = window.scrollY;
+
+            // 2. 初始计算 (默认 Bottom-Start: 下方，左对齐)
+            let top = tr.bottom + scrollY + offset;
+            let left = tr.left + scrollX;
+
+            // 3. 【Y轴检测】底部不够放吗？
+            // 如果 (触发器底部 + 弹窗高度 + 间距) > 视口高度
+            if (tr.bottom + pr.height + offset > winH) {
+                // 尝试翻转到上方 (Top-Start)
+                // 新 top = 触发器顶部 - 弹窗高度 - 间距
+                const topSpace = tr.top - pr.height - offset;
+                // 只有当上方空间足够，或者上方空间比下方大时，才翻转
+                if (topSpace > 0 || tr.top > (winH - tr.bottom)) {
+                    top = tr.top + scrollY - pr.height - offset;
+                    // 可选：添加一个类名以便改变箭头方向
+                    popup.classList.add('placement-top'); 
+                }
+            }
+
+            // 4. 【X轴检测】右侧溢出吗？
+            // 如果 (当前左坐标 + 弹窗宽度) > 屏幕宽度
+            if (left + pr.width > winW) {
+                // 尝试右对齐 (Bottom-End)
+                // left = 触发器右边界 - 弹窗宽度
+                left = (tr.right + scrollX) - pr.width;
+            }
+
+            // 5. 【X轴二次检测】左侧溢出吗？(防强行右对齐后左边不够)
+            if (left < 10) {
+                left = 10; // 强制靠左安全距离
+            }
+            // 如果还宽出屏幕，限制最大宽度 (可选，配合 CSS max-width)
+            if (left + pr.width > winW) {
+                // 这里通常通过 CSS max-width: 95vw 处理，JS 只负责定位起点
+            }
+
+            // 6. 应用样式
+            popup.style.top = `${top}px`;
+            popup.style.left = `${left}px`;
+            
+            // 返回计算结果以便后续可能的调整
+            return { top, left };
         }
     };
 
@@ -147,16 +198,13 @@
 
         // 新增：计算并设置下拉菜单的位置
         _updatePosition() {
-            const rect = this.trigger.getBoundingClientRect();
-            const scrollY = window.scrollY || window.pageYOffset;
-            const scrollX = window.scrollX || window.pageXOffset;
+            if (!this.state.isOpen) return;
 
+            const rect = this.trigger.getBoundingClientRect();
             // 设置宽度与 Trigger 一致
             this.dropdown.style.width = `${rect.width}px`;
-            
-            // 设置绝对位置 (Trigger 底部 + 6px 间距)
-            this.dropdown.style.left = `${rect.left + scrollX}px`;
-            this.dropdown.style.top = `${rect.bottom + scrollY + 6}px`;
+            // 定位
+            Utils.smartPosition(this.trigger, this.dropdown, { offset: 6 });
         }
 
         _handleSelect(value, label) {
@@ -246,6 +294,9 @@
             this.state.isOpen = true;
             this.dropdown.classList.add('is-open');
             this.container.classList.add('active');
+
+            // 必须在显示(add class)后或之前挂载后立即计算
+            this._updatePosition();
         }
         
         _close() {
@@ -591,13 +642,6 @@
             document.addEventListener('click', globalClickHandler);
         }
 
-
-
-
-
-
-
-
         // ==========================================
         // 加载提示 (Loading)
         // ==========================================
@@ -630,23 +674,19 @@
         // 气泡卡片 (Popover)
         // ==========================================
         popover(target, contentHtml) {
-            // 移除现有的 popover
             this.closeAllPopovers();
 
             const popover = Utils.createElement('div', 'ui-popover ui-box ui-panel');
-            popover.style.padding = '15px';
             popover.innerHTML = contentHtml;
-            document.body.appendChild(popover);
+            document.body.appendChild(popover); // 必须先挂载，smartPosition 才能算出宽度
 
-            // 简单定位 logic (Bottom Center)
-            const rect = target.getBoundingClientRect();
-            popover.style.top = `${rect.bottom + window.scrollY + 10}px`;
-            popover.style.left = `${rect.left + window.scrollX}px`;
+            // === 一行代码搞定定位 ===
+            Utils.smartPosition(target, popover, { offset: 12 });
 
-            // 点击外部关闭
+            // 点击外部关闭逻辑 (保持不变)
             setTimeout(() => {
                 const closeHandler = (e) => {
-                    if (!popover.contains(e.target) && e.target !== target) {
+                    if (!popover.contains(e.target) && !target.contains(e.target)) {
                         Utils.removeElement(popover);
                         document.removeEventListener('click', closeHandler);
                     }
@@ -1162,6 +1202,7 @@
             // 实际项目中可能只需要 toggle class，但考虑到 "更多" 里面的状态，重绘最安全
             this.renderResponsiveNav(items, activeId);
         }
+
 
 
     }
