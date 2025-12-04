@@ -794,70 +794,50 @@
             const totalPages = Math.ceil(total / pageSize);
             container.innerHTML = '';
             container.className = 'ui-pagination';
-
-            // 如果只有1页或没有数据，不显示或只显示1（视需求而定）
             if (totalPages <= 1) return;
 
-            // 辅助函数：创建按钮
-            const createBtn = (text, page, isActive = false, isDisabled = false, isDots = false) => {
+            // 1. 定义生成按钮的工具函数
+            const createBtn = (text, page, cls = '') => {
+                const isDots = text === '...';
+                const isActive = page === current;
+                const isDisabled = text === '<' ? current === 1 : (text === '>' ? current === totalPages : false);
+                
                 const el = Utils.createElement('li', 
-                    `ui-page-item ${isActive ? 'active' : ''} ${isDisabled ? 'disabled' : ''} ${isDots ? 'ui-page-dots' : ''}`, 
+                    `ui-page-item ${isActive ? 'active' : ''} ${isDisabled ? 'disabled' : ''} ${cls} ${isDots ? 'ui-page-dots' : ''}`, 
                     text
                 );
+                
                 if (!isDisabled && !isActive && !isDots) {
                     el.onclick = () => {
-                        // 重新渲染自身（也可以由外部控制）
                         this.renderPagination(container, { current: page, total, pageSize }, onChange);
                         if (onChange) onChange(page);
                     };
                 }
-                return el;
+                return container.appendChild(el);
             };
 
-            // 1. 上一页
-            container.appendChild(createBtn('<', current - 1, false, current === 1));
-
-            // 2. 页码逻辑
-            const maxVisible = 7; // 最多显示多少个按钮（包括省略号）
-            
-            if (totalPages <= maxVisible) {
-                // 页码少，全部显示
-                for (let i = 1; i <= totalPages; i++) {
-                    container.appendChild(createBtn(i, i, current === i));
-                }
+            // 3. 生成页码数组 (核心简化逻辑：只分3种情况)
+            let pages = [];
+            if (totalPages <= 6) {
+                // [场景1] 页数很少：直接铺开 [1, 2, 3, 4, 5, 6]
+                pages = Array.from({ length: totalPages }, (_, i) => i + 1);
             } else {
-                // 页码多，需要省略号
-                // 始终显示第一页
-                container.appendChild(createBtn(1, 1, current === 1));
-
-                // 处理前面的省略号
-                if (current > 4) {
-                    container.appendChild(createBtn('...', null, false, false, true));
+                // 页数很多：保证只显示 6 个元素
+                if (current < 4) {
+                    // [场景2] 靠前：[1, 2, 3, 4, '...', 100]
+                    pages = [1, 2, 3, 4, '...', totalPages];
+                } else if (current > totalPages - 3) {
+                    // [场景3] 靠后：[1, '...', 97, 98, 99, 100]
+                    pages = [1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+                } else {
+                    // [场景4] 在中间：[1, '...', 49, 50, '...', 100]
+                    pages = [1, '...', current - 1, current, '...', totalPages];
                 }
-
-                // 中间区域 (显示当前页附近的页码)
-                let start = Math.max(2, current - 1);
-                let end = Math.min(totalPages - 1, current + 1);
-
-                // 调整 start/end 保证中间始终有 3 个数字 (除非靠近边界)
-                if (current < 4) { end = 4; }
-                if (current > totalPages - 3) { start = totalPages - 3; }
-
-                for (let i = start; i <= end; i++) {
-                    container.appendChild(createBtn(i, i, current === i));
-                }
-
-                // 处理后面的省略号
-                if (current < totalPages - 3) {
-                    container.appendChild(createBtn('...', null, false, false, true));
-                }
-
-                // 始终显示最后一页
-                container.appendChild(createBtn(totalPages, totalPages, current === totalPages));
             }
 
-            // 3. 下一页
-            container.appendChild(createBtn('>', current + 1, false, current === totalPages));
+            // 4. 循环渲染页码
+            pages.forEach(p => createBtn(p, typeof p === 'number' ? p : null));
+
         }
 
         // 渲染面包屑
