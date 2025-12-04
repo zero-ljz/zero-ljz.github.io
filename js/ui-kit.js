@@ -22,12 +22,242 @@
             
             tooltip.style.top = `${top}px`;
             tooltip.style.left = `${left}px`;
+        },
+        // 新增：防抖函数 (用于搜索)
+        debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
         }
     };
+
+
+    /**
+     * ==========================================
+     * 组件：UISelect
+     * 功能：单选、多选、搜索过滤、Tag展示
+     * ==========================================
+     */
+    class UISelect {
+        constructor(container, options = {}) {
+            this.container = typeof container === 'string' ? document.querySelector(container) : container;
+            if (!this.container) throw new Error('UISelect: Container not found');
+
+            // 配置
+            this.config = {
+                data: options.data || [], // [{ label: 'A', value: '1' }]
+                placeholder: options.placeholder || '请选择',
+                multiple: options.multiple || false,
+                searchable: options.searchable || false,
+                onChange: options.onChange || null
+            };
+
+            this.state = {
+                selected: [], // 存储 value
+                isOpen: false,
+                filterText: ''
+            };
+
+            this._init();
+        }
+
+        _init() {
+            this.container.classList.add('ui-select');
+            
+            // 1. 构建 DOM 结构
+            this.trigger = Utils.createElement('div', 'ui-select__trigger');
+            this.trigger.tabIndex = 0; // 可聚焦
+            
+            // 输入框 (用于搜索或作为隐藏焦点锚点)
+            this.input = Utils.createElement('input', 'ui-select__input');
+            this.input.placeholder = this.config.placeholder;
+            if (!this.config.searchable) this.input.readOnly = true;
+            
+            this.trigger.appendChild(this.input);
+            
+            // 下拉列表
+            this.dropdown = Utils.createElement('div', 'ui-select__dropdown');
+            
+            this.container.appendChild(this.trigger);
+            this.container.appendChild(this.dropdown);
+
+            // 2. 绑定事件
+            this._bindEvents();
+            
+            // 3. 初始渲染
+            this._renderOptions();
+        }
+
+        _bindEvents() {
+            // 切换下拉
+            this.trigger.addEventListener('click', (e) => {
+                // 如果点击的是 tag 关闭按钮，不触发展开
+                if (e.target.classList.contains('ui-tag__close')) return;
+                
+                if (this.config.searchable && e.target === this.input) {
+                    this._open();
+                } else {
+                    this._toggle();
+                }
+                if (this.state.isOpen) this.input.focus();
+            });
+
+            // 搜索输入
+            if (this.config.searchable) {
+                this.input.addEventListener('input', Utils.debounce((e) => {
+                    this.state.filterText = e.target.value.trim().toLowerCase();
+                    this._renderOptions();
+                    this._open();
+                }, 200));
+            }
+
+            // 点击外部关闭
+            document.addEventListener('click', (e) => {
+                if (!this.container.contains(e.target)) {
+                    this._close();
+                }
+            });
+
+            // 选项点击代理
+            this.dropdown.addEventListener('click', (e) => {
+                const option = e.target.closest('.ui-select__option');
+                if (option && !option.classList.contains('is-disabled')) {
+                    const value = option.dataset.value;
+                    const label = option.dataset.label;
+                    this._handleSelect(value, label);
+                }
+            });
+        }
+
+        _handleSelect(value, label) {
+            if (this.config.multiple) {
+                const index = this.state.selected.indexOf(value);
+                if (index > -1) {
+                    this.state.selected.splice(index, 1); // 取消选择
+                } else {
+                    this.state.selected.push(value); // 选择
+                }
+                this.input.value = ''; // 清空搜索
+                this.state.filterText = '';
+                // 多选不自动关闭，或者根据需求决定
+            } else {
+                this.state.selected = [value];
+                this._close();
+                this.input.value = label; // 单选回填文字
+            }
+            
+            this._renderTags(); // 只有多选需要渲染 Tag，单选其实由 input 显示
+            this._renderOptions(); // 刷新选中状态
+            
+            if (this.config.onChange) {
+                this.config.onChange(this.state.selected);
+            }
+        }
+
+        _renderOptions() {
+            this.dropdown.innerHTML = '';
+            const { data } = this.config;
+            const { filterText, selected } = this.state;
+
+            const filtered = data.filter(item => 
+                item.label.toLowerCase().includes(filterText)
+            );
+
+            if (filtered.length === 0) {
+                this.dropdown.innerHTML = '<div class="ui-select__empty">无匹配数据</div>';
+                return;
+            }
+
+            filtered.forEach(item => {
+                const isSelected = selected.includes(item.value);
+                const cls = `ui-select__option ${isSelected ? 'is-selected' : ''}`;
+                const el = Utils.createElement('div', cls, item.label);
+                el.dataset.value = item.value;
+                el.dataset.label = item.label;
+                this.dropdown.appendChild(el);
+            });
+        }
+
+        _renderTags() {
+            // 清理旧 Tag (保留 Input)
+            const oldTags = this.trigger.querySelectorAll('.ui-tag');
+            oldTags.forEach(t => t.remove());
+
+            if (this.config.multiple) {
+                this.input.placeholder = this.state.selected.length ? '' : this.config.placeholder;
+                
+                this.state.selected.forEach(val => {
+                    const item = this.config.data.find(d => d.value === val);
+                    if (!item) return;
+                    
+                    const tag = Utils.createElement('span', 'ui-tag', `
+                        ${item.label} <span class="ui-tag__close" data-val="${val}">&times;</span>
+                    `);
+                    
+                    // 绑定删除事件
+                    tag.querySelector('.ui-tag__close').onclick = (e) => {
+                        e.stopPropagation();
+                        this._handleSelect(val);
+                    };
+                    
+                    this.trigger.insertBefore(tag, this.input);
+                });
+            } else {
+                 // 单选逻辑已经在 handleSelect 处理 input.value
+            }
+        }
+
+        _toggle() { this.state.isOpen ? this._close() : this._open(); }
+        
+        _open() {
+            this.state.isOpen = true;
+            this.dropdown.classList.add('is-open');
+            this.container.classList.add('active');
+        }
+        
+        _close() {
+            this.state.isOpen = false;
+            this.dropdown.classList.remove('is-open');
+            this.container.classList.remove('active');
+            // 重置搜索
+            if (this.config.searchable && this.config.multiple) {
+                this.input.value = '';
+                this.state.filterText = '';
+                this._renderOptions();
+            }
+        }
+
+        // Public API: 设置值
+        setValue(values) {
+            this.state.selected = Array.isArray(values) ? values : [values];
+            if (!this.config.multiple && values.length > 0) {
+                 const item = this.config.data.find(d => d.value == values[0]);
+                 if(item) this.input.value = item.label;
+            }
+            this._renderTags();
+            this._renderOptions();
+        }
+    }
+
 
     class UIKitClass {
         constructor() {
             this.toastContainer = null;
+            this.activeMenu = null; // 追踪当前打开的菜单
+            
+            // 全局点击监听，用于关闭菜单
+            document.addEventListener('click', (e) => {
+                if (this.activeMenu && !this.activeMenu.contains(e.target)) {
+                    this.closeMenu();
+                }
+            });
+            
+            // 监听滚动，关闭菜单 (可选，防止浮动错位)
+            window.addEventListener('scroll', () => {
+               if(this.activeMenu) this.closeMenu();
+            }, true);
         }
 
         // ==========================================
@@ -39,7 +269,7 @@
                 
                 // 创建 DOM
                 const mask = Utils.createElement('div', 'ui-mask ui-box');
-                const dialog = Utils.createElement('div', 'ui-dialog');
+                const dialog = Utils.createElement('div', 'ui-dialog ui-panel');
                 if (width) dialog.style.width = width;
 
                 // 头部
@@ -155,6 +385,188 @@
         }
 
 
+
+        /**
+         * ==========================================
+         * 工厂方法：创建 Select 组件
+         * ==========================================
+         */
+        createSelect(selector, options) {
+            return new UISelect(selector, options);
+        }
+
+        /**
+         * ==========================================
+         * 菜单系统：上下文菜单 (Context Menu)
+         * ==========================================
+         */
+        // attachTarget: 需要右键的 DOM 元素
+        // menuItems: [{ label, icon, onClick, danger, separator }]
+        contextMenu(attachTarget, menuItems) {
+            if (!attachTarget) return;
+
+            attachTarget.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                this.showMenu(e.clientX, e.clientY, menuItems);
+            });
+        }
+
+        /**
+         * ==========================================
+         * 菜单系统：下拉操作菜单 (Dropdown Action)
+         * ==========================================
+         */
+        dropdownMenu(triggerBtn, menuItems) {
+            if (!triggerBtn) return;
+            
+            triggerBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const rect = triggerBtn.getBoundingClientRect();
+                // 默认显示在按钮左下角
+                this.showMenu(rect.left, rect.bottom + 5, menuItems);
+            });
+        }
+
+        /**
+         * 核心：显示菜单
+         */
+        showMenu(x, y, items) {
+            this.closeMenu(); // 先关闭已存在的
+
+            const menu = Utils.createElement('div', 'ui-menu');
+            
+            items.forEach(item => {
+                if (item.separator) {
+                    menu.appendChild(Utils.createElement('div', 'ui-menu__divider'));
+                    return;
+                }
+
+                const li = Utils.createElement('div', `ui-menu__item ${item.danger ? 'is-danger' : ''}`);
+                
+                let iconHtml = `<span class="ui-menu__icon">${item.icon || ''}</span>`;
+                li.innerHTML = `${iconHtml}<span>${item.label}</span>`;
+                
+                li.onclick = (e) => {
+                    e.stopPropagation();
+                    if (item.onClick) item.onClick();
+                    this.closeMenu();
+                };
+                menu.appendChild(li);
+            });
+
+            document.body.appendChild(menu);
+            this.activeMenu = menu;
+
+            // 简单的防溢出计算
+            const winWidth = window.innerWidth;
+            const winHeight = window.innerHeight;
+            
+            // 先渲染才能获取宽高
+            menu.classList.add('is-visible');
+            const rect = menu.getBoundingClientRect();
+            
+            let finalX = x;
+            let finalY = y;
+
+            if (x + rect.width > winWidth) finalX = winWidth - rect.width - 10;
+            if (y + rect.height > winHeight) finalY = y - rect.height; // 向上翻转
+
+            menu.style.left = `${finalX}px`;
+            menu.style.top = `${finalY}px`;
+        }
+
+        closeMenu() {
+            if (this.activeMenu) {
+                Utils.removeElement(this.activeMenu);
+                this.activeMenu = null;
+            }
+        }
+
+
+        /**
+         * ==========================================
+         * 组件：菜单栏 (Menu Bar)
+         * 特性：支持点击展开，展开后支持鼠标滑过自动切换
+         * ==========================================
+         */
+        createMenubar(container, menuData) {
+            const el = typeof container === 'string' ? document.querySelector(container) : container;
+            if (!el) return;
+
+            el.classList.add('ui-menubar');
+            el.innerHTML = ''; // 清空容器
+
+            // 状态标记：当前菜单栏是否处于“激活”状态（即有一个菜单已打开）
+            let activeItem = null; 
+
+            // 辅助：清除所有项的高亮
+            const clearActive = () => {
+                const items = el.querySelectorAll('.ui-menubar__item');
+                items.forEach(i => i.classList.remove('is-active'));
+                activeItem = null;
+            };
+
+            // 辅助：打开指定项的菜单
+            const openItemMenu = (domItem, subItems) => {
+                // 1. UI 处理
+                clearActive();
+                domItem.classList.add('is-active');
+                activeItem = domItem;
+
+                // 2. 计算位置 (按钮左下角)
+                const rect = domItem.getBoundingClientRect();
+                
+                // 3. 调用核心 showMenu，但需要劫持它的关闭逻辑
+                // 因为 showMenu 默认点击外部会关闭，我们需要监听那个关闭动作来同步清除高亮
+                this.showMenu(rect.left, rect.bottom, subItems);
+            };
+
+            // 构建 DOM
+            menuData.forEach(group => {
+                const itemEl = Utils.createElement('div', 'ui-menubar__item', group.label);
+
+                // 事件 1: 点击
+                itemEl.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // 如果当前点的就是这个，且已经打开，则关闭
+                    if (activeItem === itemEl) {
+                        this.closeMenu();
+                        clearActive();
+                    } else {
+                        openItemMenu(itemEl, group.children);
+                    }
+                });
+
+                // 事件 2: 鼠标滑过 (仅在已激活状态下触发)
+                itemEl.addEventListener('mouseenter', () => {
+                    if (activeItem && activeItem !== itemEl) {
+                        // 切换菜单
+                        openItemMenu(itemEl, group.children);
+                    }
+                });
+
+                el.appendChild(itemEl);
+            });
+
+            // 监听全局点击来重置状态
+            // 注意：我们在 constructor 里已经有一个 document click 监听器了
+            // 为了解耦，这里单独监听一下菜单关闭的时机可能比较复杂
+            // 最简单的方法是：利用现有的 document click，检测是否点击了外部
+            const globalClickHandler = (e) => {
+                if (!el.contains(e.target)) {
+                    clearActive();
+                }
+            };
+            document.addEventListener('click', globalClickHandler);
+        }
+
+
+
+
+
+
+
+
         // ==========================================
         // 加载提示 (Loading)
         // ==========================================
@@ -190,7 +602,7 @@
             // 移除现有的 popover
             this.closeAllPopovers();
 
-            const popover = Utils.createElement('div', 'ui-popover ui-box');
+            const popover = Utils.createElement('div', 'ui-popover ui-box ui-panel');
             popover.style.padding = '15px';
             popover.innerHTML = contentHtml;
             document.body.appendChild(popover);
@@ -217,58 +629,10 @@
             existing.forEach(el => Utils.removeElement(el));
         }
 
+
         // ==========================================
-        // 上下文菜单 (Context Menu)
+        // 抽屉 (Drawer)
         // ==========================================
-        contextMenu(e, menuItems) {
-            e.preventDefault();
-            this.closeContextMenu(); // 关闭旧的
-
-            const menu = Utils.createElement('div', 'ui-context-menu ui-box');
-            
-            menuItems.forEach(item => {
-                const el = Utils.createElement('a', 'ui-context-menu__item', item.label);
-                el.onclick = () => {
-                    item.action();
-                    this.closeContextMenu();
-                };
-                menu.appendChild(el);
-            });
-
-            document.body.appendChild(menu);
-            
-            // 边界检测
-            let x = e.clientX;
-            let y = e.clientY;
-            // (可选优化) 防止菜单溢出屏幕右侧/底部
-            const menuWidth = 160; // 估算宽度
-            const menuHeight = menuItems.length * 40; // 估算高度
-            
-            if (x + menuWidth > window.innerWidth) x -= menuWidth;
-            if (y + menuHeight > window.innerHeight) y -= menuHeight;
-
-            menu.style.left = `${x}px`;
-            menu.style.top = `${y}px`;
-            menu.style.display = 'block';
-
-            // 点击任意处关闭
-            setTimeout(() => {
-                const closeHandler = () => {
-                    this.closeContextMenu();
-                    document.removeEventListener('click', closeHandler);
-                    document.removeEventListener('contextmenu', closeHandler); // 右键别处也关闭
-                };
-                document.addEventListener('click', closeHandler);
-                document.addEventListener('contextmenu', closeHandler); 
-            }, 0);
-        }
-
-        closeContextMenu() {
-            const menu = document.querySelector('.ui-context-menu');
-            Utils.removeElement(menu);
-        }
-
-        // 在 UIKitClass 内部添加
         drawer({ title, content, placement = 'right', width }) {
             return new Promise((resolve) => {
                 // 复用遮罩，但点击遮罩不仅关闭，还触发 resolve
@@ -277,7 +641,7 @@
                 mask.style.opacity = '0';
                 mask.style.transition = 'opacity 0.3s';
 
-                const drawer = Utils.createElement('div', `ui-drawer ui-drawer--${placement}`);
+                const drawer = Utils.createElement('div', `ui-drawer ui-drawer--${placement} ui-panel`);
                 if (width) drawer.style.width = width;
 
                 const headerHtml = `<div class="ui-drawer__header">
@@ -349,92 +713,7 @@
         }
 
 
-        // 初始化下拉框
-        // container: DOM容器
-        // options: [{ label: 'Option 1', value: '1' }]
-        // defaultValue: 初始值
-        // onChange: 回调函数
-        renderSelect(container, { data = [], placeholder = '请选择', name = '', defaultValue = null, onChange }) {
-            // 1. 清空容器
-            container.innerHTML = '';
-            container.classList.add('ui-select');
-
-            // 2. 创建内部状态
-            let selectedValue = defaultValue;
-            const selectedLabel = () => {
-                const item = data.find(i => i.value === selectedValue);
-                return item ? item.label : placeholder;
-            };
-
-            // 3. 创建 DOM 结构
-            // 隐藏 Input 用于 form 提交
-            const hiddenInput = Utils.createElement('input');
-            hiddenInput.type = 'hidden';
-            hiddenInput.name = name;
-            hiddenInput.value = selectedValue || '';
-
-            // 触发器
-            const trigger = Utils.createElement('div', 'ui-select__trigger', `<span>${selectedLabel()}</span>`);
-            
-            // 下拉列表
-            const dropdown = Utils.createElement('div', 'ui-select__options');
-            
-            // 渲染列表项方法
-            const renderItems = () => {
-                dropdown.innerHTML = '';
-                data.forEach(item => {
-                    const cls = `ui-select__item ${item.value === selectedValue ? 'selected' : ''}`;
-                    const el = Utils.createElement('div', cls, item.label);
-                    el.onclick = (e) => {
-                        e.stopPropagation(); // 防止冒泡导致立即关闭（虽然逻辑上也可以）
-                        selectItem(item);
-                    };
-                    dropdown.appendChild(el);
-                });
-            };
-
-            // 选中逻辑
-            const selectItem = (item) => {
-                selectedValue = item.value;
-                hiddenInput.value = item.value;
-                trigger.querySelector('span').innerText = item.label;
-                container.classList.remove('active');
-                renderItems(); //由于重绘了selected状态
-                if (onChange) onChange(item.value, item);
-            };
-
-            renderItems();
-
-            // 4. 组装
-            container.appendChild(hiddenInput);
-            container.appendChild(trigger);
-            container.appendChild(dropdown);
-
-            // 5. 事件绑定
-            trigger.onclick = (e) => {
-                e.stopPropagation();
-                // 关闭其他打开的 select
-                document.querySelectorAll('.ui-select.active').forEach(el => {
-                    if (el !== container) el.classList.remove('active');
-                });
-                container.classList.toggle('active');
-            };
-
-            // 点击外部关闭
-            const closeHandler = (e) => {
-                if (!container.contains(e.target)) {
-                    container.classList.remove('active');
-                }
-            };
-            // 绑定到 document 上，注意防止内存泄漏（如果是 SPA 需要销毁机制）
-            document.addEventListener('click', closeHandler);
-            
-            // 返回实例以便后续可能的销毁
-            return {
-                destroy: () => document.removeEventListener('click', closeHandler),
-                getValue: () => selectedValue
-            };
-        }
+        
 
         // 渲染分页
         // container: DOM元素
@@ -531,6 +810,184 @@
         }
 
 
+        // --- 文件上传 (File Upload) ---
+        initUploads(selector = '.ui-upload', onUpload) {
+            const uploads = document.querySelectorAll(selector);
+            uploads.forEach(upload => {
+                const input = upload.querySelector('input[type="file"]');
+                const text = upload.querySelector('.ui-upload__text');
+                
+                // 点击触发
+                upload.onclick = () => input.click();
+                
+                // Input Change
+                input.onchange = (e) => handleFiles(e.target.files);
+
+                // Drag & Drop
+                upload.ondragover = (e) => { e.preventDefault(); upload.classList.add('drag-over'); };
+                upload.ondragleave = (e) => { e.preventDefault(); upload.classList.remove('drag-over'); };
+                upload.ondrop = (e) => {
+                    e.preventDefault();
+                    upload.classList.remove('drag-over');
+                    handleFiles(e.dataTransfer.files);
+                };
+
+                function handleFiles(files) {
+                    if (files.length > 0) {
+                        // 简单的文件名显示逻辑，实际需配合回调
+                        text.innerText = `已选择: ${files[0].name} (${(files[0].size/1024).toFixed(1)}KB)`;
+                        if (onUpload) onUpload(files);
+                    }
+                }
+            });
+        }
+
+        // ==========================================
+        // 命令面板 (Command Palette)
+        // ==========================================
+        /**
+         * 显示命令面板
+         * @param {Array} commands - 命令列表
+         * 结构示例: { id: 'save', title: '保存文件', icon: '💾', shortcut: 'Ctrl+S', action: () => {} }
+         */
+        showCommandPalette(commands = []) {
+            return new Promise((resolve) => {
+                // 防止重复打开
+                if (document.querySelector('.ui-cmd-mask')) return;
+
+                // 1. 创建 DOM
+                const mask = Utils.createElement('div', 'ui-mask ui-cmd-mask');
+                const box = Utils.createElement('div', 'ui-cmd-box ui-panel');
+                
+                const header = Utils.createElement('div', 'ui-cmd-header');
+                header.innerHTML = `<span class="ui-cmd-icon">🔍</span>`;
+                const input = Utils.createElement('input', 'ui-cmd-input');
+                input.placeholder = '输入命令搜索...';
+                header.appendChild(input);
+
+                const listEl = Utils.createElement('div', 'ui-cmd-list');
+                
+                const footer = Utils.createElement('div', 'ui-cmd-footer');
+                footer.innerHTML = `<span>↑↓ 选择</span><span>↵ 确认</span>`;
+
+                box.appendChild(header);
+                box.appendChild(listEl);
+                box.appendChild(footer);
+                mask.appendChild(box);
+                document.body.appendChild(mask);
+                
+                input.focus();
+
+                // 2. 状态管理
+                let selectedIndex = 0;
+                let filteredCommands = [...commands];
+
+                // 3. 渲染列表函数
+                const renderList = () => {
+                    listEl.innerHTML = '';
+                    if (filteredCommands.length === 0) {
+                        listEl.innerHTML = '<div class="ui-cmd-empty">未找到相关命令</div>';
+                        return;
+                    }
+
+                    filteredCommands.forEach((cmd, index) => {
+                        const isSelected = index === selectedIndex;
+                        const cls = `ui-cmd-item ${isSelected ? 'selected' : ''}`;
+                        
+                        const el = Utils.createElement('div', cls);
+                        // 处理图标，如果没有图标给个默认占位
+                        const iconHtml = `<span class="ui-cmd-item__icon">${cmd.icon || '•'}</span>`;
+                        const shortcutHtml = cmd.shortcut ? `<span class="ui-cmd-item__shortcut">${cmd.shortcut}</span>` : '';
+                        
+                        el.innerHTML = `
+                            <div class="ui-cmd-item__left">${iconHtml}<span>${cmd.title}</span></div>
+                            ${shortcutHtml}
+                        `;
+                        
+                        // 鼠标点击执行
+                        el.onclick = () => execute(cmd);
+                        // 鼠标悬停更新选中索引
+                        el.onmouseenter = () => {
+                            selectedIndex = index;
+                            updateHighlight();
+                        };
+                        
+                        listEl.appendChild(el);
+                    });
+                    
+                    ensureVisible();
+                };
+
+                // 只更新高亮样式 (性能优化)
+                const updateHighlight = () => {
+                    const items = listEl.querySelectorAll('.ui-cmd-item');
+                    items.forEach((item, idx) => {
+                        if (idx === selectedIndex) item.classList.add('selected');
+                        else item.classList.remove('selected');
+                    });
+                };
+
+                // 确保选中项在视图内
+                const ensureVisible = () => {
+                    const selectedEl = listEl.children[selectedIndex];
+                    if (selectedEl && selectedEl.scrollIntoView) {
+                        selectedEl.scrollIntoView({ block: 'nearest' });
+                    }
+                };
+
+                // 执行命令
+                const execute = (cmd) => {
+                    close();
+                    if (cmd && cmd.action) cmd.action();
+                    resolve(cmd);
+                };
+
+                const close = () => {
+                    Utils.removeElement(mask);
+                };
+
+                // 4. 事件绑定
+                
+                // 输入过滤
+                input.oninput = (e) => {
+                    const val = e.target.value.toLowerCase();
+                    filteredCommands = commands.filter(c => c.title.toLowerCase().includes(val));
+                    selectedIndex = 0;
+                    renderList();
+                };
+
+                // 键盘导航
+                input.onkeydown = (e) => {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        selectedIndex = (selectedIndex + 1) % filteredCommands.length;
+                        updateHighlight();
+                        ensureVisible();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        selectedIndex = (selectedIndex - 1 + filteredCommands.length) % filteredCommands.length;
+                        updateHighlight();
+                        ensureVisible();
+                    } else if (e.key === 'Enter') {
+                        e.preventDefault();
+                        execute(filteredCommands[selectedIndex]);
+                    } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        close();
+                    }
+                };
+
+                // 点击遮罩关闭
+                mask.onclick = (e) => {
+                    if (e.target === mask) close();
+                };
+
+                // 初始化渲染
+                renderList();
+            });
+        }
+
+
         // actions: [{ text: '拍照', color: 'blue', onClick: fn }, { text: '删除', type: 'danger' }]
         actionSheet(actions = []) {
             return new Promise((resolve) => {
@@ -540,7 +997,7 @@
                 mask.style.transition = 'opacity 0.3s';
                 
                 // 2. 创建面板
-                const sheet = Utils.createElement('div', 'ui-action-sheet');
+                const sheet = Utils.createElement('div', 'ui-action-sheet ui-panel');
                 
                 // 渲染选项
                 actions.forEach((item, index) => {
@@ -581,8 +1038,6 @@
             });
         }
 
-
-
         /**
          * 渲染响应式导航
          * @param {Array} items - [{ label: '首页', icon: '🏠', id: 'home', onClick: fn }]
@@ -591,7 +1046,7 @@
         renderResponsiveNav(items, activeId) {
             // 1. 清理旧的导航 (如果存在)
             const oldSide = document.querySelector('.ui-sidebar-nav');
-            const oldBottom = document.querySelector('.ui-bottom-nav');
+            const oldBottom = document.querySelector('.ui-tabbar-nav');
             Utils.removeElement(oldSide);
             Utils.removeElement(oldBottom);
 
@@ -601,7 +1056,7 @@
             // ============================
             // A. 创建侧边栏 (Sidebar) - 用于中大屏
             // ============================
-            const sidebar = Utils.createElement('div', 'ui-sidebar-nav');
+            const sidebar = Utils.createElement('div', 'ui-sidebar-nav ui-panel');
             
             // 可选：添加 Logo 区域
             const logo = Utils.createElement('div', '', '<h2 style="margin:0;padding:20px;text-align:center;color:#007bff">LOGO</h2>');
@@ -620,9 +1075,9 @@
             document.body.appendChild(sidebar);
 
             // ============================
-            // B. 创建底部栏 (Tabbar) - 用于小屏
+            // B. 创建底部标签栏 (Tabbar) - 用于小屏
             // ============================
-            const bottomBar = Utils.createElement('div', 'ui-bottom-nav');
+            const bottomBar = Utils.createElement('div', 'ui-tabbar-nav ui-panel');
             
             // 逻辑：如果超过5个，显示前4个 + "更多"
             let displayItems = items;
@@ -636,7 +1091,7 @@
 
             // 渲染前 4 个
             displayItems.forEach(item => {
-                const el = Utils.createElement('div', `ui-bottom-item ${item.id === activeId ? 'active' : ''}`);
+                const el = Utils.createElement('div', `ui-tabbar-item ${item.id === activeId ? 'active' : ''}`);
                 el.innerHTML = `<span class="ui-nav-icon">${item.icon}</span><span style="font-size:10px">${item.label}</span>`;
                 el.onclick = () => {
                     this._handleNavClick(items, item.id);
@@ -648,7 +1103,7 @@
             // 渲染 "更多" 按钮
             if (moreItems.length > 0) {
                 const isMoreActive = moreItems.some(i => i.id === activeId);
-                const moreBtn = Utils.createElement('div', `ui-bottom-item ${isMoreActive ? 'active' : ''}`);
+                const moreBtn = Utils.createElement('div', `ui-tabbar-item ${isMoreActive ? 'active' : ''}`);
                 moreBtn.innerHTML = `<span class="ui-nav-icon">⋯</span><span style="font-size:10px">更多</span>`;
                 
                 moreBtn.onclick = () => {
@@ -678,57 +1133,6 @@
         }
 
 
-
-
-        // --- 文件上传 (File Upload) ---
-        initUploads(selector = '.ui-upload', onUpload) {
-            const uploads = document.querySelectorAll(selector);
-            uploads.forEach(upload => {
-                const input = upload.querySelector('input[type="file"]');
-                const text = upload.querySelector('.ui-upload__text');
-                
-                // 点击触发
-                upload.onclick = () => input.click();
-                
-                // Input Change
-                input.onchange = (e) => handleFiles(e.target.files);
-
-                // Drag & Drop
-                upload.ondragover = (e) => { e.preventDefault(); upload.classList.add('drag-over'); };
-                upload.ondragleave = (e) => { e.preventDefault(); upload.classList.remove('drag-over'); };
-                upload.ondrop = (e) => {
-                    e.preventDefault();
-                    upload.classList.remove('drag-over');
-                    handleFiles(e.dataTransfer.files);
-                };
-
-                function handleFiles(files) {
-                    if (files.length > 0) {
-                        // 简单的文件名显示逻辑，实际需配合回调
-                        text.innerText = `已选择: ${files[0].name} (${(files[0].size/1024).toFixed(1)}KB)`;
-                        if (onUpload) onUpload(files);
-                    }
-                }
-            });
-        }
-
-        // --- 复制到剪贴板工具 ---
-        copyToClipboard(text) {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(text).then(() => {
-                    this.toast('复制成功', 'success');
-                });
-            } else {
-                // Fallback
-                const textarea = document.createElement('textarea');
-                textarea.value = text;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                this.toast('复制成功', 'success');
-            }
-        }
     }
 
     // 导出实例

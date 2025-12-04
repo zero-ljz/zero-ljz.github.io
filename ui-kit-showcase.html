@@ -1,29 +1,39 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UI Kit 完整演示 Showcase</title>
     <!-- 引入 UI Kit 样式 -->
     <link rel="stylesheet" href="css/ui-kit.css">
-    
+
     <!-- 演示页面专用样式 (仅用于排版展示，不属于UI库) -->
     <style>
         body {
-            background-color: #f4f6f8;
+            background: 
+                radial-gradient(at 0% 0%, hsla(340, 100%, 85%, 1) 0, transparent 50%),   /* 粉色 */
+                radial-gradient(at 50% 0%, hsla(40, 100%, 85%, 1) 0, transparent 50%),   /* 杏橙 */
+                radial-gradient(at 100% 0%, hsla(60, 100%, 85%, 1) 0, transparent 50%),  /* 柠檬黄 */
+                radial-gradient(at 0% 100%, hsla(160, 100%, 85%, 1) 0, transparent 50%), /* 薄荷绿 */
+                radial-gradient(at 50% 100%, hsla(200, 100%, 85%, 1) 0, transparent 50%),/* 天空蓝 */
+                radial-gradient(at 100% 100%, hsla(260, 100%, 85%, 1) 0, transparent 50%);/* 薰衣草紫 */
             padding: 20px;
             /* 预留给 sidebar 的 padding，虽然后面 JS 会自动处理，这里为了防止闪烁 */
-            padding-left: 20px; 
+            padding-left: 20px;
             padding-bottom: 80px;
         }
-        h1 { margin-bottom: 20px; color: #333; }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
         .demo-section {
-            background: #fff;
             padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             margin-bottom: 25px;
         }
+
         .demo-title {
             font-size: 18px;
             font-weight: bold;
@@ -32,6 +42,7 @@
             border-bottom: 1px solid #eee;
             color: #555;
         }
+
         .demo-group {
             display: flex;
             flex-wrap: wrap;
@@ -39,6 +50,7 @@
             margin-bottom: 15px;
             align-items: center;
         }
+
         .demo-context-area {
             width: 100%;
             height: 100px;
@@ -51,6 +63,7 @@
             color: #668;
             cursor: context-menu;
         }
+
         .preview-img {
             width: 100px;
             height: 100px;
@@ -59,21 +72,30 @@
             cursor: zoom-in;
             transition: 0.2s;
         }
-        .preview-img:hover { opacity: 0.8; }
-        
+
+        .preview-img:hover {
+            opacity: 0.8;
+        }
+
         /* 响应式调整 */
         @media (max-width: 767px) {
-            body { padding: 15px; padding-bottom: 80px; }
+            body {
+                padding: 15px;
+                padding-bottom: 80px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div style="max-width: 1000px; margin: 0 auto;">
+
+
         <h1>🎨 UI Kit 组件演示</h1>
-        
+
         <!-- 1. 基础按钮 -->
-        <div class="demo-section">
+        <div class="demo-section ui-panel">
             <div class="demo-title">基础按钮 (Buttons)</div>
             <div class="demo-group">
                 <button class="ui-btn ui-btn--default">默认按钮</button>
@@ -83,7 +105,7 @@
         </div>
 
         <!-- 2. 全局交互 (Dialogs & Toasts) -->
-        <div class="demo-section">
+        <div class="demo-section ui-panel">
             <div class="demo-title">全局交互 (Dialogs & Feedback)</div>
             <div class="demo-group">
                 <button class="ui-btn ui-btn--default" onclick="testAlert()">Alert 提示</button>
@@ -93,17 +115,48 @@
             </div>
             <div class="demo-group">
                 <button class="ui-btn ui-btn--primary" onclick="UIKit.toast('这是一条普通消息')">Toast Info</button>
-                <button class="ui-btn ui-btn--primary" style="background:var(--ui-success)" onclick="UIKit.toast('操作成功！', 'success')">Toast Success</button>
-                <button class="ui-btn ui-btn--primary" style="background:var(--ui-danger)" onclick="UIKit.toast('操作失败！', 'error')">Toast Error</button>
-                <button class="ui-btn ui-btn--default" onclick="UIKit.notify('系统通知', '您的数据已成功同步到云端。')">Notify 通知</button>
+                <button class="ui-btn ui-btn--primary" style="background:var(--ui-success)"
+                    onclick="UIKit.toast('操作成功！', 'success')">Toast Success</button>
+                <button class="ui-btn ui-btn--primary" style="background:var(--ui-danger)"
+                    onclick="UIKit.toast('操作失败！', 'error')">Toast Error</button>
+                <button class="ui-btn ui-btn--default" onclick="UIKit.notify('系统通知', '您的数据已成功同步到云端。')">Notify
+                    通知</button>
             </div>
             <div class="demo-group">
                 <button class="ui-btn ui-btn--default" onclick="testLoading()">测试 Loading (2秒后关闭)</button>
             </div>
         </div>
 
+
+        <!-- 选择 -->
+        <div class="demo-section ui-panel">
+            <div class="demo-title">选择</div>
+            <div class="demo-group">
+                <!-- 1. 下拉选择器 -->
+                <div id="select-demo-1" style="width: 250px;"></div>
+            </div>
+            <div class="demo-group">
+                <div id="select-demo-2" style="width: 300px;"></div>
+            </div>
+        </div>
+
+        <!-- 菜单 -->
+        <div class="demo-section ui-panel">
+            <div class="demo-title">菜单</div>
+
+            <!-- 菜单栏容器 -->
+            <div id="top-nav" style=" margin-bottom: 10px;"></div>
+            <div class="demo-group">
+
+                <button id="btn-action" class="ui-btn ui-btn--primary">点击操作 ▼</button>
+            </div>
+
+            <div id="ctx-area" class="box">在此区域点击右键</div>
+        </div>
+
+
         <!-- 3. 抽屉与菜单 (Drawer & ActionSheet) -->
-        <div class="demo-section">
+        <div class="demo-section ui-panel">
             <div class="demo-title">抽屉与菜单 (Drawers & Menus)</div>
             <div class="demo-group">
                 <button class="ui-btn ui-btn--default" onclick="testDrawer('right')">右侧抽屉</button>
@@ -113,9 +166,9 @@
         </div>
 
         <!-- 4. 表单组件 (Forms) -->
-        <div class="demo-section">
+        <div class="demo-section ui-panel">
             <div class="demo-title">表单组件 (Forms)</div>
-            
+
             <div style="margin-bottom: 15px;">
                 <p style="margin-bottom:5px; color:#666; font-size:14px;">开关 (Switch)</p>
                 <!-- Switch HTML 结构 -->
@@ -129,12 +182,6 @@
                 </label>
             </div>
 
-            <div style="margin-bottom: 15px; max-width: 300px;">
-                <p style="margin-bottom:5px; color:#666; font-size:14px;">下拉选择 (Select)</p>
-                <!-- Select 容器 -->
-                <div id="demo-select"></div>
-            </div>
-
             <div>
                 <p style="margin-bottom:5px; color:#666; font-size:14px;">文件上传 (Upload)</p>
                 <div class="ui-upload">
@@ -146,9 +193,9 @@
         </div>
 
         <!-- 5. 导航与分页 (Navigation) -->
-        <div class="demo-section">
+        <div class="demo-section ui-panel">
             <div class="demo-title">导航与分页 (Navigation)</div>
-            
+
             <div style="margin-bottom: 15px;">
                 <div id="demo-breadcrumb"></div>
             </div>
@@ -158,34 +205,35 @@
         </div>
 
         <!-- 6. 高级交互 (Context, Popover, Preview) -->
-        <div class="demo-section">
+        <div class="demo-section ui-panel">
             <div class="demo-title">高级交互 (Advanced)</div>
-            
+
             <div class="demo-group">
                 <!-- 气泡 -->
                 <button class="ui-btn ui-btn--default" id="btn-popover">点击显示气泡 (Popover)</button>
-                
-                <!-- 复制 -->
-                <button class="ui-btn ui-btn--default" onclick="UIKit.copyToClipboard('Hello UI Kit!')">复制文本</button>
             </div>
 
             <div class="demo-group" style="align-items: flex-start;">
                 <!-- 图片预览 -->
                 <div>
                     <p style="font-size:14px; color:#666; margin-bottom:5px;">图片预览 (点击图片)</p>
-                    <img src="https://picsum.photos/300/300" class="preview-img" onclick="UIKit.previewImage(this.src)" alt="Demo">
+                    <img src="https://picsum.photos/300/300" class="preview-img" onclick="UIKit.previewImage(this.src)"
+                        alt="Demo">
                 </div>
 
-                <!-- 右键菜单区域 -->
-                <div style="flex:1;">
-                    <p style="font-size:14px; color:#666; margin-bottom:5px;">右键菜单 (Context Menu)</p>
-                    <div class="demo-context-area" id="context-area">
-                        在此区域点击右键
-                    </div>
-                </div>
             </div>
+
+            <div class="demo-group">
+                <button class="ui-btn ui-btn--primary" onclick="openCmd()">打开命令面板 (Ctrl+K)</button>
+            </div>
+
         </div>
-        
+
+
+
+
+
+
         <div style="text-align: center; color: #999; margin-top: 30px;">
             UI Kit Demo Page &copy; 2023
         </div>
@@ -198,7 +246,7 @@
     <!-- 演示逻辑脚本 -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            
+
             // 1. 初始化响应式导航 (Sidebar / Tabbar)
             // 这会自动改变 body 的 padding
             UIKit.renderResponsiveNav([
@@ -210,21 +258,6 @@
                 { label: '更多选项', icon: '➕', id: 'more', onClick: () => console.log('More') },
             ], 'dashboard'); // 默认选中 dashboard
 
-
-            // 2. 初始化下拉框 (Select)
-            UIKit.renderSelect(document.getElementById('demo-select'), {
-                name: 'city',
-                placeholder: '请选择城市',
-                data: [
-                    { label: '北京', value: 'bj' },
-                    { label: '上海', value: 'sh' },
-                    { label: '广州', value: 'gz' },
-                    { label: '深圳', value: 'sz' },
-                ],
-                onChange: (val, item) => {
-                    UIKit.toast(`你选择了: ${item.label} (${val})`);
-                }
-            });
 
 
             // 3. 初始化分页 (Pagination)
@@ -267,17 +300,6 @@
                     </div>
                 `);
             };
-
-
-            // 7. 绑定右键菜单
-            const ctxArea = document.getElementById('context-area');
-            ctxArea.addEventListener('contextmenu', (e) => {
-                UIKit.contextMenu(e, [
-                    { label: '📄 新建文件', action: () => UIKit.toast('点击了新建') },
-                    { label: '✏️ 编辑', action: () => UIKit.toast('点击了编辑') },
-                    { label: '🗑️ 删除', action: () => UIKit.confirm('确定删除吗？').then(res => res && UIKit.toast('已删除', 'error')) }
-                ]);
-            });
 
         });
 
@@ -353,6 +375,125 @@
             });
         }
 
+
+        // ============================
+        // 命令面板功能
+        // ============================
+        const commands = [
+            { title: '新建文件 (New File)', icon: '📄', shortcut: 'Ctrl+N', action: () => UIKit.toast('新建文件') },
+            { title: '打开文件 (Open File)', icon: '📂', shortcut: 'Ctrl+O', action: () => UIKit.toast('打开文件') },
+            { title: '切换主题: 深色 (Dark Mode)', icon: '🌙', action: () => document.body.style.background = '#333' },
+            { title: '切换主题: 浅色 (Light Mode)', icon: '☀️', action: () => document.body.style.background = '#fff' },
+            { title: '显示设置 (Settings)', icon: '⚙️', action: () => UIKit.alert('打开设置窗口') },
+            { title: '关于 (About)', icon: 'ℹ️', action: () => UIKit.modal({ title: '关于', content: 'UI Kit v1.0' }) },
+        ];
+
+        function openCmd() {
+            UIKit.showCommandPalette(commands);
+        }
+
+        // 绑定全局快捷键 Ctrl+K 打开命令面板
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'k') {
+                e.preventDefault();
+                openCmd();
+            }
+        });
+
+
+
+        // === 1. 初始化单选 (带搜索) ===
+        const select1 = UIKit.createSelect('#select-demo-1', {
+            placeholder: '选择城市 (单选)',
+            searchable: true,
+            data: [
+                { label: '北京', value: 'bj' },
+                { label: '上海', value: 'sh' },
+                { label: '广州', value: 'gz' },
+                { label: '深圳', value: 'sz' },
+                { label: '东京', value: 'tk' }
+            ],
+            onChange: (val) => console.log('单选结果:', val)
+        });
+
+        // === 2. 初始化多选 ===
+        const select2 = UIKit.createSelect('#select-demo-2', {
+            placeholder: '选择标签 (多选)',
+            multiple: true,
+            searchable: true,
+            data: [
+                { label: 'JavaScript', value: 'js' },
+                { label: 'CSS3', value: 'css' },
+                { label: 'HTML5', value: 'html' },
+                { label: 'Node.js', value: 'node' }
+            ],
+            onChange: (val) => console.log('多选结果:', val)
+        });
+        select2.setValue(['js', 'node']); // 默认选中
+
+        // === 3. 下拉操作菜单 ===
+        UIKit.dropdownMenu(document.getElementById('btn-action'), [
+            { label: '编辑', icon: '✎', onClick: () => UIKit.toast('点击了编辑') },
+            { label: '复制', icon: '❐', onClick: () => UIKit.toast('点击了复制') },
+            { separator: true },
+            { label: '删除', icon: '🗑', danger: true, onClick: () => UIKit.confirm('确定删除吗？') }
+        ]);
+
+        // === 4. 上下文菜单 (右键) ===
+        UIKit.contextMenu(document.getElementById('ctx-area'), [
+            { label: '查看详情', onClick: () => UIKit.alert('查看详情') },
+            { label: '下载文件', onClick: () => UIKit.toast('开始下载...', 'success') },
+            { separator: true },
+            { label: '系统设置', onClick: () => console.log('Settings') }
+        ]);
+
+
+        // 定义菜单数据结构
+        const menuData = [
+            {
+                label: '文件(F)',
+                children: [
+                    { label: '新建窗口', icon: '＋', onClick: () => console.log('New') },
+                    { label: '打开文件...', icon: '📂', onClick: () => UIKit.prompt('输入文件路径') },
+                    { separator: true },
+                    { label: '保存', icon: '💾', onClick: () => UIKit.toast('保存成功', 'success') },
+                    { label: '另存为...', onClick: () => console.log('Save As') },
+                    { separator: true },
+                    { label: '退出', danger: true, onClick: () => window.close() }
+                ]
+            },
+            {
+                label: '编辑(E)',
+                children: [
+                    { label: '撤销', icon: '↶', onClick: () => console.log('Undo') },
+                    { label: '重做', icon: '↷', onClick: () => console.log('Redo') },
+                    { separator: true },
+                    { label: '剪切', onClick: () => console.log('Cut') },
+                    { label: '复制', onClick: () => console.log('Copy') },
+                    { label: '粘贴', onClick: () => console.log('Paste') }
+                ]
+            },
+            {
+                label: '视图(V)',
+                children: [
+                    { label: '放大', icon: '🔍', onClick: () => console.log('Zoom In') },
+                    { label: '缩小', onClick: () => console.log('Zoom Out') },
+                    { separator: true },
+                    { label: '全屏模式', onClick: () => console.log('Fullscreen') }
+                ]
+            },
+            {
+                label: '帮助(H)',
+                children: [
+                    { label: '关于我们', onClick: () => UIKit.alert('UI Kit v1.0 <br> Create by You', '关于') }
+                ]
+            }
+        ];
+
+        // 初始化菜单栏
+        UIKit.createMenubar('#top-nav', menuData);
+
     </script>
 </body>
+
 </html>

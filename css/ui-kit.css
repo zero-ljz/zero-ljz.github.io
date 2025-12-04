@@ -1,19 +1,67 @@
 /* ui-kit.css */
 :root {
-  --ui-primary: #00B7C3; /* #007bff */
-  --ui-success: #28a745;
-  --ui-danger: #dc3545;
-  --ui-warning: #ffc107;
-  --ui-text: #333;
-  --ui-bg: #fff;
-  --ui-border: #ddd;
-  --ui-radius: 6px;
-  --ui-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --ui-mask: rgba(0, 0, 0, 0.5);
-  --ui-z-idx-low: 1000;
-  --ui-z-idx-mid: 2000;
-  --ui-z-idx-high: 3000;
-  --ui-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* 🎨 主题色彩 */
+  --ui-primary: #00B7C3; /* 主色 (#007bff) */
+  --ui-success: #28a745; /* 成功色 */
+  --ui-danger: #dc3545;  /* 危险色 */
+  --ui-warning: #ffc107; /* 警告色 */
+
+  /* 📝 文本颜色 */
+  --ui-text: #333;             /* 主文本 */
+  --ui-text-secondary: #6b7280; /* 次文本 */
+
+  /* 🖼️ 背景与边框 */
+  --ui-bg: #fff;          /* 页面背景 */
+  --ui-bg-panel: rgba(255, 255, 255, 0.65); /* 面板背景 */
+  --ui-border: #ddd;      /* 边框颜色 */
+  --ui-border-panel: rgba(255, 255, 255, 0.4);
+
+  /* 📐 尺寸与圆角 */
+  --ui-padding: 12px; /* 内边距 */
+  --ui-radius: 6px;   /* 圆角半径 */
+  --ui-radius-panel: 6px;
+
+  /* 🌫️ 阴影与滤镜 */
+  --ui-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 阴影 */
+  --ui-shadow-panel: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  --ui-filter-panel: blur(20px) saturate(180%); /* 毛玻璃滤镜 */
+
+  /* 🌓 遮罩 */
+  --ui-mask: rgba(0, 0, 0, 0.5); /* 半透明遮罩 */
+
+  /* 📊 层级控制 */
+  --ui-z-idx-low: 1000;  /* 低层级 */
+  --ui-z-idx-mid: 2000;  /* 中层级 */
+  --ui-z-idx-high: 3000; /* 高层级 */
+
+  /* 🔤 字体与过渡 */
+  --ui-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* 字体族 */
+  --ui-trans-speed-panel: 0.3s; /* 过渡速度 */
+}
+
+
+/* --- 通用面板基类 (所有组件的核心) --- */
+.ui-panel {
+  position: relative;
+  background: var(--ui-bg-panel);
+  color: var(--ui-text-secondary);
+  border-radius: var(--ui-radius-panel);
+  border: 1px solid var(--ui-border-panel);
+  box-shadow: var(--ui-shadow-panel);
+  backdrop-filter: var(--ui-filter-panel);
+  -webkit-backdrop-filter: var(--ui-filter-panel); /* Safari */
+  transition: all var(--ui-trans-speed-panel) ease;
+  /* overflow: hidden; */
+}
+/* 模拟噪点 (可选，增加质感) */
+.ui-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+    mix-blend-mode: overlay;
 }
 
 /* 基础重置 */
@@ -41,8 +89,7 @@
 
 /* 对话框/模态框通用容器 */
 .ui-dialog {
-  background: var(--ui-bg); width: 400px; max-width: 90%;
-  border-radius: var(--ui-radius); box-shadow: var(--ui-shadow);
+  width: 400px; max-width: 90%;
   font-family: var(--ui-font-family); overflow: hidden;
   position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
   animation: ui-slide-up 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
@@ -66,6 +113,145 @@
 .ui-toast--success { border-color: var(--ui-success); }
 .ui-toast--error { border-color: var(--ui-danger); }
 
+
+
+
+
+/* =========================================
+   组件: UISelect (下拉/组合/多选)
+   ========================================= */
+.ui-select {
+  position: relative;
+  width: 100%;
+  font-family: var(--ui-font-family);
+}
+
+/* 触发器 (输入框/显示框) */
+.ui-select__trigger {
+  /* min-height: 38px; */
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius);
+  background: var(--ui-bg);
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.ui-select__trigger::after {
+    content: ''; border: 5px solid transparent; border-top-color: #999;
+    margin-top: 4px; transition: transform 0.2s;
+}
+.ui-select.active .ui-select__trigger::after {
+    transform: rotate(180deg);
+    margin-top: -4px;
+}
+.ui-select__trigger:focus-within { border-color: var(--ui-primary); box-shadow: 0 0 0 2px rgba(0, 183, 195, 0.2); }
+.ui-select__trigger.is-disabled { background: #f5f5f5; cursor: not-allowed; opacity: 0.7; }
+
+/* 输入框 (用于搜索) */
+.ui-select__input {
+  border: none; outline: none; background: transparent;
+  flex: 1; min-width: 60px; height: 28px; font-size: 14px;
+}
+
+/* 占位符 */
+.ui-select__placeholder { color: #999; margin-left: 4px; user-select: none; }
+
+
+/* 标签 (多选时) */
+.ui-tag {
+  background: #e6f7ff; border: 1px solid #91d5ff; color: #0060df;
+  border-radius: 4px; padding: 2px 8px; font-size: 12px;
+  display: flex; align-items: center; gap: 6px;
+}
+.ui-tag__close { cursor: pointer; font-weight: bold; opacity: 0.6; }
+.ui-tag__close:hover { opacity: 1; }
+
+/* 下拉菜单列表 */
+.ui-select__dropdown {
+  position: absolute; top: calc(100% + 6px); left: 0; width: 100%;
+  background: var(--ui-bg); border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius); box-shadow: var(--ui-shadow);
+  z-index: var(--ui-z-idx-mid);
+  max-height: 250px; overflow-y: auto;
+  opacity: 0; transform: scaleY(0.95); transform-origin: top center;
+  visibility: hidden; transition: 0.15s ease;
+}
+.ui-select__dropdown.is-open { opacity: 1; transform: scaleY(1); visibility: visible; }
+
+/* 选项 */
+.ui-select__option { padding: 8px 12px; cursor: pointer; transition: background 0.1s; font-size: 14px; }
+.ui-select__option:hover { background: #f5f5f5; }
+.ui-select__option.is-selected { color: var(--ui-primary); background: #e6fffb; font-weight: 500; }
+.ui-select__option.is-disabled { color: #ccc; cursor: not-allowed; background: #fff; }
+.ui-select__empty { padding: 12px; text-align: center; color: #999; font-size: 13px; }
+
+
+/* =========================================
+   组件: UIMenu (上下文菜单/操作菜单)
+   ========================================= */
+.ui-menu {
+  position: fixed; /* 上下文菜单用 fixed, 下拉菜单可用 absolute */
+  background: var(--ui-bg);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius);
+  box-shadow: var(--ui-shadow);
+  z-index: var(--ui-z-idx-high);
+  min-width: 180px;
+  padding: 5px 0;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.1s;
+}
+.ui-menu.is-visible { opacity: 1; visibility: visible; }
+
+.ui-menu__item {
+  padding: 8px 16px; cursor: pointer; display: flex; align-items: center; gap: 8px;
+  font-size: 14px; color: var(--ui-text); transition: background 0.1s;
+}
+.ui-menu__item:hover { background: #f5f5f5; }
+.ui-menu__item.has-submenu { justify-content: space-between; }
+.ui-menu__item.is-danger { color: var(--ui-danger); }
+.ui-menu__divider { height: 1px; background: var(--ui-border); margin: 4px 0; }
+.ui-menu__icon { width: 16px; text-align: center; opacity: 0.7; }
+
+/* =========================================
+   组件: UIMenubar (顶部菜单栏)
+   ========================================= */
+.ui-menubar {
+  display: flex;
+  background: #f5f5f5;
+  border-bottom: 1px solid var(--ui-border);
+  user-select: none;
+}
+
+.ui-menubar__item {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--ui-text);
+  transition: background 0.1s;
+  position: relative;
+}
+
+.ui-menubar__item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* 当菜单展开时，保持高亮状态 */
+.ui-menubar__item.is-active {
+  background: #e6e6e6;
+  color: var(--ui-primary); /* 可选：高亮文字颜色 */
+}
+
+
+
+
+
+
+
 /* 加载提示 (Loading) */
 .ui-loading-spinner {
   width: 40px; height: 40px; border: 4px solid #f3f3f3;
@@ -74,29 +260,15 @@
 }
 @keyframes ui-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-/* 气泡 (Tooltip/Popover) */
+/* 气泡 (Popover) */
 .ui-popover {
-  position: absolute; background: #fff; border: 1px solid var(--ui-border);
-  box-shadow: var(--ui-shadow); border-radius: var(--ui-radius);
+  position: absolute;
   z-index: var(--ui-z-idx-low); min-width: 150px;
 }
 
-/* 上下文菜单 (Context Menu) */
-.ui-context-menu {
-  position: fixed; background: #fff; border: 1px solid var(--ui-border);
-  box-shadow: var(--ui-shadow); border-radius: 4px; padding: 5px 0;
-  z-index: var(--ui-z-idx-high); min-width: 160px; display: none;
-}
-.ui-context-menu__item {
-  padding: 8px 15px; cursor: pointer; display: block;
-  font-size: 14px; color: var(--ui-text); text-decoration: none;
-}
-.ui-context-menu__item:hover { background: #f5f5f5; }
-
-/* Drawer */
+/* 抽屉 (Drawer) */
 .ui-drawer {
     position: fixed; top: 0; right: 0; height: 100%;
-    background: var(--ui-bg); box-shadow: -4px 0 12px rgba(0,0,0,0.1);
     z-index: var(--ui-z-idx-mid); width: 400px; max-width: 90vw;
     transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
     display: flex; flex-direction: column;
@@ -110,53 +282,6 @@
 
 
 
-
-
-/* Switch */
-.ui-switch { position: relative; display: inline-block; width: 44px; height: 24px; vertical-align: middle; }
-.ui-switch input { opacity: 0; width: 0; height: 0; }
-.ui-switch__slider {
-    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #ccc; transition: .4s; border-radius: 24px;
-}
-.ui-switch__slider:before {
-    position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
-    background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-.ui-switch input:checked + .ui-switch__slider { background-color: var(--ui-primary); }
-.ui-switch input:checked + .ui-switch__slider:before { transform: translateX(20px); }
-.ui-switch input:disabled + .ui-switch__slider { opacity: 0.5; cursor: not-allowed; }
-
-
-/* Select */
-.ui-select {
-    position: relative; width: 100%; min-width: 200px;
-    font-size: 14px; user-select: none;
-}
-.ui-select__trigger {
-    padding: 8px 12px; border: 1px solid var(--ui-border); border-radius: var(--ui-radius);
-    background: #fff; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-    transition: border-color 0.2s;
-}
-.ui-select__trigger:hover { border-color: var(--ui-primary); }
-.ui-select.active .ui-select__trigger { border-color: var(--ui-primary); box-shadow: 0 0 0 2px rgba(0,123,255, 0.1); }
-.ui-select__trigger::after {
-    content: ''; border: 5px solid transparent; border-top-color: #999;
-    margin-top: 4px; transition: transform 0.2s;
-}
-.ui-select.active .ui-select__trigger::after { transform: rotate(180deg); margin-top: -4px; }
-
-.ui-select__options {
-    position: absolute; top: 100%; left: 0; right: 0; margin-top: 5px;
-    background: #fff; border: 1px solid var(--ui-border); border-radius: var(--ui-radius);
-    box-shadow: var(--ui-shadow); z-index: var(--ui-z-idx-low);
-    max-height: 250px; overflow-y: auto; display: none;
-}
-.ui-select.active .ui-select__options { display: block; animation: ui-fade-in 0.2s; }
-
-.ui-select__item { padding: 10px 12px; cursor: pointer; color: var(--ui-text); transition: background 0.1s; }
-.ui-select__item:hover { background-color: #f5f5f5; }
-.ui-select__item.selected { background-color: #e6f7ff; color: var(--ui-primary); font-weight: 500; }
 
 
 /* Pagination */
@@ -182,17 +307,108 @@
 .ui-breadcrumb__item:last-child .ui-breadcrumb__separator { display: none; }
 
 
+/* Switch */
+.ui-switch { position: relative; display: inline-block; width: 44px; height: 24px; vertical-align: middle; }
+.ui-switch input { opacity: 0; width: 0; height: 0; }
+.ui-switch__slider {
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc; transition: .4s; border-radius: 24px;
+}
+.ui-switch__slider:before {
+    position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+    background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.ui-switch input:checked + .ui-switch__slider { background-color: var(--ui-primary); }
+.ui-switch input:checked + .ui-switch__slider:before { transform: translateX(20px); }
+.ui-switch input:disabled + .ui-switch__slider { opacity: 0.5; cursor: not-allowed; }
+
+
+/* 文件上传区域 */
+.ui-upload {
+    border: 2px dashed var(--ui-border); border-radius: var(--ui-radius);
+    padding: 30px; text-align: center; cursor: pointer; transition: all 0.2s;
+    background: #fafafa; position: relative;
+}
+.ui-upload:hover, .ui-upload.drag-over { border-color: var(--ui-primary); background: rgba(var(--ui-primary-rgb), 0.05); }
+.ui-upload__icon { font-size: 32px; color: #ccc; margin-bottom: 10px; }
+.ui-upload__text { font-size: 14px; color: #666; }
+.ui-upload input { display: none; }
+
+
+/* =========================================
+   命令面板 (Command Palette)
+   ========================================= */
+.ui-cmd-mask {
+    align-items: flex-start; /* 也就是 top-center 对齐，而不是正中心 */
+    padding-top: 10vh;
+}
+
+.ui-cmd-box {
+    width: 600px; max-width: 90%;
+    overflow: hidden; display: flex; flex-direction: column;
+    animation: ui-slide-up-small 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+@keyframes ui-slide-up-small {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.ui-cmd-header { border-bottom: 1px solid var(--ui-border); padding: 12px; display: flex; align-items: center; }
+.ui-cmd-icon { margin-right: 10px; color: #999; font-size: 18px; }
+
+.ui-cmd-input {
+    border: none; outline: none; font-size: 16px; width: 100%;
+    height: 30px; background: transparent; color: var(--ui-text);
+}
+
+.ui-cmd-list {
+    max-height: 400px; overflow-y: auto; padding: 6px 0;
+    scroll-behavior: smooth;
+}
+.ui-cmd-empty { padding: 20px; text-align: center; color: #999; font-size: 14px; }
+
+.ui-cmd-item {
+    padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; font-size: 14px; border-left: 3px solid transparent;
+}
+/* 选中/高亮状态 */
+.ui-cmd-item.selected { background: #f5f5f5; border-left-color: var(--ui-primary); }
+.ui-cmd-item:active { background: #e6e6e6; }
+
+.ui-cmd-item__left { display: flex; align-items: center; gap: 10px; }
+.ui-cmd-item__icon { width: 20px; text-align: center; color: #666; }
+.ui-cmd-item__shortcut {
+    font-size: 12px; background: #eee; padding: 2px 6px;
+    border-radius: 4px; color: #666; font-family: monospace;
+}
+.ui-cmd-footer {
+    padding: 6px 12px; border-top: 1px solid var(--ui-border);
+    font-size: 12px; color: #999; display: flex; justify-content: space-between;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 /* Action Sheet */
 .ui-action-sheet {
     position: fixed; left: 0; bottom: 0; width: 100%;
-    background: #f7f7f7; z-index: var(--ui-z-idx-high);
+    z-index: var(--ui-z-idx-high);
     border-radius: 12px 12px 0 0; overflow: hidden;
     transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
 }
 .ui-action-sheet.visible { transform: translateY(0); }
 
 .ui-action-sheet__item {
-    background: #fff; padding: 16px; text-align: center;
+    padding: 16px; text-align: center;
     font-size: 16px; border-bottom: 1px solid #eee;
     active-behavior: none; /* 防止点击高亮错位 */
 }
@@ -200,22 +416,6 @@
 .ui-action-sheet__item:last-child { border-bottom: none; }
 .ui-action-sheet__item--danger { color: var(--ui-danger); }
 .ui-action-sheet__cancel { margin-top: 8px; border-top: none; font-weight: bold; }
-
-.ui-tabbar {
-    position: fixed; bottom: 0; left: 0; width: 100%; height: 50px;
-    background: #fff; border-top: 1px solid #eee; display: flex;
-    justify-content: space-around; align-items: center; z-index: var(--ui-z-idx-low);
-    padding-bottom: env(safe-area-inset-bottom); /* 适配 iPhone X */
-}
-.ui-tabbar-item {
-    flex: 1; text-align: center; color: #999; font-size: 10px; cursor: pointer;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-}
-.ui-tabbar-item.active { color: var(--ui-primary); }
-.ui-tabbar-icon { font-size: 20px; margin-bottom: 2px; }
-
-
-
 
 
 /* =========================================
@@ -229,7 +429,7 @@
 /* --- 1. 侧边栏 (Desktop & Tablet) --- */
 .ui-sidebar-nav {
     position: fixed; top: 0; left: 0; height: 100%;
-    background: #fff; border-right: 1px solid var(--ui-border);
+    border-right: 1px solid var(--ui-border);
     z-index: var(--ui-z-idx-low); display: flex; flex-direction: column;
     padding-top: 20px; overflow-y: auto; transition: width 0.3s ease;
     /* 隐藏滚动条但允许滚动 */
@@ -247,18 +447,18 @@
 .ui-sidebar-item .ui-nav-icon { margin-right: 12px; margin-bottom: 0; width: 24px; text-align: center; }
 .ui-sidebar-item .ui-nav-text { font-size: 14px; opacity: 1; transition: opacity 0.2s; }
 
-/* --- 2. 底部栏 (Mobile) --- */
-.ui-bottom-nav {
+/* --- 2. 底部标签栏 (Mobile) --- */
+.ui-tabbar-nav {
     position: fixed; bottom: 0; left: 0; width: 100%; height: 50px;
-    background: #fff; border-top: 1px solid var(--ui-border);
+    border-top: 1px solid var(--ui-border);
     z-index: var(--ui-z-idx-low); display: none; /* 默认隐藏 */
     padding-bottom: env(safe-area-inset-bottom);
 }
-.ui-bottom-item {
+.ui-tabbar-item {
     flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
     color: #999; cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
-.ui-bottom-item.active { color: var(--ui-primary); }
+.ui-tabbar-item.active { color: var(--ui-primary); }
 
 /* --- 响应式断点控制 --- */
 
@@ -280,19 +480,6 @@
 /* C. 小屏幕 (Mobile): 隐藏侧边栏，显示底部栏 */
 @media (max-width: 767px) {
     .ui-sidebar-nav { display: none; }
-    .ui-bottom-nav { display: flex; }
+    .ui-tabbar-nav { display: flex; }
     .ui-app-layout { padding-left: 0; padding-bottom: 60px; } /* 给底部留位 */
 }
-
-
-/* 文件上传区域 */
-.ui-upload {
-    border: 2px dashed var(--ui-border); border-radius: var(--ui-radius);
-    padding: 30px; text-align: center; cursor: pointer; transition: all 0.2s;
-    background: #fafafa; position: relative;
-}
-.ui-upload:hover, .ui-upload.drag-over { border-color: var(--ui-primary); background: rgba(var(--ui-primary-rgb), 0.05); }
-.ui-upload__icon { font-size: 32px; color: #ccc; margin-bottom: 10px; }
-.ui-upload__text { font-size: 14px; color: #666; }
-.ui-upload input { display: none; }
-
