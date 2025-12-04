@@ -172,9 +172,7 @@
 
 /* 下拉菜单列表 */
 .ui-select__dropdown {
-  position: absolute; top: calc(100% + 6px); left: 0; width: 100%;
-  background: var(--ui-bg); border: 1px solid var(--ui-border);
-  border-radius: var(--ui-radius); box-shadow: var(--ui-shadow);
+  position: absolute;
   z-index: var(--ui-z-idx-mid);
   max-height: 250px; overflow-y: auto;
   opacity: 0; transform: scaleY(0.95); transform-origin: top center;
@@ -195,10 +193,6 @@
    ========================================= */
 .ui-menu {
   position: fixed; /* 上下文菜单用 fixed, 下拉菜单可用 absolute */
-  background: var(--ui-bg);
-  border: 1px solid var(--ui-border);
-  border-radius: var(--ui-radius);
-  box-shadow: var(--ui-shadow);
   z-index: var(--ui-z-idx-high);
   min-width: 180px;
   padding: 5px 0;

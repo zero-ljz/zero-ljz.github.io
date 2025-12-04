@@ -78,10 +78,10 @@
             this.trigger.appendChild(this.input);
             
             // 下拉列表
-            this.dropdown = Utils.createElement('div', 'ui-select__dropdown');
+            this.dropdown = Utils.createElement('div', 'ui-select__dropdown ui-panel');
             
             this.container.appendChild(this.trigger);
-            this.container.appendChild(this.dropdown);
+            document.body.appendChild(this.dropdown); 
 
             // 2. 绑定事件
             this._bindEvents();
@@ -115,12 +115,16 @@
 
             // 点击外部关闭
             document.addEventListener('click', (e) => {
-                if (!this.container.contains(e.target)) {
+                // 判断点击是否在容器内，或者在下拉菜单内
+                const isClickInContainer = this.container.contains(e.target);
+                const isClickInDropdown = this.dropdown.contains(e.target);
+                
+                if (!isClickInContainer && !isClickInDropdown) {
                     this._close();
                 }
             });
 
-            // 选项点击代理
+            // 选项点击
             this.dropdown.addEventListener('click', (e) => {
                 const option = e.target.closest('.ui-select__option');
                 if (option && !option.classList.contains('is-disabled')) {
@@ -129,6 +133,30 @@
                     this._handleSelect(value, label);
                 }
             });
+
+            // 监听窗口大小变化，更新位置
+            window.addEventListener('resize', () => {
+                if (this.state.isOpen) this._updatePosition();
+            });
+            
+            // 监听滚动 (可选，如果页面滚动需要菜单跟着动，则开启)
+            window.addEventListener('scroll', () => {
+                if (this.state.isOpen) this._updatePosition();
+            }, true);
+        }
+
+        // 新增：计算并设置下拉菜单的位置
+        _updatePosition() {
+            const rect = this.trigger.getBoundingClientRect();
+            const scrollY = window.scrollY || window.pageYOffset;
+            const scrollX = window.scrollX || window.pageXOffset;
+
+            // 设置宽度与 Trigger 一致
+            this.dropdown.style.width = `${rect.width}px`;
+            
+            // 设置绝对位置 (Trigger 底部 + 6px 间距)
+            this.dropdown.style.left = `${rect.left + scrollX}px`;
+            this.dropdown.style.top = `${rect.bottom + scrollY + 6}px`;
         }
 
         _handleSelect(value, label) {
@@ -212,6 +240,9 @@
         _toggle() { this.state.isOpen ? this._close() : this._open(); }
         
         _open() {
+            // 打开前先计算位置
+            this._updatePosition();
+            
             this.state.isOpen = true;
             this.dropdown.classList.add('is-open');
             this.container.classList.add('active');
@@ -433,7 +464,7 @@
         showMenu(x, y, items) {
             this.closeMenu(); // 先关闭已存在的
 
-            const menu = Utils.createElement('div', 'ui-menu');
+            const menu = Utils.createElement('div', 'ui-menu ui-panel');
             
             items.forEach(item => {
                 if (item.separator) {
