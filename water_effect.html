@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>真实落叶池塘水面模拟</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0d1b15; 
+            font-family: sans-serif;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        #canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const DOWNSCALE = 2; 
+        let width, height, simWidth, simHeight;
+        
+        let size, texture, rippleData, lastRippleData;
+        let imgData;
+
+        const damping = 0.975; 
+
+        // 1. 先声明图片对象
+        const bgImage = new Image();
+        bgImage.crossOrigin = "anonymous"; 
+        bgImage.src = 'https://picsum.photos/1920/1080';
+
+        // 2. 核心初始化函数
+        function init(fallback = false) {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            
+            simWidth = Math.floor(width / DOWNSCALE);
+            simHeight = Math.floor(height / DOWNSCALE);
+            size = simWidth * simHeight;
+
+            rippleData = new Float32Array(size);
+            lastRippleData = new Float32Array(size);
+
+            const bgCanvas = document.createElement('canvas');
+            bgCanvas.width = simWidth;
+            bgCanvas.height = simHeight;
+            const bgCtx = bgCanvas.getContext('2d');
+
+            if (!fallback && bgImage.complete && bgImage.naturalWidth !== 0) {
+                let imgWidth = bgImage.width;
+                let imgHeight = bgImage.height;
+                let outputRatio = simWidth / simHeight;
+                let inputRatio = imgWidth / imgHeight;
+                
+                let srcX, srcY, srcWidth, srcHeight;
+                if (inputRatio > outputRatio) {
+                    srcHeight = imgHeight;
+                    srcWidth = imgHeight * outputRatio;
+                    srcX = (imgWidth - srcWidth) / 2;
+                    srcY = 0;
+                } else {
+                    srcWidth = imgWidth;
+                    srcHeight = imgWidth / outputRatio;
+                    srcX = 0;
+                    srcY = (imgHeight - srcHeight) / 2;
+                }
+                bgCtx.drawImage(bgImage, srcX, srcY, srcWidth, srcHeight, 0, 0, simWidth, simHeight);
+            } else {
+                const grad = bgCtx.createLinearGradient(0, 0, simWidth, simHeight);
+                grad.addColorStop(0, '#0a2e1d'); grad.addColorStop(0.5, '#103d31'); grad.addColorStop(1, '#05141c');
+                bgCtx.fillStyle = grad; bgCtx.fillRect(0, 0, simWidth, simHeight);
+            }
+
+            texture = bgCtx.getImageData(0, 0, simWidth, simHeight).data;
+
+            imgData = ctx.createImageData(simWidth, simHeight);
+            for (let i = 3; i < imgData.data.length; i += 4) {
+                imgData.data[i] = 255;
+            }
+        }
+
+        // 3. 物理波形更新
+        // 3. 物理波形更新（带阈值截断，防止无限余震）
+        function updateWave() {
+            let hasActiveWave = false; // 用于标记当前水面是否还有活性能量
+
+            for (let y = 1; y < simHeight - 1; y++) {
+                for (let x = 1; x < simWidth - 1; x++) {
+                    let i = y * simWidth + x;
+                    
+                    // 波动方程
+                    let value = (
+                        lastRippleData[i - 1] + 
+                        lastRippleData[i + 1] + 
+                        lastRippleData[i - simWidth] + 
+                        lastRippleData[i + simWidth]
+                    ) / 2 - rippleData[i];
+
+                    // 1. 稍微调低衰减系数（从 0.975 降到 0.95，让波纹消散得更自然、更快）
+                    value *= 0.95; 
+                    
+                    // 2. 核心修复：能量截断。如果能量太小，直接归零，彻底杀死余震
+                    if (Math.abs(value) < 0.15) {
+                        value = 0;
+                    } else {
+                        hasActiveWave = true; // 还有大能量波在运动
+                    }
+
+                    // 边界安全限制
+                    if (value > 127) value = 127;
+                    if (value < -127) value = -127;
+
+                    rippleData[i] = value;
+                }
+            }
+
+            // 优化性能：如果整张地图已经完全没有能量了，直接把整个缓冲区清零，确保绝对静止
+            if (!hasActiveWave) {
+                rippleData.fill(0);
+                lastRippleData.fill(0);
+            }
+
+            let temp = lastRippleData;
+            lastRippleData = rippleData;
+            rippleData = temp;
+        }
+
+        // 4. 渲染水波与物理折射
+        function renderWave() {
+            if (!texture) return;
+            let srcIndex = 0;
+
+            for (let y = 0; y < simHeight; y++) {
+                for (let x = 0; x < simWidth; x++) {
+                    
+                    if (x === 0 || x === simWidth - 1 || y === 0 || y === simHeight - 1) {
+                        const baseIdx = (y * simWidth + x) * 4;
+                        imgData.data[srcIndex] = texture[baseIdx];
+                        imgData.data[srcIndex + 1] = texture[baseIdx + 1];
+                        imgData.data[srcIndex + 2] = texture[baseIdx + 2];
+                        srcIndex += 4;
+                        continue;
+                    }
+
+                    let i = y * simWidth + x;
+
+                    let dx = lastRippleData[i - 1] - lastRippleData[i + 1];
+                    let dy = lastRippleData[i - simWidth] - lastRippleData[i + simWidth];
+
+                    let xOffset = Math.floor(dx * 1.8); 
+                    let yOffset = Math.floor(dy * 1.8);
+
+                    let refX = x + xOffset;
+                    let refY = y + yOffset;
+
+                    if (refX < 0) refX = 0;
+                    if (refX >= simWidth) refX = simWidth - 1;
+                    if (refY < 0) refY = 0;
+                    if (refY >= simHeight) refY = simHeight - 1;
+
+                    let targetIndex = (refY * simWidth + refX) * 4;
+
+                    let r = texture[targetIndex];
+                    let g = texture[targetIndex + 1];
+                    let b = texture[targetIndex + 2];
+
+                    let specular = dx * 2.2 + dy * 1.5; 
+                    let slopeSq = dx * dx + dy * dy;
+                    let fresnel = Math.min(28, slopeSq * 0.06); 
+
+                    r = Math.min(255, Math.max(0, r + specular + fresnel));
+                    g = Math.min(255, Math.max(0, g + specular + fresnel + 2)); 
+                    b = Math.min(255, Math.max(0, b + specular + fresnel + 4));
+
+                    imgData.data[srcIndex] = r;
+                    imgData.data[srcIndex + 1] = g;
+                    imgData.data[srcIndex + 2] = b;
+
+                    srcIndex += 4;
+                }
+            }
+
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = simWidth;
+            tempCanvas.height = simHeight;
+            tempCanvas.getContext('2d').putImageData(imgData, 0, 0);
+
+            ctx.clearRect(0, 0, width, height);
+            ctx.drawImage(tempCanvas, 0, 0, width, height);
+        }
+
+        // 5. 激起水波
+        function dropWater(x, y, radius, strength) {
+            let simX = Math.floor(x / DOWNSCALE);
+            let simY = Math.floor(y / DOWNSCALE);
+
+            for (let j = -radius; j <= radius; j++) {
+                for (let i = -radius; i <= radius; i++) {
+                    if (simX + i >= 0 && simX + i < simWidth && simY + j >= 0 && simY + j < simHeight) {
+                        let distSq = i * i + j * j;
+                        let radSq = radius * radius;
+                        if (distSq <= radSq) {
+                            let dist = Math.sqrt(distSq);
+                            let weight = Math.cos((dist / radius) * (Math.PI / 2)); 
+                            lastRippleData[(simY + j) * simWidth + (simX + i)] -= strength * weight;
+                        }
+                    }
+                }
+            }
+        }
+
+        // 6. 动画渲染循环
+        function loop() {
+            updateWave();
+            renderWave();
+            requestAnimationFrame(loop);
+        }
+
+        // 7. 交互事件
+        let lastInputX = 0;
+        let lastInputY = 0;
+        const INPUT_THRESHOLD = 4; 
+
+        function handlePointer(e, force = false) {
+            e.preventDefault();
+            let touches = e.touches ? e.touches : [e];
+            for (let i = 0; i < touches.length; i++) {
+                let currX = touches[i].clientX;
+                let currY = touches[i].clientY;
+
+                let distMoved = Math.sqrt(Math.pow(currX - lastInputX, 2) + Math.pow(currY - lastInputY, 2));
+
+                if (force || distMoved > INPUT_THRESHOLD) {
+                    dropWater(currX, currY, 6, 90); 
+                    lastInputX = currX;
+                    lastInputY = currY;
+                }
+            }
+        }
+
+        window.addEventListener('mousedown', (e) => {
+            handlePointer(e, true); 
+            window.addEventListener('mousemove', handlePointer);
+        });
+
+        window.addEventListener('mouseup', () => {
+            window.removeEventListener('mousemove', handlePointer);
+        });
+
+        window.addEventListener('touchstart', (e) => { handlePointer(e, true); }, { passive: false });
+        window.addEventListener('touchmove', handlePointer, { passive: false });
+
+        window.addEventListener('resize', () => init());
+
+        // --- 核心修复：确保所有函数声明完毕后，再挂载图片加载监听 ---
+        bgImage.onload = function() {
+            init();
+            loop();
+        };
+
+        bgImage.onerror = function() {
+            console.log("图片加载失败，启用备用池塘纹理");
+            init(true);
+            loop();
+        };
+
+        // 如果图片已经在缓存中瞬间加载完了，手动触发一次
+        if (bgImage.complete) {
+            init();
+            loop();
+        }
+
+    </script>
+</body>
+</html>
