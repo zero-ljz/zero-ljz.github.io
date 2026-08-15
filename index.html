@@ -112,16 +112,6 @@
             font-weight: 700;
         }
 
-        .aplayer.aplayer-fixed .aplayer-lrc {
-            background: linear-gradient(
-                90deg,
-                transparent 8%,
-                rgba(2, 6, 23, 0.58) 30%,
-                rgba(2, 6, 23, 0.58) 70%,
-                transparent 92%
-            );
-        }
-
         .aplayer.aplayer-fixed .aplayer-lrc p {
             color: rgba(255, 255, 255, 0.82);
             font-weight: 500;
@@ -1088,6 +1078,65 @@
 
     fetchPlayerList();
 
+  </script>
+
+  <!-- Live2D interactive assistant: mouse tracking, click motions and built-in controls. -->
+  <script src="https://cdn.jsdelivr.net/npm/oh-my-live2d@0.19.3/dist/index.min.js"></script>
+  <script>
+    OML2D.loadOml2d({
+      dockedPosition: 'right',
+      mobileDisplay: false,
+      primaryColor: '#a78bfa',
+      sayHello: false,
+      transitionTime: 600,
+      models: [
+        {
+          name: 'shizuku',
+          path: 'https://cdn.jsdelivr.net/npm/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json',
+          scale: 0.16,
+          position: [0, 20],
+          motionPreloadStrategy: 'IDLE',
+          volume: 0.25,
+          stageStyle: {
+            width: 280,
+            height: 380
+          }
+        }
+      ],
+      tips: {
+        messageLine: 2,
+        style: {
+          top: '-90px',
+          width: '220px',
+          minHeight: '80px',
+          fontSize: '16px',
+          lineHeight: '1.5',
+          zIndex: 9999
+        },
+        idleTips: {
+          interval: 12000,
+          duration: 4000,
+          message: [
+            '嗨，要和我互动一下吗？',
+            '移动鼠标，我会看向你。',
+            '点点我，会有不同的动作哦。'
+          ]
+        }
+      },
+      menus: {
+        items(defaultItems) {
+          return defaultItems.filter((item) => item.id === 'Rest');
+        }
+      },
+      statusBar: {
+        loadingMessage: '看板娘加载中',
+        loadSuccessMessage: '看板娘已上线',
+        loadFailMessage: '看板娘加载失败',
+        reloadMessage: '点击重新加载',
+        restMessage: '看板娘休息中',
+        switchingMessage: '正在切换角色'
+      }
+    });
   </script>
 </body>
 
