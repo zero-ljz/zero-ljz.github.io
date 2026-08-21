@@ -7,10 +7,24 @@
     <title>起始页 | Start Page</title>
     <link rel="icon" href="data:," />
 
-    <!-- 预连接资源 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- 本地字体 -->
+    <style>
+        @font-face {
+            font-family: 'Inter';
+            src: url('./fonts/Inter-latin.woff2') format('woff2');
+            font-weight: 300 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('./fonts/JetBrainsMono-latin.woff2') format('woff2');
+            font-weight: 300 700;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
 
     <!-- 依赖库 -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -27,7 +41,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
                         mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace']
                     },
                     colors: {
