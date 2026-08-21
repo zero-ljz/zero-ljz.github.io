@@ -16,6 +16,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lunar-javascript@1.7.7/lunar.js"
+            onerror="this.onerror=null;this.src='https://unpkg.com/lunar-javascript@1.7.7/lunar.js'"></script>
 
     <link href="https://gcore.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" rel="stylesheet" />
 
@@ -421,7 +423,7 @@
                 <div class="absolute -top-24 -right-20 w-72 h-72 bg-brand-600/20 rounded-full blur-3xl"></div>
             </div>
             <div class="relative z-10 space-y-7">
-                <div class="flex flex-col sm:flex-row items-center gap-6 sm:gap-9" x-data="clockWidget">
+                <div class="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap items-center gap-6 sm:gap-9" x-data="clockWidget">
                     <!-- 模拟表盘 -->
                     <div class="relative w-32 h-32 shrink-0 rounded-full border-4 border-white/10 bg-black/20 backdrop-blur-sm shadow-inner">
                         <template x-for="i in 12" :key="i">
@@ -446,6 +448,19 @@
                         </p>
                         <p class="mt-3 text-sm text-gray-300" x-text="dateString"></p>
                         <p x-show="widgets.quote && quote" class="mt-2 text-xs text-gray-400 italic max-w-lg" x-text="quote"></p>
+                    </div>
+                    <!-- 农历新年倒数 -->
+                    <div x-show="widgets.newYear && ready" x-data="lunarNewYearCountdown" style="display: none"
+                         class="w-full sm:basis-full lg:basis-auto lg:w-auto lg:min-w-[190px] shrink-0 pt-5 lg:pt-0 lg:pl-8 border-t lg:border-t-0 lg:border-l border-white/10 text-center lg:text-left">
+                        <p class="flex items-center justify-center lg:justify-start gap-2 text-xs text-gray-400">
+                            <i data-lucide="calendar-days" class="w-4 h-4 text-brand-500" aria-hidden="true"></i>
+                            <span>距离农历新年</span>
+                        </p>
+                        <p class="mt-2 font-mono font-bold tabular leading-none text-white">
+                            <span class="text-4xl text-brand-300" x-text="days"></span>
+                            <span class="ml-1 text-sm font-sans text-gray-300">天</span>
+                        </p>
+                        <p class="mt-2 text-[11px] text-gray-500" x-text="targetLabel"></p>
                     </div>
                 </div>
 
@@ -1040,7 +1055,7 @@
 
             // 主应用：菜单栏 + 上下文菜单 + 全局偏好
             Alpine.data('mainApp', () => ({
-                widgets: { weather: true, nav: true, notes: true, todo: true, quote: true },
+                widgets: { weather: true, nav: true, notes: true, todo: true, quote: true, newYear: true },
                 quote: '',
                 bookmarkStatus: 'loading',
                 bookmarkMenu: null,
@@ -1119,6 +1134,7 @@
                                 { label: '网站导航', checked: this.widgets.nav, action: () => this.toggleWidget('nav') },
                                 { label: '便签', checked: this.widgets.notes, action: () => this.toggleWidget('notes') },
                                 { label: '待办', checked: this.widgets.todo, action: () => this.toggleWidget('todo') },
+                                { label: '农历新年倒数', checked: this.widgets.newYear, action: () => this.toggleWidget('newYear') },
                                 { label: '每日一言', checked: this.widgets.quote, action: () => this.toggleWidget('quote') }
                             ]
                         },
@@ -1284,8 +1300,62 @@
                 }
             }));
 
+            Alpine.data('lunarNewYearCountdown', () => ({
+                days: 0,
+                targetLabel: '',
+                target: null,
+                ready: false,
+                timer: null,
+
+                init() {
+                    this.update();
+                    this.timer = setInterval(() => this.update(), 60000);
+                },
+
+                destroy() {
+                    clearInterval(this.timer);
+                },
+
+                update() {
+                    const now = new Date();
+                    const dayAfterTarget = this.target
+                        ? new Date(this.target.getFullYear(), this.target.getMonth(), this.target.getDate() + 1)
+                        : null;
+                    if (!this.target || now >= dayAfterTarget) this.target = findNextLunarNewYear(now);
+                    if (!this.target) return;
+
+                    this.days = Math.max(0, Math.ceil((this.target.getTime() - now.getTime()) / 86400000));
+                    this.targetLabel = this.target.toLocaleDateString('zh-CN', {
+                        year: 'numeric', month: 'long', day: 'numeric'
+                    });
+                    this.ready = true;
+                }
+            }));
+
+            function findNextLunarNewYear(fromDate) {
+                try {
+                    if (typeof Solar === 'undefined' || typeof Lunar === 'undefined') return null;
+                    const today = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate());
+                    let lunarYear = Solar.fromDate(fromDate).getLunar().getYear();
+                    let solar = Lunar.fromYmd(lunarYear, 1, 1).getSolar();
+                    let target = new Date(solar.getYear(), solar.getMonth() - 1, solar.getDay());
+                    if (target < today) {
+                        solar = Lunar.fromYmd(lunarYear + 1, 1, 1).getSolar();
+                        target = new Date(solar.getYear(), solar.getMonth() - 1, solar.getDay());
+                    }
+                    return target;
+                } catch (error) {
+                    return null;
+                }
+            }
+
             function formatLunarDate(date) {
                 try {
+                    if (typeof Solar !== 'undefined') {
+                        const lunar = Solar.fromDate(date).getLunar();
+                        const leap = lunar.getMonth() < 0 ? '闰' : '';
+                        return `${lunar.getYearInGanZhi()}年${leap}${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`;
+                    }
                     const parts = new Intl.DateTimeFormat('zh-CN-u-ca-chinese', {
                         dateStyle: 'full'
                     }).formatToParts(date);
