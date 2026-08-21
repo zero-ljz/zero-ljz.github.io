@@ -29,6 +29,13 @@
                         mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace']
                     },
                     colors: {
+                        brand: {
+                            200: '#99f6e4',
+                            300: '#5eead4',
+                            400: '#2dd4bf',
+                            500: '#14B8A6',
+                            600: '#0d9488'
+                        },
                         glass: {
                             bg: 'rgba(30, 41, 59, 0.90)', // 更不透明的背景，防止文字重叠干扰
                             border: 'rgba(255, 255, 255, 0.08)',
@@ -209,7 +216,7 @@
             width: 18px;
             height: 18px;
             flex: 0 0 18px;
-            color: #a78bfa;
+            color: #14B8A6;
         }
 
         .wallpaper-status__icon svg {
@@ -288,7 +295,7 @@
         input::placeholder,
         textarea::placeholder { color: #64748b; }
 
-        ::selection { background: rgba(167, 139, 250, 0.35); }
+        ::selection { background: rgba(20, 184, 166, 0.35); }
 
         /* 起始页：数字时钟等宽数字 */
         .tabular { font-variant-numeric: tabular-nums; }
@@ -300,7 +307,7 @@
             font-size: 15px;
             font-weight: 700;
             color: #e2e8f0;
-            background: linear-gradient(135deg, rgba(167, 139, 250, 0.45), rgba(59, 130, 246, 0.45));
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.45), rgba(59, 130, 246, 0.45));
         }
 
         /* 浮层面板（搜索补全 / 弹窗）：会盖在其它卡片上，需要更实的底色保证可读性 */
@@ -341,7 +348,7 @@
 
     <!-- 背景装饰 -->
     <div class="fixed inset-0 overflow-hidden -z-10 pointer-events-none">
-        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px]"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-600/20 rounded-full blur-[120px]"></div>
         <div class="absolute bottom-[10%] right-[-5%] w-[400px] h-[400px] bg-blue-600/20 rounded-full blur-[100px]"></div>
     </div>
 
@@ -349,7 +356,7 @@
 <header class="hidden lg:flex fixed top-0 left-0 w-full h-12 acrylic z-50 items-center px-4 justify-between shadow-lg">
         <div class="flex items-center h-full">
             <div class="mr-6 font-bold text-white flex items-center gap-2">
-                <i data-lucide="layout-grid" class="w-5 h-5 text-purple-400"></i>
+                <i data-lucide="layout-grid" class="w-5 h-5 text-brand-500"></i>
                 <span>Start Page</span>
             </div>
             
@@ -378,18 +385,18 @@
             </span>
             <a href="https://github.com/zero-ljz" target="_blank" rel="noopener noreferrer"
                aria-label="访问 GitHub" title="GitHub"
-               class="grid w-8 h-8 place-items-center rounded-md text-gray-400 hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-purple-400">
+               class="grid w-8 h-8 place-items-center rounded-md text-gray-400 hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
                 <svg aria-hidden="true" viewBox="0 0 24 24" class="w-4 h-4 fill-current">
                     <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.335-1.756-1.335-1.756-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.467-1.332-5.467-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.404c1.02.005 2.045.138 3.003.404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
                 </svg>
             </a>
             <a href="mailto:hi@iapp.run" aria-label="发送邮件" title="hi@iapp.run"
-               class="grid w-8 h-8 place-items-center rounded-md text-gray-400 hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-purple-400">
+               class="grid w-8 h-8 place-items-center rounded-md text-gray-400 hover:bg-white/10 hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
                 <i data-lucide="mail" class="w-4 h-4"></i>
             </a>
             <a href="https://iapp.run" target="_blank" rel="noopener noreferrer"
                aria-label="访问 iapp.run" title="iapp.run"
-               class="block w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 p-[1px] transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-purple-400">
+               class="block w-8 h-8 rounded-full bg-gradient-to-tr from-brand-500 to-cyan-500 p-[1px] transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
                 <img src="img/avatar.png" alt="zero-ljz" class="rounded-full w-full h-full bg-black object-cover">
             </a>
         </div>
@@ -411,7 +418,7 @@
         <section class="acrylic rounded-3xl p-6 sm:p-8 relative z-20">
             <!-- 光晕单独裁剪，避免卡片 overflow 影响搜索补全面板 -->
             <div class="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none">
-                <div class="absolute -top-24 -right-20 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl"></div>
+                <div class="absolute -top-24 -right-20 w-72 h-72 bg-brand-600/20 rounded-full blur-3xl"></div>
             </div>
             <div class="relative z-10 space-y-7">
                 <div class="flex flex-col sm:flex-row items-center gap-6 sm:gap-9" x-data="clockWidget">
@@ -424,18 +431,18 @@
                         </template>
                         <div class="absolute top-1/2 left-1/2 w-1.5 h-8 bg-white rounded-full origin-bottom" :style="`transform: translate(-50%, -100%) rotate(${h}deg)`"></div>
                         <div class="absolute top-1/2 left-1/2 w-1 h-11 bg-gray-300 rounded-full origin-bottom" :style="`transform: translate(-50%, -100%) rotate(${m}deg)`"></div>
-                        <div class="absolute top-1/2 left-1/2 w-0.5 h-12 bg-purple-500 rounded-full origin-bottom" :style="`transform: translate(-50%, -100%) rotate(${s}deg)`"></div>
-                        <div class="absolute top-1/2 left-1/2 w-3 h-3 bg-purple-500 rounded-full -translate-x-1/2 -translate-y-1/2 shadow-lg border-2 border-white/20"></div>
+                        <div class="absolute top-1/2 left-1/2 w-0.5 h-12 bg-brand-500 rounded-full origin-bottom" :style="`transform: translate(-50%, -100%) rotate(${s}deg)`"></div>
+                        <div class="absolute top-1/2 left-1/2 w-3 h-3 bg-brand-500 rounded-full -translate-x-1/2 -translate-y-1/2 shadow-lg border-2 border-white/20"></div>
                     </div>
                     <!-- 数字时间 -->
                     <div class="min-w-0 flex-1 text-center sm:text-left">
                         <p class="flex items-center justify-center sm:justify-start gap-2 text-sm text-gray-400">
-                            <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i>
+                            <i data-lucide="sparkles" class="w-4 h-4 text-brand-500"></i>
                             <span x-text="greeting"></span>
                         </p>
                         <p class="mt-1.5 font-mono font-bold text-white tabular leading-none">
                             <span class="text-5xl sm:text-6xl" x-text="hhmm"></span>
-                            <span class="text-2xl sm:text-3xl text-purple-300/90 ml-1" x-text="ss"></span>
+                            <span class="text-2xl sm:text-3xl text-brand-300/90 ml-1" x-text="ss"></span>
                         </p>
                         <p class="mt-3 text-sm text-gray-300" x-text="dateString"></p>
                         <p x-show="widgets.quote && quote" class="mt-2 text-xs text-gray-400 italic max-w-lg" x-text="quote"></p>
@@ -455,15 +462,15 @@
                         </template>
                     </div>
                     <form @submit.prevent="submit()" class="mt-3 relative" autocomplete="off">
-                        <div class="flex items-center gap-3 h-14 px-5 rounded-2xl bg-white/5 border border-white/10 transition focus-within:border-purple-400/60 focus-within:bg-white/10">
-                            <i data-lucide="search" class="w-5 h-5 shrink-0 text-purple-300"></i>
+                        <div class="flex items-center gap-3 h-14 px-5 rounded-2xl bg-white/5 border border-white/10 transition focus-within:border-brand-500/60 focus-within:bg-white/10">
+                            <i data-lucide="search" class="w-5 h-5 shrink-0 text-brand-300"></i>
                             <input id="sp-search" x-ref="input" type="text" x-model="query"
                                    @input.debounce.200ms="loadSuggestions()"
                                    @keydown="onKeydown($event)"
                                    placeholder="搜索，或输入网址直达…"
                                    class="flex-1 min-w-0 bg-transparent border-0 outline-none text-base text-white">
                             <span x-show="looksLikeUrl" style="display: none"
-                                  class="hidden sm:block shrink-0 px-2 py-1 rounded-lg border border-purple-400/30 bg-purple-500/20 text-[11px] text-purple-200">回车直达</span>
+                                  class="hidden sm:block shrink-0 px-2 py-1 rounded-lg border border-brand-500/30 bg-brand-500/20 text-[11px] text-brand-200">回车直达</span>
                             <button type="button" x-show="query" style="display: none" @click="reset()" aria-label="清空"
                                     class="shrink-0 text-gray-500 hover:text-white transition">
                                 <i data-lucide="x" class="w-4 h-4"></i>
@@ -513,7 +520,7 @@
                 <div x-show="editing" style="display: none" class="mb-4 space-y-2">
                     <div class="flex gap-2">
                         <input type="text" x-model="cityQuery" @keydown.enter.prevent="searchCity()" placeholder="城市名，如 长沙 / Tokyo"
-                               class="flex-1 min-w-0 h-10 px-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white outline-none focus:border-purple-400/60">
+                               class="flex-1 min-w-0 h-10 px-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white outline-none focus:border-brand-500/60">
                         <button @click="searchCity()" class="h-10 px-3 rounded-xl bg-white/10 border border-white/10 text-sm hover:bg-white/20 transition">搜索</button>
                         <button @click="useGeolocation()" title="使用当前定位"
                                 class="h-10 w-10 grid place-items-center rounded-xl bg-white/10 border border-white/10 hover:bg-white/20 transition">
@@ -575,7 +582,7 @@
                      class="col-span-1 md:col-span-6 lg:col-span-8 acrylic rounded-3xl p-6 flex flex-col">
                 <div class="flex items-center justify-between gap-2 mb-4">
                     <div class="flex items-center gap-2 min-w-0">
-                        <i data-lucide="compass" class="w-5 h-5 shrink-0 text-purple-400"></i>
+                        <i data-lucide="compass" class="w-5 h-5 shrink-0 text-brand-500"></i>
                         <h3 class="text-lg font-semibold text-white shrink-0">网站导航</h3>
                         <span class="text-xs text-gray-400 bg-white/10 px-2 py-0.5 rounded-full shrink-0" x-text="`${total} 个`"></span>
                     </div>
@@ -610,7 +617,7 @@
                     <template x-if="addingGroup">
                         <input x-ref="groupInput" type="text" x-model="groupDraft" placeholder="分组名，回车确认"
                                @keydown.enter.prevent="addGroup()" @keydown.escape="addingGroup = false" @blur="addGroup()"
-                               class="shrink-0 h-8 w-36 px-2.5 rounded-xl bg-white/5 border border-white/15 text-xs text-white outline-none focus:border-purple-400/60">
+                               class="shrink-0 h-8 w-36 px-2.5 rounded-xl bg-white/5 border border-white/15 text-xs text-white outline-none focus:border-brand-500/60">
                     </template>
                     <button x-show="groups.length > 1" style="display: none" @click="removeGroup()" title="删除当前分组"
                             class="shrink-0 w-8 h-8 grid place-items-center rounded-xl text-gray-500 hover:text-rose-400 hover:bg-white/5 transition">
@@ -667,17 +674,17 @@
                             <label class="block space-y-1.5">
                                 <span class="text-xs text-gray-400">名称</span>
                                 <input type="text" x-model="form.name" placeholder="例如 GitHub"
-                                       class="w-full h-11 px-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white outline-none focus:border-purple-400/60">
+                                       class="w-full h-11 px-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white outline-none focus:border-brand-500/60">
                             </label>
                             <label class="block space-y-1.5">
                                 <span class="text-xs text-gray-400">网址</span>
                                 <input type="text" x-model="form.url" @keydown.enter.prevent="save()" placeholder="github.com"
-                                       class="w-full h-11 px-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white outline-none focus:border-purple-400/60">
+                                       class="w-full h-11 px-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white outline-none focus:border-brand-500/60">
                             </label>
                             <label class="block space-y-1.5">
                                 <span class="text-xs text-gray-400">分组</span>
                                 <select x-model.number="form.group"
-                                        class="w-full h-11 px-3 rounded-xl bg-slate-800 border border-white/10 text-sm text-white outline-none focus:border-purple-400/60">
+                                        class="w-full h-11 px-3 rounded-xl bg-slate-800 border border-white/10 text-sm text-white outline-none focus:border-brand-500/60">
                                     <template x-for="(group, index) in groups" :key="group.name + index">
                                         <option :value="index" x-text="group.name"></option>
                                     </template>
@@ -752,7 +759,7 @@
 
                 <form @submit.prevent="add()" class="flex gap-2 mb-3 shrink-0">
                     <input type="text" x-model="draft" placeholder="添加一项待办，回车保存"
-                           class="flex-1 min-w-0 h-11 px-3.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white outline-none focus:border-purple-400/60 focus:bg-white/10 transition">
+                           class="flex-1 min-w-0 h-11 px-3.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white outline-none focus:border-brand-500/60 focus:bg-white/10 transition">
                     <button type="submit" class="w-11 h-11 shrink-0 grid place-items-center rounded-xl bg-white/10 border border-white/10 text-white hover:bg-white/20 transition">
                         <i data-lucide="plus" class="w-4 h-4"></i>
                     </button>
@@ -1263,9 +1270,11 @@
                     this.h = (hours % 12) * 30 + minutes * 0.5;
                     this.hhmm = `${pad2(hours)}:${pad2(minutes)}`;
                     this.ss = pad2(seconds);
-                    this.dateString = now.toLocaleDateString('zh-CN', {
+                    const solarDate = now.toLocaleDateString('zh-CN', {
                         year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
                     });
+                    const lunarDate = formatLunarDate(now);
+                    this.dateString = lunarDate ? `${solarDate} ${lunarDate}` : solarDate;
                     this.greeting = hours < 5 ? '夜深了，注意休息'
                         : hours < 11 ? '早上好，新的一天开始了'
                         : hours < 14 ? '中午好，记得吃饭'
@@ -1274,6 +1283,21 @@
                         : '夜深了，注意休息';
                 }
             }));
+
+            function formatLunarDate(date) {
+                try {
+                    const parts = new Intl.DateTimeFormat('zh-CN-u-ca-chinese', {
+                        dateStyle: 'full'
+                    }).formatToParts(date);
+                    const part = type => parts.find(item => item.type === type)?.value || '';
+                    const yearName = part('yearName');
+                    const month = part('month');
+                    const day = part('day');
+                    return yearName && month && day ? `${yearName}年${month}${day}` : '';
+                } catch (error) {
+                    return '';
+                }
+            }
 
             // ===================== 搜索 =====================
             // 搜索建议：百度 JSONP 接口，失败时静默降级
@@ -1845,7 +1869,7 @@
                                     <i data-lucide="globe" class="w-4 h-4 opacity-50 shrink-0 hidden"></i>`;
                     } else if (item.checked !== undefined) {
                         iconHtml = item.checked 
-                            ? `<i data-lucide="check" class="w-4 h-4 text-purple-400 shrink-0"></i>` 
+                            ? `<i data-lucide="check" class="w-4 h-4 text-brand-500 shrink-0"></i>`
                             : `<div class="w-4 h-4 shrink-0"></div>`;
                     } else if (item.icon) {
                         iconHtml = `<i data-lucide="${item.icon}" class="w-4 h-4 opacity-70 shrink-0"></i>`;
@@ -2138,7 +2162,7 @@
     OML2D.loadOml2d({
       dockedPosition: 'right',
       mobileDisplay: false,
-      primaryColor: '#a78bfa',
+      primaryColor: '#14B8A6',
       sayHello: false,
       transitionTime: 600,
       models: [
