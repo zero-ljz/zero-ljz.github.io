@@ -7,7 +7,7 @@
     <title>起始页 | Start Page</title>
     <link rel="icon" href="data:," />
 
-    <!-- 字体：拉丁字符使用本地 Inter，中文使用霞鹜文楷屏幕阅读版。 -->
+    <!-- 字体：拉丁字符使用本地 Inter，中文使用 HarmonyOS Sans SC。 -->
     <style>
         @font-face {
             font-family: 'Inter';
@@ -26,7 +26,7 @@
         }
     </style>
     <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.7.0/lxgwwenkaigbscreen.css" />
+          href="https://cdn.jsdelivr.net/npm/harmonyos-sans-sc-webfont-splitted@1.1.0/dist/index.css" />
 
     <!-- 依赖库 -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -43,7 +43,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'LXGW WenKai Screen', 'system-ui', 'sans-serif'],
+                        sans: ['Inter', 'HarmonyOS Sans SC', 'Microsoft YaHei UI', 'PingFang SC', 'system-ui', 'sans-serif'],
                         mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace']
                     },
                     colors: {
@@ -69,6 +69,10 @@
     </script>
 
     <style>
+        :lang(zh-CN) {
+            font-family: 'Inter', 'HarmonyOS Sans SC', 'Microsoft YaHei UI', 'PingFang SC', system-ui, sans-serif;
+        }
+
         html {
             background-color: #0f172a;
         }
@@ -78,13 +82,6 @@
             color: #e2e8f0;
             text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
             isolation: isolate;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4 {
-            font-family: 'Inter', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
         }
 
         #water-effect {
