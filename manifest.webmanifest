@@ -1,0 +1,32 @@
+{
+    "name": "起始页 | Start Page",
+    "short_name": "起始页",
+    "description": "个人起始页：时钟、搜索、天气、网站导航、便签与待办，数据保存在本机浏览器。",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#0f172a",
+    "theme_color": "#0f172a",
+    "lang": "zh-CN",
+    "icons": [
+        {
+            "src": "./img/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "./img/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "./img/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

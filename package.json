@@ -1,0 +1,7 @@
+{
+    "name": "zero-ljz.github.io",
+    "private": true,
+    "scripts": {
+        "build:css": "tailwindcss -c tailwind.config.js -i css/tailwind.src.css -o css/tailwind.css --minify"
+    }
+}
