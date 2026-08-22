@@ -7,7 +7,7 @@
     <title>起始页 | Start Page</title>
     <link rel="icon" href="data:," />
 
-    <!-- 本地字体 -->
+    <!-- 字体：拉丁字符使用本地 Inter，中文使用霞鹜文楷屏幕阅读版。 -->
     <style>
         @font-face {
             font-family: 'Inter';
@@ -25,6 +25,8 @@
             font-display: swap;
         }
     </style>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.7.0/lxgwwenkaigbscreen.css" />
 
     <!-- 依赖库 -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -41,7 +43,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        sans: ['Inter', 'LXGW WenKai Screen', 'system-ui', 'sans-serif'],
                         mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace']
                     },
                     colors: {
@@ -76,6 +78,13 @@
             color: #e2e8f0;
             text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
             isolation: isolate;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Inter', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
         }
 
         #water-effect {
